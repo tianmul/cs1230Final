@@ -5,8 +5,40 @@
 #include <QKeyEvent>
 #include <iostream>
 
+#include "camera/OrbitingCamera.h"
+#include "scenegraph/ShapesScene.h"
+
+
+
+
+
+
+
+
+
+
+OrbitingCamera *View::getOrbitingCamera(){
+    return m_defaultOrbitingCamera.get();
+}
+
+
+
+
+
+
+
+
+
+
+
+/* all codes below are stencil code*/
+
+
+
+
 View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
-    m_time(), m_timer(), m_captureMouse(false)
+    m_time(), m_timer(), m_captureMouse(false),m_defaultOrbitingCamera(new OrbitingCamera()),
+    m_currentScene(nullptr)
 {
     // View needs all mouse move events, not just mouse drag events
     setMouseTracking(true);
@@ -26,6 +58,8 @@ View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
 View::~View()
 {
 }
+
+
 
 void View::initializeGL()
 {
@@ -51,6 +85,14 @@ void View::initializeGL()
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
+
+
+    //------------------by Lan---------------------
+    //Updating the camera matrix,
+    getOrbitingCamera()->updateMatrices();
+
+    m_shapesScene = std::make_unique<ShapesScene>(width(), height());
+    m_currentScene = m_shapesScene.get();
 }
 
 void View::paintGL()
@@ -58,6 +100,10 @@ void View::paintGL()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // TODO: Implement the demo rendering here
+
+    //----------------by Lan---------------
+    //set Camera and rendering
+    m_currentScene->render(this);
 }
 
 void View::resizeGL(int w, int h)
@@ -66,10 +112,22 @@ void View::resizeGL(int w, int h)
     w = static_cast<int>(w / ratio);
     h = static_cast<int>(h / ratio);
     glViewport(0, 0, w, h);
+
+
+    //resize camera by Lan
+     getOrbitingCamera()->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
 }
 
 void View::mousePressEvent(QMouseEvent *event)
 {
+    //-----------by Lan
+
+    if (event->button() == Qt::RightButton) {
+        getOrbitingCamera()->mouseDown(event->x(), event->y());
+        m_isDragging = true;
+        update();
+    }
+
 }
 
 void View::mouseMoveEvent(QMouseEvent *event)
@@ -89,10 +147,19 @@ void View::mouseMoveEvent(QMouseEvent *event)
 
         // TODO: Handle mouse movements here
     }
+
+
+    if (m_isDragging) {
+        getOrbitingCamera()->mouseDragged(event->x(), event->y());
+    }
 }
 
 void View::mouseReleaseEvent(QMouseEvent *event)
 {
+    if (m_isDragging && event->button() == Qt::RightButton) {
+        getOrbitingCamera()->mouseUp(event->x(), event->y());
+        m_isDragging = false;
+    }
 }
 
 void View::keyPressEvent(QKeyEvent *event)

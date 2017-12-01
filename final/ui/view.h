@@ -6,6 +6,13 @@
 #include <QTime>
 #include <QTimer>
 
+#include <memory>
+class Camera;
+class OrbitingCamera;
+class OpenGLScene;
+class ShapesScene;
+
+
 class View : public QGLWidget
 {
     Q_OBJECT
@@ -13,6 +20,12 @@ class View : public QGLWidget
 public:
     View(QWidget *parent);
     ~View();
+
+
+    OrbitingCamera *getOrbitingCamera();
+
+    // Returns a pointer to the current scene. If no scene is loaded, this function returns nullptr.
+    OpenGLScene *getScene() { return m_currentScene; }
 
 private:
     QTime m_time;
@@ -32,6 +45,16 @@ private:
 
 private slots:
     void tick();
+
+
+private:
+    //currently suppose we only have this one
+    std::unique_ptr<OrbitingCamera> m_defaultOrbitingCamera;
+    bool m_isDragging;
+
+    OpenGLScene *m_currentScene;
+    std::unique_ptr<ShapesScene> m_shapesScene;
+    //std::unique_ptr<SceneviewScene> m_sceneviewScene;
 };
 
 #endif // VIEW_H
