@@ -53,8 +53,6 @@ private:
     bool m_isDragging;
 
     OpenGLScene *m_currentScene;
-    std::unique_ptr<ShapesScene> m_shapesScene;
-    //std::unique_ptr<SceneviewScene> m_sceneviewScene;
 };
 
 #endif // VIEW_H

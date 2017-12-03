@@ -55,7 +55,8 @@ SOURCES += ui/mainwindow.cpp \
     gl/textures/TextureParameters.cpp \
     gl/textures/TextureParametersBuilder.cpp \
     gl/util/FullScreenQuad.cpp \
-    gl/GLDebug.cpp
+    gl/GLDebug.cpp \
+    scenegraph/SceneviewScene.cpp
 
 HEADERS += ui/mainwindow.h \
     ui_mainwindow.h \
@@ -96,7 +97,8 @@ HEADERS += ui/mainwindow.h \
     gl/textures/TextureParameters.h \
     gl/textures/TextureParametersBuilder.h \
     gl/util/FullScreenQuad.h \
-    gl/GLDebug.h
+    gl/GLDebug.h \
+    scenegraph/SceneviewScene.h
 
 FORMS += ui/mainwindow.ui
 INCLUDEPATH += glm ui glew-1.10.0/include

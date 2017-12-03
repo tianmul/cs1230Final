@@ -7,34 +7,23 @@
 
 #include "camera/OrbitingCamera.h"
 #include "scenegraph/ShapesScene.h"
+#include "scenegraph/SceneviewScene.h"
+
+//if we want to read file, change it to true
+#define READFILE false
+#define FILEPATH "/home/tlan4/cs1230Final/final/all_objects.xml"
+
+//edit the whole program and add all comments, Dec.2, by Lan
 
 
-
-
-
-
-
-
-
-
+//Since we only use OrbitingCamera, this substitute the getCamera() in SupportCanvas3D()
 OrbitingCamera *View::getOrbitingCamera(){
     return m_defaultOrbitingCamera.get();
 }
 
 
 
-
-
-
-
-
-
-
-
 /* all codes below are stencil code*/
-
-
-
 
 View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
     m_time(), m_timer(), m_captureMouse(false),m_defaultOrbitingCamera(new OrbitingCamera()),
@@ -91,8 +80,9 @@ void View::initializeGL()
     //Updating the camera matrix,
     getOrbitingCamera()->updateMatrices();
 
-    m_shapesScene = std::make_unique<ShapesScene>(width(), height());
-    m_currentScene = m_shapesScene.get();
+    //Build the scene
+    if(!READFILE) m_currentScene = std::make_unique<ShapesScene>(width(), height());
+    else m_currentScene = std::make_unique<SceneviewScene>(width(), height());
 }
 
 void View::paintGL()
