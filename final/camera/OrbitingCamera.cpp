@@ -60,11 +60,12 @@ void OrbitingCamera::mouseDragged(int x, int y) {
 }
 
 
-void OrbitingCamera::mouseScrolled(int delta) {
+void OrbitingCamera::mouseScrolled(float deltaX, float deltaZ) {
     // Use an exponential factor so the zoom increments are small when we are
     // close to the object and large when we are far away from the object
-    m_zoomZ *= powf(0.999f, delta);
-
+    //m_zoomZ *= powf(0.999f, delta);
+    m_zoomZ += deltaZ;
+    m_zoomX += deltaX;
     updateViewMatrix();
 }
 
@@ -88,7 +89,7 @@ void OrbitingCamera::updateProjectionMatrix() {
 
 void OrbitingCamera::updateViewMatrix() {
     m_viewMatrix =
-            glm::translate(glm::vec3(0.f, 0.f, m_zoomZ)) *
+            glm::translate(glm::vec3(m_zoomX, 0.f, m_zoomZ)) *
             glm::rotate(glm::radians(m_angleY), glm::vec3(0.f, 1.f, 0.f)) *
             glm::rotate(glm::radians(m_angleX), glm::vec3(1.f, 0.f, 0.f));
 }

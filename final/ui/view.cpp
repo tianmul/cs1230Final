@@ -14,6 +14,7 @@
 //if we want to read file, change it to true
 #define READFILE true
 #define FILEPATH "/home/tlan4/cs1230Final/final/all_objects.xml"
+#define CameraSpeed 15.0f
 
 //edit the whole program and add all comments, Dec.2, by Lan
 
@@ -28,7 +29,7 @@ OrbitingCamera *View::getOrbitingCamera(){
 
 View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
     m_time(), m_timer(), m_captureMouse(false),m_defaultOrbitingCamera(new OrbitingCamera()),
-    m_currentScene(nullptr)
+    m_currentScene(nullptr), m_isDragging(false)
 {
     // View needs all mouse move events, not just mouse drag events
     setMouseTracking(true);
@@ -178,6 +179,14 @@ void View::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) QApplication::quit();
 
+    float speed = CameraSpeed;
+    float seconds = m_time.elapsed()* 0.001f;
+
+    if (event->key() == Qt::Key_W) getOrbitingCamera()->mouseScrolled(0.f,speed*seconds);
+    else if (event->key() == Qt::Key_S) getOrbitingCamera()->mouseScrolled(0.f,-speed*seconds);
+    else if (event->key() == Qt::Key_A) getOrbitingCamera()->mouseScrolled(speed*seconds, 0.f);
+    else if (event->key() == Qt::Key_D) getOrbitingCamera()->mouseScrolled(-speed*seconds, 0.f);
+
     // TODO: Handle keyboard presses here
 }
 
@@ -192,9 +201,12 @@ void View::tick()
 
     // TODO: Implement the demo update here
     //at most 60 frams per second
+
+    update();
+    /*
     if(seconds > 1.0f/60.0f)update();
 
-    if(seconds > 0.1f)std::cout << "fps too low:" << seconds << std::endl;
+    if(seconds > 0.1f)std::cout << "fps too low:" << seconds << std::endl;*/
 
     // Flag this view for repainting (Qt will call paintGL() soon after)
     //update();

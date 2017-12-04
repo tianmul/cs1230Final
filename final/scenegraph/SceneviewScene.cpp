@@ -67,6 +67,7 @@ void SceneviewScene::loadNormalsArrowShader() {
     m_normalsArrowShader = std::make_unique<Shader>(vertexSource, geometrySource, fragmentSource);
 }
 */
+
 void SceneviewScene::render(View *context) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -151,22 +152,18 @@ void SceneviewScene::settingsChanged() {
     for (int i = 0; i<m_Primitives.size(); i++){
         switch (m_Primitives[i].first->type) {
         case PrimitiveType::PRIMITIVE_CUBE:
-            //m_shape.push_back(std::make_unique<Cube>());
             m_shapeA.push_back(0);
             marker.push_back(i);
             break;
         case PrimitiveType::PRIMITIVE_CONE:
-            //m_shape.push_back(std::make_unique<Cone>());
             m_shapeA.push_back(1);
             marker.push_back(i);
             break;
         case PrimitiveType::PRIMITIVE_CYLINDER:
-            //m_shape.push_back(std::make_unique<Cylinder>());
             m_shapeA.push_back(2);
             marker.push_back(i);
             break;
         case PrimitiveType::PRIMITIVE_SPHERE:
-            //m_shape.push_back(std::make_unique<Sphere>());
             m_shapeA.push_back(3);
             marker.push_back(i);
             break;

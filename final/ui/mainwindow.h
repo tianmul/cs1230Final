@@ -31,7 +31,6 @@ private:
 
     View *m_canvas3D;
     std::unique_ptr<CS123XmlSceneParser> m_sceneParser;
-    //OpenGLScene *old_glScene;
 };
 
 #endif // MAINWINDOW_H

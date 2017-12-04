@@ -22,7 +22,7 @@ public:
     View(QWidget *parent);
     ~View();
 
-
+    // Returns a pointer to OrbitingCamera
     OrbitingCamera *getOrbitingCamera();
 
     // Returns a pointer to the current scene. If no scene is loaded, this function returns nullptr.
@@ -49,13 +49,14 @@ private slots:
 
 
 private:
-    //currently suppose we only have this one
+    //We only have this camera
     std::unique_ptr<OrbitingCamera> m_defaultOrbitingCamera;
     bool m_isDragging;
 
     OpenGLScene *m_currentScene;
     std::unique_ptr<ShapesScene> m_shapesScene;
     std::unique_ptr<SceneviewScene> m_sceneviewScene;
+    float holdTime;
 };
 
 #endif // VIEW_H
