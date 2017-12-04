@@ -34,7 +34,7 @@ public:
     SceneviewScene();
     virtual ~SceneviewScene();
 
-    virtual void render(SupportCanvas3D *context) override;
+    virtual void render(View *context) override;
     virtual void settingsChanged() override;
 
     // Use this method to set an internal selection, based on the (x, y) position of the mouse
@@ -47,19 +47,20 @@ private:
 private:
 
     void loadPhongShader();
+    /*
     void loadWireframeShader();
     void loadNormalsShader();
-    void loadNormalsArrowShader();
+    void loadNormalsArrowShader();*/
 
-    void setSceneUniforms(SupportCanvas3D *context);\
-    void setMatrixUniforms(CS123::GL::Shader *shader, SupportCanvas3D *context);
+    void setSceneUniforms(View *context);\
+    void setMatrixUniforms(CS123::GL::Shader *shader, View *context);
     void setLights();
     void renderGeometry();
 
     std::unique_ptr<CS123::GL::CS123Shader> m_phongShader;
-    std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
+    /*std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsShader;
-    std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
+    std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;*/
 
 
     std::vector<std::unique_ptr<Shape>> m_shape;

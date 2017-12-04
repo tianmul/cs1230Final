@@ -1,35 +1,39 @@
 #include "SceneviewScene.h"
 #include "GL/glew.h"
 #include <QGLWidget>
-#include "Camera.h"
+#include "camera/OrbitingCamera.h"
 
-#include "Settings.h"
-#include "SupportCanvas3D.h"
-#include "ResourceLoader.h"
+#include "lib/ResourceLoader.h"
 #include "gl/shaders/CS123Shader.h"
 #include <string>
 #include <utility>
+
 #include "shapes/cube.h"
-
 #include "shapes/cone.h"
-
 #include "shapes/sphere.h"
-
 #include "shapes/cylinder.h"
+
 #include "glm/ext.hpp"
 #include <iostream>
 #include <sstream>
 #include "gl/GLDebug.h"
+
+#include "view.h"
 using namespace CS123::GL;
+
+#define P1 29
+#define P2 32
+#define P3 0
+#define Lighting true
 
 
 SceneviewScene::SceneviewScene()
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     loadPhongShader();
-    loadWireframeShader();
+    /*loadWireframeShader();
     loadNormalsShader();
-    loadNormalsArrowShader();
+    loadNormalsArrowShader();*/
 
 }
 
@@ -42,7 +46,7 @@ void SceneviewScene::loadPhongShader() {
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/default.frag");
     m_phongShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
 }
-
+/*
 void SceneviewScene::loadWireframeShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.frag");
@@ -62,8 +66,8 @@ void SceneviewScene::loadNormalsArrowShader() {
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.frag");
     m_normalsArrowShader = std::make_unique<Shader>(vertexSource, geometrySource, fragmentSource);
 }
-
-void SceneviewScene::render(SupportCanvas3D *context) {
+*/
+void SceneviewScene::render(View *context) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -76,17 +80,17 @@ void SceneviewScene::render(SupportCanvas3D *context) {
 
 }
 
-void SceneviewScene::setSceneUniforms(SupportCanvas3D *context) {
-    Camera *camera = context->getCamera();
-    m_phongShader->setUniform("useLighting", settings.useLighting);
+void SceneviewScene::setSceneUniforms(View *context) {
+    OrbitingCamera *camera = context->getOrbitingCamera();
+    m_phongShader->setUniform("useLighting", Lighting);
     m_phongShader->setUniform("useArrowOffsets", false);
     m_phongShader->setUniform("p" , camera->getProjectionMatrix());
     m_phongShader->setUniform("v", camera->getViewMatrix());
 }
 
-void SceneviewScene::setMatrixUniforms(Shader *shader, SupportCanvas3D *context) {
-    shader->setUniform("p", context->getCamera()->getProjectionMatrix());
-    shader->setUniform("v", context->getCamera()->getViewMatrix());
+void SceneviewScene::setMatrixUniforms(Shader *shader, View *context) {
+    shader->setUniform("p", context->getOrbitingCamera()->getProjectionMatrix());
+    shader->setUniform("v", context->getOrbitingCamera()->getViewMatrix());
 }
 
 void SceneviewScene::setLights()
@@ -171,20 +175,10 @@ void SceneviewScene::settingsChanged() {
         }
     }
 
-
     int p1,p2;
-    float p3;
-    if (settings.shapeParameter1<25) p1 = 1;
-    else if (settings.shapeParameter1 < 50) p1 = 8;
-    else if (settings.shapeParameter1 < 75) p1 = 15;
-    else if (settings.shapeParameter1 < 100) p1 = 22;
-    else p1 = 29;
-
-    if (settings.shapeParameter2<25) p2 = 4;
-    else if (settings.shapeParameter2 < 50) p2 = 11;
-    else if (settings.shapeParameter2 < 75) p2 = 18;
-    else if (settings.shapeParameter2 < 100) p1 = 25;
-    else p1 = 32;
+    p1 = P1;
+    p2 = P2;
+    float p3 = P3;
 
     m_shape.clear();
     m_shape.push_back(std::make_unique<Cube>());
@@ -193,7 +187,7 @@ void SceneviewScene::settingsChanged() {
     m_shape.push_back(std::make_unique<Sphere>());
 
     for (int i = 0; i<4; i++){
-        m_shape[i]->setting(p1, p2, settings.shapeParameter3);
+        m_shape[i]->setting(p1, p2, p3);
         m_shape[i]->init();
     }
 }

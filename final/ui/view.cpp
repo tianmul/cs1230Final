@@ -3,14 +3,16 @@
 #include "viewformat.h"
 #include <QApplication>
 #include <QKeyEvent>
+#include <QMessageBox>
 #include <iostream>
 
 #include "camera/OrbitingCamera.h"
 #include "scenegraph/ShapesScene.h"
 #include "scenegraph/SceneviewScene.h"
+#include "lib/CS123XmlSceneParser.h"
 
 //if we want to read file, change it to true
-#define READFILE false
+#define READFILE true
 #define FILEPATH "/home/tlan4/cs1230Final/final/all_objects.xml"
 
 //edit the whole program and add all comments, Dec.2, by Lan
@@ -20,7 +22,6 @@
 OrbitingCamera *View::getOrbitingCamera(){
     return m_defaultOrbitingCamera.get();
 }
-
 
 
 /* all codes below are stencil code*/
@@ -81,8 +82,33 @@ void View::initializeGL()
     getOrbitingCamera()->updateMatrices();
 
     //Build the scene
-    if(!READFILE) m_currentScene = std::make_unique<ShapesScene>(width(), height());
-    else m_currentScene = std::make_unique<SceneviewScene>(width(), height());
+
+    m_shapesScene = std::make_unique<ShapesScene>(width(), height());
+    m_sceneviewScene = std::make_unique<SceneviewScene>();
+
+    if(!READFILE) m_currentScene = m_shapesScene.get();
+    else {
+        m_currentScene = m_sceneviewScene.get();
+
+        //Load scene from file
+        QString file = FILEPATH;
+        CS123XmlSceneParser parser(file.toLatin1().data());
+
+        if (parser.parse()) {
+            Scene::parse(m_sceneviewScene.get(), &parser);
+
+            // Set the camera for the new scene
+            CS123SceneCameraData camera;
+            if (parser.getCameraData(camera)) {
+                //Since we use Orbiting Camera here, just do nothing
+            }
+        } else {
+            QMessageBox::critical(this, "Error", "Could not load scene \"" + file + "\"");
+        }
+    }
+
+    //Refresh the screen to load the file to scene
+    m_currentScene->settingsChanged();
 }
 
 void View::paintGL()
@@ -91,7 +117,6 @@ void View::paintGL()
 
     // TODO: Implement the demo rendering here
 
-    //----------------by Lan---------------
     //set Camera and rendering
     m_currentScene->render(this);
 }
@@ -104,18 +129,15 @@ void View::resizeGL(int w, int h)
     glViewport(0, 0, w, h);
 
 
-    //resize camera by Lan
+    //resize camera
      getOrbitingCamera()->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
 }
 
 void View::mousePressEvent(QMouseEvent *event)
 {
-    //-----------by Lan
-
     if (event->button() == Qt::RightButton) {
         getOrbitingCamera()->mouseDown(event->x(), event->y());
         m_isDragging = true;
-        update();
     }
 
 }
@@ -169,7 +191,11 @@ void View::tick()
     float seconds = m_time.restart() * 0.001f;
 
     // TODO: Implement the demo update here
+    //at most 60 frams per second
+    if(seconds > 1.0f/60.0f)update();
+
+    if(seconds > 0.1f)std::cout << "fps too low:" << seconds << std::endl;
 
     // Flag this view for repainting (Qt will call paintGL() soon after)
-    update();
+    //update();
 }
