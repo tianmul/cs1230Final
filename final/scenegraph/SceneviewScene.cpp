@@ -21,8 +21,8 @@
 #include "view.h"
 using namespace CS123::GL;
 
-#define P1 29
-#define P2 32
+#define P1 60
+#define P2 60
 #define P3 0
 #define Lighting true
 
@@ -35,6 +35,9 @@ SceneviewScene::SceneviewScene()
     loadNormalsShader();
     loadNormalsArrowShader();*/
 
+    // shadow map
+    initShadowMap();
+    glEnable(GL_DEPTH_TEST);
 }
 
 SceneviewScene::~SceneviewScene()
@@ -68,14 +71,73 @@ void SceneviewScene::loadNormalsArrowShader() {
 }
 */
 
+void SceneviewScene::initShadowMap() {
+    // load depth shader
+    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/depth.vert");
+    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/depth.frag");
+    m_depthShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
+
+    glGenFramebuffers(1, &depthMapFBO);
+    glGenTextures(1, &depthMap);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+    // attach depth texture as FBO's depth buffer
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
+    glDrawBuffer(GL_NONE);
+    glReadBuffer(GL_NONE);
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+}
+
+
 void SceneviewScene::render(View *context) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+
+    m_depthShader->bind();
+    m_depthShader->setLight(*m_Lights[0]);
+
+    glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    GLfloat near_plane = 0.1f, far_plane = 20.0f;
+    glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+    glm::mat4 lightView = glm::lookAt(glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(0.0f),  glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+    m_depthShader->setUniform("lightSpaceMatrix",lightSpaceMatrix);
+
+    glCullFace(GL_FRONT);
+    renderGeometry(m_depthShader.get());
+    glCullFace(GL_BACK);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    m_depthShader->unbind();
+
+    // reset viewport
+    glViewport(0, 0, context->width(), context->height());
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
     m_phongShader->bind();
     setSceneUniforms(context);
+    setMatrixUniforms(m_phongShader.get(), context);
     setLights();
-    renderGeometry();
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, depthMap);
+    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "depthMap"),1);
+
+    m_phongShader->setUniform("lightSpaceMatrix",lightSpaceMatrix);
+
+    renderGeometry(m_phongShader.get());
     glBindTexture(GL_TEXTURE_2D, 0);
     m_phongShader->unbind();
 
@@ -92,6 +154,7 @@ void SceneviewScene::setSceneUniforms(View *context) {
 void SceneviewScene::setMatrixUniforms(Shader *shader, View *context) {
     shader->setUniform("p", context->getOrbitingCamera()->getProjectionMatrix());
     shader->setUniform("v", context->getOrbitingCamera()->getViewMatrix());
+    shader->setUniform("m", glm::mat4(1.0f));
 }
 
 void SceneviewScene::setLights()
@@ -113,11 +176,11 @@ void SceneviewScene::setLights()
 
     for (int i = 0; i<m_Lights.size(); i++){
         CS123SceneLightData curlight = *m_Lights[i];
-        m_phongShader-> setLight(curlight);
+        m_phongShader->setLight(curlight);
     }
 }
 
-void SceneviewScene::renderGeometry() {
+void SceneviewScene::renderGeometry(CS123Shader *shader) {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     // TODO: [SCENEVIEW] Fill this in...
     // You shouldn't need to write *any* OpenGL in this class!
@@ -129,13 +192,13 @@ void SceneviewScene::renderGeometry() {
 
 
     for (int i = 0; i<m_shapeA.size(); i++){
-        m_phongShader->setUniform("m", m_Primitives[marker[i]].second);
+        shader->setUniform("m", m_Primitives[marker[i]].second);
         CS123SceneMaterial mat = m_Primitives[marker[i]].first->material;
         mat.cDiffuse*=m_global.kd;
         mat.cAmbient*=m_global.ka;
         mat.cSpecular*=m_global.ks;
         mat.cTransparent*=m_global.kt;
-        m_phongShader->applyMaterial(mat);
+        shader->applyMaterial(mat);
         m_shape[m_shapeA[i]]->draw();
     }
 

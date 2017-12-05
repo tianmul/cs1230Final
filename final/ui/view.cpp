@@ -13,7 +13,7 @@
 
 //if we want to read file, change it to true
 #define READFILE true
-#define FILEPATH "/home/tlan4/cs1230Final/final/all_objects.xml"
+#define FILEPATH "/course/cs1230/data/scenes/ray/all_objects.xml"
 #define CameraSpeed 15.0f
 
 //edit the whole program and add all comments, Dec.2, by Lan
@@ -72,10 +72,10 @@ void View::initializeGL()
     m_time.start();
     m_timer.start(1000 / 60);
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);
-    glFrontFace(GL_CCW);
+//    glEnable(GL_DEPTH_TEST);
+//    glEnable(GL_CULL_FACE);
+//    glCullFace(GL_BACK);
+//    glFrontFace(GL_CCW);
 
 
     //------------------by Lan---------------------

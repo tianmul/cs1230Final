@@ -5,13 +5,12 @@
 
 #include <memory>
 #include "shapes/shape.h"
-
+#include "gl/textures/Texture2D.h"
 
 namespace CS123 { namespace GL {
 
     class Shader;
     class CS123Shader;
-    class Texture2D;
 }}
 
 /**
@@ -42,10 +41,6 @@ public:
     void setSelection(int x, int y);
 
 private:
-
-
-private:
-
     void loadPhongShader();
     /*
     void loadWireframeShader();
@@ -55,7 +50,7 @@ private:
     void setSceneUniforms(View *context);\
     void setMatrixUniforms(CS123::GL::Shader *shader, View *context);
     void setLights();
-    void renderGeometry();
+    void renderGeometry(CS123::GL::CS123Shader* shader);
 
     std::unique_ptr<CS123::GL::CS123Shader> m_phongShader;
     /*std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
@@ -66,6 +61,15 @@ private:
     std::vector<std::unique_ptr<Shape>> m_shape;
     std::vector<int> m_shapeA;
     std::vector<int> marker;
+
+    // shadow map
+    std::unique_ptr<CS123::GL::CS123Shader> m_depthShader;
+    std::vector<Texture2D> m_depthTextures;
+
+    unsigned int depthMapFBO;
+    unsigned int depthMap;
+    unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+    void initShadowMap();
 
 };
 
