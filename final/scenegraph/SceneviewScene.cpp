@@ -21,8 +21,8 @@
 #include "view.h"
 using namespace CS123::GL;
 
-#define P1 60
-#define P2 60
+#define P1 40
+#define P2 30
 #define P3 0
 #define Lighting true
 

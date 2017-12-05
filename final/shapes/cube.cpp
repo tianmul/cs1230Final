@@ -7,7 +7,9 @@ Cube::Cube():Shape()
 
 void Cube::init(){
     //front face
+    param1 = param1*5;
     for (int i = 0; i<param1; i++){
+
         Point a(-0.5,0.5-i*1./param1,0.5);
         Point b(0.5,0.5-i*1./param1,0.5);
         Point c(0.5,0.5-(i+1)*1./param1,0.5);

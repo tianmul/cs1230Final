@@ -523,8 +523,10 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../final/resources.qrc \
+		../final/shaders/shader.frag \
+		../final/shaders/depth.vert \
 		../final/shaders/shader.vert \
-		../final/shaders/shader.frag
+		../final/shaders/depth.frag
 	/contrib/projects/qt5.2.0/5.2.0/gcc_64/bin/rcc -name resources ../final/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_view.cpp
@@ -641,6 +643,200 @@ moc_mainwindow.cpp: ../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/g
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qicon.h \
+		../final/lib/CS123XmlSceneParser.h \
+		../final/lib/CS123ISceneParser.h \
+		../final/lib/CS123SceneData.h \
+		../final/glm/glm.hpp \
+		../final/glm/detail/_fixes.hpp \
+		../final/glm/fwd.hpp \
+		../final/glm/detail/type_int.hpp \
+		../final/glm/detail/setup.hpp \
+		../final/glm/detail/type_float.hpp \
+		../final/glm/detail/type_vec.hpp \
+		../final/glm/detail/precision.hpp \
+		../final/glm/detail/type_mat.hpp \
+		../final/glm/vec2.hpp \
+		../final/glm/detail/type_vec2.hpp \
+		../final/glm/detail/_swizzle.hpp \
+		../final/glm/detail/_swizzle_func.hpp \
+		../final/glm/detail/type_vec2.inl \
+		../final/glm/vec3.hpp \
+		../final/glm/detail/type_vec3.hpp \
+		../final/glm/detail/type_vec3.inl \
+		../final/glm/vec4.hpp \
+		../final/glm/detail/type_vec4.hpp \
+		../final/glm/detail/type_vec4.inl \
+		../final/glm/mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.inl \
+		../final/glm/mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.inl \
+		../final/glm/mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.inl \
+		../final/glm/mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.inl \
+		../final/glm/mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.inl \
+		../final/glm/mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.inl \
+		../final/glm/mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.inl \
+		../final/glm/mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.inl \
+		../final/glm/mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.inl \
+		../final/glm/trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.inl \
+		../final/glm/detail/_vectorize.hpp \
+		../final/glm/detail/type_vec1.hpp \
+		../final/glm/detail/type_vec1.inl \
+		../final/glm/exponential.hpp \
+		../final/glm/detail/func_exponential.hpp \
+		../final/glm/detail/func_exponential.inl \
+		../final/glm/detail/func_vector_relational.hpp \
+		../final/glm/detail/func_vector_relational.inl \
+		../final/glm/common.hpp \
+		../final/glm/detail/func_common.hpp \
+		../final/glm/detail/func_common.inl \
+		../final/glm/packing.hpp \
+		../final/glm/detail/func_packing.hpp \
+		../final/glm/detail/func_packing.inl \
+		../final/glm/detail/type_half.hpp \
+		../final/glm/detail/type_half.inl \
+		../final/glm/geometric.hpp \
+		../final/glm/detail/func_geometric.hpp \
+		../final/glm/detail/func_geometric.inl \
+		../final/glm/matrix.hpp \
+		../final/glm/detail/func_matrix.hpp \
+		../final/glm/detail/func_matrix.inl \
+		../final/glm/vector_relational.hpp \
+		../final/glm/integer.hpp \
+		../final/glm/detail/func_integer.hpp \
+		../final/glm/detail/func_integer.inl \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXml \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXmlDepends \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QtCore \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QtCoreDepends \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qparallelanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpauseanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvariantanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeasingcurve.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsequentialanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextcodec.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qendian.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlibraryinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatetime.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnumeric.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbuffer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdir.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfileinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdiriterator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfileselector.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QStringList \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfilesystemwatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlockfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qloggingcategory.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocess.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qresource.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsavefile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsettings.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstandardpaths.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporarydir.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QScopedPointer \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporaryfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qidentityproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlistmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonarray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsondocument.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventloop.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasictimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmath.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetaobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedata.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectcleanuphandler.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedmemory.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsignalmapper.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsocketnotifier.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemsemaphore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtranslator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qwineventnotifier.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedatabase.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimetype.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfactoryinterface.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlibrary.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qplugin.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpluginloader.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/quuid.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracttransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventtransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfinalstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qhistorystate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsignaltransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstatemachine.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qexception.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuture.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfutureinterface.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrunnable.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qresultstore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuturesynchronizer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuturewatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qreadwritelock.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsemaphore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthread.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthreadpool.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthreadstorage.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qwaitcondition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydataops.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbitarray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearraymatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcache.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcollator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcommandlineoption.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlinkedlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmessageauthenticationcode.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qqueue.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedvaluerollback.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstack.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextboundaryfinder.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimeline.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimezone.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qxmlstream.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtcoreversion.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlglobal.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qdom.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qxml.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlversion.h \
 		../final/ui/mainwindow.h
 	/contrib/projects/qt5.2.0/5.2.0/gcc_64/bin/moc $(DEFINES) $(INCPATH) ../final/ui/mainwindow.h -o moc_mainwindow.cpp
 
@@ -1030,6 +1226,200 @@ mainwindow.o: ../final/ui/mainwindow.cpp ../final/ui/mainwindow.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtouchdevice.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qicon.h \
+		../final/lib/CS123XmlSceneParser.h \
+		../final/lib/CS123ISceneParser.h \
+		../final/lib/CS123SceneData.h \
+		../final/glm/glm.hpp \
+		../final/glm/detail/_fixes.hpp \
+		../final/glm/fwd.hpp \
+		../final/glm/detail/type_int.hpp \
+		../final/glm/detail/setup.hpp \
+		../final/glm/detail/type_float.hpp \
+		../final/glm/detail/type_vec.hpp \
+		../final/glm/detail/precision.hpp \
+		../final/glm/detail/type_mat.hpp \
+		../final/glm/vec2.hpp \
+		../final/glm/detail/type_vec2.hpp \
+		../final/glm/detail/_swizzle.hpp \
+		../final/glm/detail/_swizzle_func.hpp \
+		../final/glm/detail/type_vec2.inl \
+		../final/glm/vec3.hpp \
+		../final/glm/detail/type_vec3.hpp \
+		../final/glm/detail/type_vec3.inl \
+		../final/glm/vec4.hpp \
+		../final/glm/detail/type_vec4.hpp \
+		../final/glm/detail/type_vec4.inl \
+		../final/glm/mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.inl \
+		../final/glm/mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.inl \
+		../final/glm/mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.inl \
+		../final/glm/mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.inl \
+		../final/glm/mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.inl \
+		../final/glm/mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.inl \
+		../final/glm/mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.inl \
+		../final/glm/mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.inl \
+		../final/glm/mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.inl \
+		../final/glm/trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.inl \
+		../final/glm/detail/_vectorize.hpp \
+		../final/glm/detail/type_vec1.hpp \
+		../final/glm/detail/type_vec1.inl \
+		../final/glm/exponential.hpp \
+		../final/glm/detail/func_exponential.hpp \
+		../final/glm/detail/func_exponential.inl \
+		../final/glm/detail/func_vector_relational.hpp \
+		../final/glm/detail/func_vector_relational.inl \
+		../final/glm/common.hpp \
+		../final/glm/detail/func_common.hpp \
+		../final/glm/detail/func_common.inl \
+		../final/glm/packing.hpp \
+		../final/glm/detail/func_packing.hpp \
+		../final/glm/detail/func_packing.inl \
+		../final/glm/detail/type_half.hpp \
+		../final/glm/detail/type_half.inl \
+		../final/glm/geometric.hpp \
+		../final/glm/detail/func_geometric.hpp \
+		../final/glm/detail/func_geometric.inl \
+		../final/glm/matrix.hpp \
+		../final/glm/detail/func_matrix.hpp \
+		../final/glm/detail/func_matrix.inl \
+		../final/glm/vector_relational.hpp \
+		../final/glm/integer.hpp \
+		../final/glm/detail/func_integer.hpp \
+		../final/glm/detail/func_integer.inl \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXml \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXmlDepends \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QtCore \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QtCoreDepends \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qparallelanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpauseanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvariantanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeasingcurve.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsequentialanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextcodec.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qendian.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlibraryinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatetime.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnumeric.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbuffer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdir.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfileinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdiriterator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfileselector.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QStringList \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfilesystemwatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlockfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qloggingcategory.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocess.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qresource.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsavefile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsettings.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstandardpaths.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporarydir.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QScopedPointer \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporaryfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qidentityproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlistmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonarray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsondocument.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventloop.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasictimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmath.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetaobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedata.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectcleanuphandler.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedmemory.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsignalmapper.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsocketnotifier.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemsemaphore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtranslator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qwineventnotifier.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedatabase.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimetype.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfactoryinterface.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlibrary.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qplugin.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpluginloader.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/quuid.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracttransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventtransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfinalstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qhistorystate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsignaltransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstatemachine.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qexception.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuture.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfutureinterface.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrunnable.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qresultstore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuturesynchronizer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuturewatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qreadwritelock.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsemaphore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthread.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthreadpool.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthreadstorage.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qwaitcondition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydataops.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbitarray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearraymatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcache.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcollator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcommandlineoption.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlinkedlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmessageauthenticationcode.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qqueue.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedvaluerollback.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstack.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextboundaryfinder.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimeline.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimezone.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qxmlstream.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtcoreversion.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlglobal.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qdom.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qxml.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlversion.h \
 		ui_mainwindow.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QVariant \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QAction \
@@ -1037,8 +1427,6 @@ mainwindow.o: ../final/ui/mainwindow.cpp ../final/ui/mainwindow.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qactiongroup.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QApplication \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qapplication.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreapplication.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventloop.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qguiapplication.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qinputmethod.h \
@@ -1054,13 +1442,10 @@ mainwindow.o: ../final/ui/mainwindow.cpp ../final/ui/mainwindow.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractitemview.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractscrollarea.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qframe.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qstyleoption.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qvalidator.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qslider.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractslider.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qstyle.h \
@@ -1083,10 +1468,7 @@ mainwindow.o: ../final/ui/mainwindow.cpp ../final/ui/mainwindow.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QSurfaceFormat \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qsurfaceformat.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QTime \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatetime.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QTimer \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimer.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasictimer.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/QGLFormat
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o mainwindow.o ../final/ui/mainwindow.cpp
 
@@ -1208,7 +1590,199 @@ main.o: ../final/main.cpp ../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QMainWindow \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qmainwindow.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qtabwidget.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qicon.h
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qicon.h \
+		../final/lib/CS123XmlSceneParser.h \
+		../final/lib/CS123ISceneParser.h \
+		../final/lib/CS123SceneData.h \
+		../final/glm/glm.hpp \
+		../final/glm/detail/_fixes.hpp \
+		../final/glm/fwd.hpp \
+		../final/glm/detail/type_int.hpp \
+		../final/glm/detail/setup.hpp \
+		../final/glm/detail/type_float.hpp \
+		../final/glm/detail/type_vec.hpp \
+		../final/glm/detail/precision.hpp \
+		../final/glm/detail/type_mat.hpp \
+		../final/glm/vec2.hpp \
+		../final/glm/detail/type_vec2.hpp \
+		../final/glm/detail/_swizzle.hpp \
+		../final/glm/detail/_swizzle_func.hpp \
+		../final/glm/detail/type_vec2.inl \
+		../final/glm/vec3.hpp \
+		../final/glm/detail/type_vec3.hpp \
+		../final/glm/detail/type_vec3.inl \
+		../final/glm/vec4.hpp \
+		../final/glm/detail/type_vec4.hpp \
+		../final/glm/detail/type_vec4.inl \
+		../final/glm/mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.inl \
+		../final/glm/mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.inl \
+		../final/glm/mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.inl \
+		../final/glm/mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.inl \
+		../final/glm/mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.inl \
+		../final/glm/mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.inl \
+		../final/glm/mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.inl \
+		../final/glm/mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.inl \
+		../final/glm/mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.inl \
+		../final/glm/trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.inl \
+		../final/glm/detail/_vectorize.hpp \
+		../final/glm/detail/type_vec1.hpp \
+		../final/glm/detail/type_vec1.inl \
+		../final/glm/exponential.hpp \
+		../final/glm/detail/func_exponential.hpp \
+		../final/glm/detail/func_exponential.inl \
+		../final/glm/detail/func_vector_relational.hpp \
+		../final/glm/detail/func_vector_relational.inl \
+		../final/glm/common.hpp \
+		../final/glm/detail/func_common.hpp \
+		../final/glm/detail/func_common.inl \
+		../final/glm/packing.hpp \
+		../final/glm/detail/func_packing.hpp \
+		../final/glm/detail/func_packing.inl \
+		../final/glm/detail/type_half.hpp \
+		../final/glm/detail/type_half.inl \
+		../final/glm/geometric.hpp \
+		../final/glm/detail/func_geometric.hpp \
+		../final/glm/detail/func_geometric.inl \
+		../final/glm/matrix.hpp \
+		../final/glm/detail/func_matrix.hpp \
+		../final/glm/detail/func_matrix.inl \
+		../final/glm/vector_relational.hpp \
+		../final/glm/integer.hpp \
+		../final/glm/detail/func_integer.hpp \
+		../final/glm/detail/func_integer.inl \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXml \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXmlDepends \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QtCore \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QtCoreDepends \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qparallelanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpauseanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvariantanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeasingcurve.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsequentialanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextcodec.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qendian.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlibraryinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatetime.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnumeric.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbuffer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdir.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfileinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdiriterator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfileselector.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QStringList \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfilesystemwatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlockfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qloggingcategory.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocess.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qresource.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsavefile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsettings.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstandardpaths.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporarydir.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QScopedPointer \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporaryfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qidentityproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlistmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonarray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsondocument.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasictimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmath.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetaobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedata.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectcleanuphandler.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedmemory.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsignalmapper.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsocketnotifier.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemsemaphore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtranslator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qwineventnotifier.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedatabase.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimetype.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfactoryinterface.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlibrary.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qplugin.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpluginloader.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/quuid.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracttransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventtransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfinalstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qhistorystate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsignaltransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstatemachine.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qexception.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuture.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfutureinterface.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrunnable.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qresultstore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuturesynchronizer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuturewatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qreadwritelock.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsemaphore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthread.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthreadpool.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthreadstorage.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qwaitcondition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydataops.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbitarray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearraymatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcache.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcollator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcommandlineoption.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlinkedlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmessageauthenticationcode.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qqueue.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedvaluerollback.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstack.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextboundaryfinder.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimeline.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimezone.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qxmlstream.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtcoreversion.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlglobal.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qdom.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qxml.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlversion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../final/main.cpp
 
 glew.o: ../final/glew-1.10.0/src/glew.c ../final/glew-1.10.0/include/GL/glew.h \
@@ -1353,6 +1927,9 @@ view.o: ../final/ui/view.cpp ../final/ui/view.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qguiapplication.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qinputmethod.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QKeyEvent \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QMessageBox \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qmessagebox.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdialog.h \
 		../final/camera/OrbitingCamera.h \
 		../final/camera/Camera.h \
 		../final/glm/glm.hpp \
@@ -1442,7 +2019,121 @@ view.o: ../final/ui/view.cpp ../final/ui/view.h \
 		../final/gl/datatype/VBO.h \
 		../final/gl/datatype/VBOAttribMarker.h \
 		../final/shapes/point.h \
-		../final/scenegraph/SceneviewScene.h
+		../final/scenegraph/SceneviewScene.h \
+		../final/gl/textures/Texture2D.h \
+		../final/gl/textures/Texture.h \
+		../final/lib/CS123XmlSceneParser.h \
+		../final/lib/CS123ISceneParser.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXml \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXmlDepends \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QtCore \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QtCoreDepends \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qparallelanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpauseanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpropertyanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvariantanimation.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeasingcurve.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsequentialanimationgroup.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextcodec.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qendian.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlibraryinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnumeric.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbuffer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdir.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfileinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdiriterator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfileselector.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QStringList \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfilesystemwatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlockfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qloggingcategory.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocess.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qresource.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsavefile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsettings.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstandardpaths.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporarydir.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QScopedPointer \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporaryfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qidentityproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlistmodel.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonarray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonvalue.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsondocument.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmath.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetaobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedata.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectcleanuphandler.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedmemory.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsignalmapper.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsocketnotifier.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemsemaphore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtranslator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qwineventnotifier.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedatabase.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimetype.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfactoryinterface.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlibrary.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qplugin.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpluginloader.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/quuid.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracttransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventtransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfinalstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qhistorystate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsignaltransition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstate.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstatemachine.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qexception.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuture.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfutureinterface.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrunnable.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qresultstore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuturesynchronizer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfuturewatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qreadwritelock.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsemaphore.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthread.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthreadpool.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qthreadstorage.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qwaitcondition.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydataops.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydatapointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbitarray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearraymatcher.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcache.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcollator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcommandlineoption.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcommandlineparser.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcryptographichash.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qelapsedtimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlinkedlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmessageauthenticationcode.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qqueue.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedvaluerollback.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstack.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextboundaryfinder.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimeline.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimezone.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qxmlstream.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtcoreversion.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlglobal.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qdom.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qxml.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlversion.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o view.o ../final/ui/view.cpp
 
 viewformat.o: ../final/ui/viewformat.cpp ../final/ui/viewformat.h \
@@ -3109,6 +3800,8 @@ SceneviewScene.o: ../final/scenegraph/SceneviewScene.cpp ../final/scenegraph/Sce
 		../final/gl/datatype/VBO.h \
 		../final/gl/datatype/VBOAttribMarker.h \
 		../final/shapes/point.h \
+		../final/gl/textures/Texture2D.h \
+		../final/gl/textures/Texture.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/QGLWidget \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qgl.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qopengl.h \
@@ -3230,6 +3923,9 @@ SceneviewScene.o: ../final/scenegraph/SceneviewScene.cpp ../final/scenegraph/Sce
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qtopenglglobal.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QSurfaceFormat \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qsurfaceformat.h \
+		../final/camera/OrbitingCamera.h \
+		../final/camera/Camera.h \
+		../final/lib/ResourceLoader.h \
 		../final/gl/shaders/CS123Shader.h \
 		../final/gl/shaders/Shader.h \
 		../final/shapes/cube.h \
@@ -3374,7 +4070,13 @@ SceneviewScene.o: ../final/scenegraph/SceneviewScene.cpp ../final/scenegraph/Sce
 		../final/glm/detail/intrinsic_matrix.hpp \
 		../final/glm/detail/intrinsic_matrix.inl \
 		../final/glm/gtx/simd_mat4.inl \
-		../final/gl/GLDebug.h
+		../final/gl/GLDebug.h \
+		../final/ui/view.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QTime \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatetime.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QTimer \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasictimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SceneviewScene.o ../final/scenegraph/SceneviewScene.cpp
 
 qrc_resources.o: qrc_resources.cpp 
