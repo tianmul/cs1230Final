@@ -26,6 +26,7 @@ glm::vec3 toGLMVec3(const CS123SceneColor &c) {
 
 void CS123Shader::applyMaterial(const CS123SceneMaterial &material) {
     setUniform("ambient_color", toGLMVec3(material.cAmbient));
+    //setUniform("ambient_color", toGLMVec3(glm::vec4(0.5f,0.5f,0.5f,0.0f)));
     setUniform("diffuse_color", toGLMVec3(material.cDiffuse));
     setUniform("specular_color", toGLMVec3(material.cSpecular));
     setUniform("shininess", material.shininess);

@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     // Resize the window because the window is huge since all docks were visible.
-    resize(1000, 600);
+    resize(800, 600);
 
     show();
 }

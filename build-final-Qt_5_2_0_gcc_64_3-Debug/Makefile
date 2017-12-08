@@ -523,10 +523,16 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../final/resources.qrc \
-		../final/shaders/shader.frag \
-		../final/shaders/depth.vert \
+		../final/shaders/ssao_geometry.frag \
+		../final/shaders/depth.frag \
+		../final/shaders/ssao.vert \
 		../final/shaders/shader.vert \
-		../final/shaders/depth.frag
+		../final/shaders/ssao_blur.frag \
+		../final/shaders/ssao_geometry.vert \
+		../final/shaders/depth.vert \
+		../final/shaders/ssao.frag \
+		../final/shaders/ssao_lighting.frag \
+		../final/shaders/shader.frag
 	/contrib/projects/qt5.2.0/5.2.0/gcc_64/bin/rcc -name resources ../final/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_view.cpp

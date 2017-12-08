@@ -4,5 +4,11 @@
         <file alias="default.vert">shaders/shader.vert</file>
         <file alias="depth.frag">shaders/depth.frag</file>
         <file alias="depth.vert">shaders/depth.vert</file>
+        <file alias="ssao.vert">shaders/ssao.vert</file>
+        <file alias="ssao.frag">shaders/ssao.frag</file>
+        <file alias="ssao_lighting.frag">shaders/ssao_lighting.frag</file>
+        <file alias="ssao_geometry.vert">shaders/ssao_geometry.vert</file>
+        <file alias="ssao_geometry.frag">shaders/ssao_geometry.frag</file>
+        <file alias="ssao_blur.frag">shaders/ssao_blur.frag</file>
     </qresource>
 </RCC>

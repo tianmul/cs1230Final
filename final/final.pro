@@ -110,7 +110,13 @@ DEFINES += GLM_SWIZZLE GLM_FORCE_RADIANS
 OTHER_FILES += shaders/shader.frag \
     shaders/shader.vert \
     shaders/depth.frag \
-    shaders/depth.vert
+    shaders/depth.vert \
+    shaders/ssao_blur.frag \
+    shaders/ssao_geometry.frag \
+    shaders/ssao_lighting.frag \
+    shaders/ssao.frag \
+    shaders/ssao_geometry.vert \
+    shaders/ssao.vert
 
 # Don't add the -pg flag unless you know what you are doing. It makes QThreadPool freeze on Mac OS X
 QMAKE_CXXFLAGS_RELEASE -= -O2

@@ -32,7 +32,16 @@ uniform bool useLighting;     // Whether to calculate lighting using lighting eq
 uniform bool useArrowOffsets; // True if rendering the arrowhead of a normal for Shapes
 
 uniform sampler2D depthMap;
+
+uniform sampler2D gPositionDepth;
+uniform sampler2D gNormal;
+uniform sampler2D gAlbedo;
+uniform sampler2D ssao;
+
+
+
 uniform mat4 lightSpaceMatrix;
+
 
 float ShadowCalculation(vec4 fragPosLightSpace, vec4 normal_worldSpace, vec4 position_worldSpace) {
     // perform perspective divide
@@ -88,7 +97,9 @@ void main() {
     if (useLighting) {
         color = ambient_color.xyz; // Add ambient component
 
-        for (int i = 0; i < MAX_LIGHTS; i++) {
+
+        //color = ambient_color.xyz; // Add ambient component
+        /*for (int i = 0; i < MAX_LIGHTS; i++) {
             vec4 lightSpacePosition = lightSpaceMatrix * position_worldSpace;
             float shadow = ShadowCalculation(lightSpacePosition, normal_worldSpace, position_worldSpace);
 
@@ -112,8 +123,12 @@ void main() {
             color += max (vec3(0), lightColors[i] * specular_color * specIntensity) * (1.0f-shadow);
 
 //            color = vec3(shadow);
-        }
-    } else {
+        }*/
+        //vec2 temp = vec2((position_cameraSpace.x+1.0f)/2.0f, (position_cameraSpace.y+1.0f)/2.0f);
+        color = vec3(texture(ssao, position_cameraSpace.xy).r);
+    }
+
+        else {
         color = ambient_color + diffuse_color;
     }
     color = clamp(color, 0.0, 1.0);
