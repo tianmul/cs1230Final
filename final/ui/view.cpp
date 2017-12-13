@@ -13,7 +13,8 @@
 
 //if we want to read file, change it to true
 #define READFILE true
-#define FILEPATH "/course/cs1230/data/scenes/ray/all_objects.xml"
+//#define FILEPATH "/course/cs1230/data/scenes/ray/all_objects.xml"
+#define FILEPATH "/course/cs1230/data/scenes/ray/shadow_test.xml"
 #define CameraSpeed 15.0f
 
 //edit the whole program and add all comments, Dec.2, by Lan

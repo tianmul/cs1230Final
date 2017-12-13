@@ -31,16 +31,16 @@ uniform vec2 repeatUV;
 uniform bool useLighting;     // Whether to calculate lighting using lighting equation
 uniform bool useArrowOffsets; // True if rendering the arrowhead of a normal for Shapes
 
-uniform sampler2D depthMap;
-uniform mat4 lightSpaceMatrix;
+uniform sampler2D depthMap[MAX_LIGHTS];
+uniform mat4 lightSpaceMatrix[MAX_LIGHTS];
 
-float ShadowCalculation(vec4 fragPosLightSpace, vec4 normal_worldSpace, vec4 position_worldSpace) {
+float ShadowCalculation(int i, vec4 fragPosLightSpace, vec4 normal_worldSpace, vec4 position_worldSpace) {
     // perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range
     projCoords = projCoords * 0.5 + 0.5;
     // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(depthMap, projCoords.xy).r;
+    float closestDepth = texture(depthMap[i], projCoords.xy).r;
     // get depth of current fragment from light's perspective
     float currentDepth = projCoords.z;
     // calculate bias (based on depth map resolution and slope)
@@ -51,10 +51,10 @@ float ShadowCalculation(vec4 fragPosLightSpace, vec4 normal_worldSpace, vec4 pos
 
     // PCF
     float shadow = 0.0;
-    vec2 texelSize = 1.0 / textureSize(depthMap, 0);
+    vec2 texelSize = 1.0 / textureSize(depthMap[i], 0);
     for(int x = -1; x <= 1; ++x) {
         for(int y = -1; y <= 1; ++y) {
-            float pcfDepth = texture(depthMap, projCoords.xy + vec2(x, y) * texelSize).r;
+            float pcfDepth = texture(depthMap[i], projCoords.xy + vec2(x, y) * texelSize).r;
             shadow += currentDepth - bias > pcfDepth  ? 1.0 : 0.0;
         }
     }
@@ -89,8 +89,8 @@ void main() {
         color = ambient_color.xyz; // Add ambient component
 
         for (int i = 0; i < MAX_LIGHTS; i++) {
-            vec4 lightSpacePosition = lightSpaceMatrix * position_worldSpace;
-            float shadow = ShadowCalculation(lightSpacePosition, normal_worldSpace, position_worldSpace);
+            vec4 lightSpacePosition = lightSpaceMatrix[i] * position_worldSpace;
+            float shadow = ShadowCalculation(i,lightSpacePosition, normal_worldSpace, position_worldSpace);
 
             vec4 vertexToLight = vec4(0);
             // Point Light
