@@ -33,10 +33,13 @@ uniform vec2 repeatUV;
 uniform bool useLighting;     // Whether to calculate lighting using lighting equation
 uniform bool useArrowOffsets; // True if rendering the arrowhead of a normal for Shapes
 
+uniform bool usingShadowMap;
 uniform sampler2D depthMap[MAX_LIGHTS];
 uniform mat4 lightSpaceMatrix[MAX_LIGHTS];
 
 float ShadowCalculation(int i, vec4 fragPosLightSpace, vec4 normal_worldSpace, vec4 position_worldSpace) {
+    if (!usingShadowMap) return 0.0f;
+
     // perform perspective divide
     vec3 projCoords = fragPosLightSpace.xyz / fragPosLightSpace.w;
     // transform to [0,1] range

@@ -30,7 +30,7 @@ using namespace CS123::GL;
 
 
 SceneviewScene::SceneviewScene()
-    : init_done(false)
+    : init_done(false), usingShadowMap(true)
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     /*loadWireframeShader();
@@ -117,6 +117,10 @@ void SceneviewScene::initShadowMap() {
     }
 
     init_done = true;
+}
+
+void SceneviewScene::toggleShadowMap() {
+    usingShadowMap = !usingShadowMap;
 }
 
 
@@ -258,27 +262,29 @@ void SceneviewScene::render(View *context) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    if (usingShadowMap) {
+        m_depthShader->bind();
+        setLights(m_depthShader.get());
 
-    m_depthShader->bind();
-    setLights(m_depthShader.get());
+        glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+        for (int i = 0 ; i < m_Lights.size(); ++i) {
+            glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO[i]);
+            glClear(GL_DEPTH_BUFFER_BIT);
 
-    glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-    for (int i = 0 ; i < m_Lights.size(); ++i) {
-        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO[i]);
-        glClear(GL_DEPTH_BUFFER_BIT);
+            m_depthShader->setUniform("lightIndex", i);
+            glCullFace(GL_FRONT);
+            renderGeometry(m_depthShader.get());
+            glCullFace(GL_BACK);
+    //        glBindTexture(GL_TEXTURE_2D, gNormal);
+    //        glActiveTexture(GL_TEXTURE4);
+    //        glBindTexture(GL_TEXTURE_2D, gAlbedo);
 
-        m_depthShader->setUniform("lightIndex", i);
-        glCullFace(GL_FRONT);
-        renderGeometry(m_depthShader.get());
-        glCullFace(GL_BACK);
-        glBindTexture(GL_TEXTURE_2D, gNormal);
-        glActiveTexture(GL_TEXTURE4);
-        glBindTexture(GL_TEXTURE_2D, gAlbedo);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
 
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        m_depthShader->unbind();
     }
 
-    m_depthShader->unbind();
 
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     //SSAO
@@ -347,11 +353,16 @@ void SceneviewScene::render(View *context) {
     setMatrixUniforms(m_phongShader.get(), context);
     setLights(m_phongShader.get());
 
-    for (int i = 0; i < m_Lights.size(); ++i) {
-        glActiveTexture(GL_TEXTURE6+i);
-        glBindTexture(GL_TEXTURE_2D, depthMap[i]);
-        m_phongShader->setUniformArrayByIndex("depthMap", i+6, i);
+    // bind shadow map
+    if (usingShadowMap) {
+        for (int i = 0; i < m_Lights.size(); ++i) {
+            glActiveTexture(GL_TEXTURE6+i);
+            glBindTexture(GL_TEXTURE_2D, depthMap[i]);
+            m_phongShader->setUniformArrayByIndex("depthMap", i+6, i);
+        }
     }
+    m_phongShader->setUniform("usingShadowMap", usingShadowMap);
+
     glUniform1i(glGetUniformLocation(m_phongShader->getID(), "square"), 0);
     m_phongShader->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
     renderGeometry(m_phongShader.get());

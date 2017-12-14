@@ -43,6 +43,7 @@ public:
     void setSelection(int x, int y);
     unsigned int SCR_WIDTH = 800, SCR_HEIGHT = 600;
 
+    void toggleShadowMap();
 private:
     void loadPhongShader();
     /*
@@ -72,6 +73,7 @@ private:
     std::vector<unsigned> depthMap;
     unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
     void initShadowMap();
+    bool usingShadowMap;
     bool init_done;
 
     // SSAO

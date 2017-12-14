@@ -196,6 +196,10 @@ void View::keyPressEvent(QKeyEvent *event)
 
 void View::keyReleaseEvent(QKeyEvent *event)
 {
+    if (event->key() == Qt::Key_1) {
+        // shadow map
+        m_sceneviewScene->toggleShadowMap();
+    }
 }
 
 void View::tick()
