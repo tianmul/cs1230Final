@@ -44,6 +44,7 @@ public:
     unsigned int SCR_WIDTH = 800, SCR_HEIGHT = 600;
 
     void toggleShadowMap();
+    void toggleSSAO();
 private:
     void loadPhongShader();
     /*
@@ -74,6 +75,7 @@ private:
     unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
     void initShadowMap();
     bool usingShadowMap;
+    bool usingSSAO;
     bool init_done;
 
     // SSAO

@@ -30,7 +30,7 @@ using namespace CS123::GL;
 
 
 SceneviewScene::SceneviewScene()
-    : init_done(false), usingShadowMap(true)
+    : init_done(false), usingShadowMap(true), usingSSAO(true)
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     /*loadWireframeShader();
@@ -123,6 +123,9 @@ void SceneviewScene::toggleShadowMap() {
     usingShadowMap = !usingShadowMap;
 }
 
+void SceneviewScene::toggleSSAO(){
+    usingSSAO = !usingSSAO;
+}
 
 
 void SceneviewScene::initSSAO(){
@@ -287,53 +290,56 @@ void SceneviewScene::render(View *context) {
 
 
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-    //SSAO
-    // 1. Geometry Pass: render scene's geometry/color data into gbuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    SSAO_geometry->bind();
-    //setSceneUniforms(context);
-    glm::mat4 projection = context->getOrbitingCamera()->getProjectionMatrix();
-    glm::mat4 view = context->getOrbitingCamera()->getViewMatrix();
-    //glm::mat4 model;
-    glUniformMatrix4fv(glGetUniformLocation(SSAO_geometry->getID(), "p"), 1, GL_FALSE, glm::value_ptr(projection));
-    glUniformMatrix4fv(glGetUniformLocation(SSAO_geometry->getID(), "v"), 1, GL_FALSE, glm::value_ptr(view));
-    renderGeometry(SSAO_geometry.get());
-    SSAO_geometry->unbind();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    // 2. Create SSAO texture
-    glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
-    glClear(GL_COLOR_BUFFER_BIT);
-    SSAO->bind();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, gPositionDepth);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, gNormal);
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, noiseTexture);
+    if (usingSSAO) {
+        //SSAO
+        // 1. Geometry Pass: render scene's geometry/color data into gbuffer
+        glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        SSAO_geometry->bind();
+        //setSceneUniforms(context);
+        glm::mat4 projection = context->getOrbitingCamera()->getProjectionMatrix();
+        glm::mat4 view = context->getOrbitingCamera()->getViewMatrix();
+        //glm::mat4 model;
+        glUniformMatrix4fv(glGetUniformLocation(SSAO_geometry->getID(), "p"), 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(glGetUniformLocation(SSAO_geometry->getID(), "v"), 1, GL_FALSE, glm::value_ptr(view));
+        renderGeometry(SSAO_geometry.get());
+        SSAO_geometry->unbind();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-    for (GLuint i = 0; i < 64; ++i)
-                    glUniform3fv(glGetUniformLocation(SSAO->getID(), ("samples[" + std::to_string(i) + "]").c_str()), 1, &ssaoKernel[i][0]);
-    glUniformMatrix4fv(glGetUniformLocation(SSAO->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(context->getOrbitingCamera()->getProjectionMatrix()));
-    SSAO->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
+        // 2. Create SSAO texture
+        glBindFramebuffer(GL_FRAMEBUFFER, ssaoFBO);
+        glClear(GL_COLOR_BUFFER_BIT);
+        SSAO->bind();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, gPositionDepth);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, gNormal);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_2D, noiseTexture);
 
-    std::unique_ptr<FullScreenQuad> t = std::make_unique<FullScreenQuad>();
-    //glm::mat4 cammatrix = glm::inverse(glm::translate(glm::vec3(0.f, 0.f, 1.001f))*context->getOrbitingCamera()->getViewMatrix());
-    t->draw();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    SSAO->unbind();
+        for (GLuint i = 0; i < 64; ++i)
+                        glUniform3fv(glGetUniformLocation(SSAO->getID(), ("samples[" + std::to_string(i) + "]").c_str()), 1, &ssaoKernel[i][0]);
+        glUniformMatrix4fv(glGetUniformLocation(SSAO->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(context->getOrbitingCamera()->getProjectionMatrix()));
+        SSAO->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
+
+        std::unique_ptr<FullScreenQuad> t = std::make_unique<FullScreenQuad>();
+        //glm::mat4 cammatrix = glm::inverse(glm::translate(glm::vec3(0.f, 0.f, 1.001f))*context->getOrbitingCamera()->getViewMatrix());
+        t->draw();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        SSAO->unbind();
 
 
-    // 3. Blur SSAO texture to remove noise
-    glBindFramebuffer(GL_FRAMEBUFFER, ssaoBlurFBO);
-    glClear(GL_COLOR_BUFFER_BIT);
-    SSAO_blur->bind();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, ssaoColorBuffer);
-    t->draw();
-    SSAO_blur->unbind();
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        // 3. Blur SSAO texture to remove noise
+        glBindFramebuffer(GL_FRAMEBUFFER, ssaoBlurFBO);
+        glClear(GL_COLOR_BUFFER_BIT);
+        SSAO_blur->bind();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, ssaoColorBuffer);
+        t->draw();
+        SSAO_blur->unbind();
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
 
 
     // 4. Lighting Pass: traditional deferred Blinn-Phong lighting now with added screen-space ambient occlusion
@@ -362,6 +368,7 @@ void SceneviewScene::render(View *context) {
         }
     }
     m_phongShader->setUniform("usingShadowMap", usingShadowMap);
+    m_phongShader->setUniform("usingSSAO", usingSSAO);
 
     glUniform1i(glGetUniformLocation(m_phongShader->getID(), "square"), 0);
     m_phongShader->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));

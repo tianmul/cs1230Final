@@ -9,6 +9,7 @@ uniform sampler2D gAlbedo;
 uniform sampler2D ssao;
 uniform int square;
 uniform vec2 SCR_SIZE;
+uniform bool usingSSAO;
 
 void main()
 {
@@ -21,8 +22,9 @@ void main()
         //vec3 texColor = texture(tex, texc).rgb;
         //texColor = clamp(texColor + vec3(1-useTexture), vec3(0), vec3(1));
         //fragColor = vec4(color * texColor, 1);
-        FragColor = vec4(color,1);
-        FragColor = vec4(color*AmbientOcclusion,1);
+
+        if(!usingSSAO) FragColor = vec4(color,1);
+        else FragColor = vec4(color*AmbientOcclusion,1);
         //FragColor = vec4(vec3(1.0f-AmbientOcclusion), 1.0);
 
     }

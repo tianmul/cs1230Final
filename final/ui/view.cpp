@@ -200,6 +200,10 @@ void View::keyReleaseEvent(QKeyEvent *event)
         // shadow map
         m_sceneviewScene->toggleShadowMap();
     }
+    if (event->key() == Qt::Key_2) {
+        // shadow map
+        m_sceneviewScene->toggleSSAO();
+    }
 }
 
 void View::tick()
