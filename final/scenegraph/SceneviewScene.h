@@ -50,7 +50,7 @@ private:
 
     void setSceneUniforms(View *context);\
     void setMatrixUniforms(CS123::GL::Shader *shader, View *context);
-    void setLights();
+    void setLights(CS123::GL::CS123Shader* shader);
     void renderGeometry(CS123::GL::CS123Shader* shader);
 
     std::unique_ptr<CS123::GL::CS123Shader> m_phongShader;
@@ -66,19 +66,17 @@ private:
     // shadow map
     std::unique_ptr<CS123::GL::CS123Shader> m_depthShader;
     std::vector<Texture2D> m_depthTextures;
+    std::vector<unsigned> depthMapFBO;
+    std::vector<unsigned> depthMap;
+    unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+    void initShadowMap();
+    bool init_done;
 
     // SSAO
     std::unique_ptr<CS123::GL::CS123Shader> SSAO_geometry;
     std::unique_ptr<CS123::GL::CS123Shader> SSAO;
     std::unique_ptr<CS123::GL::CS123Shader> SSAO_blur;
     std::unique_ptr<CS123::GL::CS123Shader> SSAO_lighting;
-
-
-    unsigned int depthMapFBO;
-    unsigned int depthMap;
-    unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
-    void initShadowMap();
-
 
     unsigned int gBuffer;
     unsigned int gPositionDepth, gNormal, gAlbedo;

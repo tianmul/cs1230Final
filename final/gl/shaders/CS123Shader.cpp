@@ -5,6 +5,7 @@
 
 
 #include "gl/GLDebug.h"
+#include "glm/ext.hpp"
 #include <sstream>
 
 namespace CS123 { namespace GL {
@@ -64,6 +65,11 @@ void CS123Shader::setLight(const CS123SceneLightData &light) {
     setUniformArrayByIndex("lightTypes", lightType, light.id);
     setUniformArrayByIndex("lightColors", glm::vec3(color.r, color.g, color.b), light.id);
 //    setUniformArrayByIndex("lightAttenuations", light.function, light.id);
+    GLfloat near_plane = 0.1f, far_plane = 50.0f;
+    glm::mat4 lightProjection = glm::ortho(-50.0f, 50.0f, -50.0f, 50.0f, near_plane, far_plane);
+    glm::mat4 lightView = glm::lookAt(light.pos.xyz(), glm::vec3(0.0f),  glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
+    setUniformArrayByIndex("lightSpaceMatrix", lightSpaceMatrix, light.id);
 }
 
 }}

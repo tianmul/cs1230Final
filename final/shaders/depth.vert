@@ -15,7 +15,8 @@ uniform vec3 specular_color;
 uniform float shininess;
 
 uniform mat4 m;
-uniform mat4 lightSpaceMatrix;
+uniform int lightIndex;
+uniform mat4 lightSpaceMatrix[MAX_LIGHTS];
 void main() {
-    gl_Position = lightSpaceMatrix * m * vec4(position, 1.0f);
+    gl_Position = lightSpaceMatrix[lightIndex] * m * vec4(position, 1.0f);
 }

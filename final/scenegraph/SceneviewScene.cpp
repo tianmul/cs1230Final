@@ -30,6 +30,7 @@ using namespace CS123::GL;
 
 
 SceneviewScene::SceneviewScene()
+    : init_done(false)
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     /*loadWireframeShader();
@@ -41,7 +42,7 @@ SceneviewScene::SceneviewScene()
     glEnable(GL_DEPTH_TEST);
 
     loadPhongShader();
-    initShadowMap();
+//    initShadowMap();
     initSSAO();
     //glEnable(GL_MULTISAMPLE);
 }
@@ -78,27 +79,37 @@ void SceneviewScene::loadNormalsArrowShader() {
 */
 
 void SceneviewScene::initShadowMap() {
+    if (init_done) return;
     // load depth shader
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/depth.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/depth.frag");
     m_depthShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
 
-    glGenFramebuffers(1, &depthMapFBO);
-    glGenTextures(1, &depthMap);
-    glBindTexture(GL_TEXTURE_2D, depthMap);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
-    // attach depth texture as FBO's depth buffer
-    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depthMap, 0);
-    glDrawBuffer(GL_NONE);
-    glReadBuffer(GL_NONE);
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    for (int i = 0; i < m_Lights.size(); ++i) {
+        unsigned tmpFBO;
+        unsigned tmpMap;
+        glGenFramebuffers(1, &tmpFBO);
+        glGenTextures(1, &tmpMap);
+        glBindTexture(GL_TEXTURE_2D, tmpMap);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, SHADOW_WIDTH, SHADOW_HEIGHT, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+        GLfloat borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
+        glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor);
+        // attach depth texture as FBO's depth buffer
+        glBindFramebuffer(GL_FRAMEBUFFER, tmpFBO);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, tmpMap, 0);
+        glDrawBuffer(GL_NONE);
+        glReadBuffer(GL_NONE);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+        depthMapFBO.emplace_back(tmpFBO);
+        depthMap.emplace_back(tmpMap);
+    }
+
+    init_done = true;
 }
 
 
@@ -235,28 +246,31 @@ void SceneviewScene::initSSAO(){
 }
 
 void SceneviewScene::render(View *context) {
+    initShadowMap(); // run only once
+
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
     m_depthShader->bind();
-    m_depthShader->setLight(*m_Lights[0]);
+    setLights(m_depthShader.get());
 
     glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-    glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-    glClear(GL_DEPTH_BUFFER_BIT);
+    for (int i = 0 ; i < m_Lights.size(); ++i) {
+        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO[i]);
+        glClear(GL_DEPTH_BUFFER_BIT);
 
-    GLfloat near_plane = 0.1f, far_plane = 20.0f;
-    glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    glm::mat4 lightView = glm::lookAt(glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(0.0f),  glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
-    m_depthShader->setUniform("lightSpaceMatrix",lightSpaceMatrix);
+        m_depthShader->setUniform("lightIndex", i);
+        glCullFace(GL_FRONT);
+        renderGeometry(m_depthShader.get());
+        glCullFace(GL_BACK);
+        glBindTexture(GL_TEXTURE_2D, gNormal);
+        glActiveTexture(GL_TEXTURE4);
+        glBindTexture(GL_TEXTURE_2D, gAlbedo);
 
-    glCullFace(GL_FRONT);
-    renderGeometry(m_depthShader.get());
-    glCullFace(GL_BACK);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
 
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
     m_depthShader->unbind();
 
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
@@ -312,10 +326,6 @@ void SceneviewScene::render(View *context) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_phongShader->bind();
 
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, depthMap);
-    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "depthMap"),1);
-
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, gPositionDepth);
     glActiveTexture(GL_TEXTURE3);
@@ -324,12 +334,19 @@ void SceneviewScene::render(View *context) {
     glBindTexture(GL_TEXTURE_2D, gAlbedo);
     glActiveTexture(GL_TEXTURE5); // Add extra SSAO texture to lighting pass
     glBindTexture(GL_TEXTURE_2D, ssaoColorBufferBlur);
+
     setSceneUniforms(context);
     setMatrixUniforms(m_phongShader.get(), context);
-    setLights();
-    m_phongShader->setUniform("lightSpaceMatrix",lightSpaceMatrix);
+    setLights(m_phongShader.get());
+
+    for (int i = 0; i < m_Lights.size(); ++i) {
+        glActiveTexture(GL_TEXTURE6+i);
+        glBindTexture(GL_TEXTURE_2D, depthMap[i]);
+        m_phongShader->setUniformArrayByIndex("depthMap", i+6, i);
+    }
     glUniform1i(glGetUniformLocation(m_phongShader->getID(), "square"), 0);
     renderGeometry(m_phongShader.get());
+    glBindTexture(GL_TEXTURE_2D, 0);
     m_phongShader->unbind();
 
 }
@@ -348,7 +365,7 @@ void SceneviewScene::setMatrixUniforms(Shader *shader, View *context) {
     shader->setUniform("m", glm::mat4(1.0f));
 }
 
-void SceneviewScene::setLights()
+void SceneviewScene::setLights(CS123::GL::CS123Shader* shader)
 {
     // TODO: [SCENEVIEW] Fill this in...
     //
@@ -357,17 +374,17 @@ void SceneviewScene::setLights()
     //
 
     /*clear light*/
-    for (int i = 0; i < MAX_NUM_LIGHTS; i++) {
-        std::ostringstream os;
-        os << i;
-        std::string indexString = "[" + os.str() + "]"; // e.g. [0], [1], etc.
-        m_phongShader->setUniform("lightColors" + indexString, glm::vec3(0.0f, 0.0f, 0.0f));
-    }
+//    for (int i = 0; i < MAX_NUM_LIGHTS; i++) {
+//        std::ostringstream os;
+//        os << i;
+//        std::string indexString = "[" + os.str() + "]"; // e.g. [0], [1], etc.
+//        m_phongShader->setUniform("lightColors" + indexString, glm::vec3(0.0f, 0.0f, 0.0f));
+//    }
 
 
     for (int i = 0; i<m_Lights.size(); i++){
         CS123SceneLightData curlight = *m_Lights[i];
-        m_phongShader->setLight(curlight);
+        shader->setLight(curlight);
     }
 }
 
