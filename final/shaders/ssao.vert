@@ -1,5 +1,5 @@
 #version 330 core
-layout (location = 0) in vec2 position;
+layout (location = 6) in vec2 position;
 layout (location = 5) in vec2 texCoord;
 
 out vec2 TexCoords;

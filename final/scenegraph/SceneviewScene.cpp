@@ -32,16 +32,16 @@ using namespace CS123::GL;
 SceneviewScene::SceneviewScene()
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
-    //loadPhongShader();
     /*loadWireframeShader();
     loadNormalsShader();
     loadNormalsArrowShader();*/
 
     // shadow map
-    //initShadowMap();
-    glViewport(0, 0, 800, 600);
+    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     glEnable(GL_DEPTH_TEST);
 
+    loadPhongShader();
+    initShadowMap();
     initSSAO();
     //glEnable(GL_MULTISAMPLE);
 }
@@ -109,9 +109,9 @@ void SceneviewScene::initSSAO(){
     std::string fragmentSource1 = ResourceLoader::loadResourceFileToString(":/shaders/ssao_geometry.frag");
     SSAO_geometry = std::make_unique<CS123Shader>(vertexSource1, fragmentSource1);
 
-    std::string vertexSource2 = ResourceLoader::loadResourceFileToString(":/shaders/ssao.vert");
+    /*std::string vertexSource2 = ResourceLoader::loadResourceFileToString(":/shaders/ssao.vert");
     std::string fragmentSource2 = ResourceLoader::loadResourceFileToString(":/shaders/ssao_lighting.frag");
-    SSAO_lighting = std::make_unique<CS123Shader>(vertexSource2, fragmentSource2);
+    SSAO_lighting = std::make_unique<CS123Shader>(vertexSource2, fragmentSource2);*/
 
     std::string vertexSource3 = ResourceLoader::loadResourceFileToString(":/shaders/ssao.vert");
     std::string fragmentSource3 = ResourceLoader::loadResourceFileToString(":/shaders/ssao.frag");
@@ -124,12 +124,12 @@ void SceneviewScene::initSSAO(){
 
 /*change*/
 
-    SSAO_lighting->bind();
-    glUniform1i(glGetUniformLocation(SSAO_lighting->getID(), "gPositionDepth"), 0);
-    glUniform1i(glGetUniformLocation(SSAO_lighting->getID(), "gNormal"), 1);
-    glUniform1i(glGetUniformLocation(SSAO_lighting->getID(), "gAlbedo"), 2);
-    glUniform1i(glGetUniformLocation(SSAO_lighting->getID(), "ssao"), 3);
-    SSAO_lighting->unbind();
+    m_phongShader->bind();
+    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "gPositionDepth"), 2);
+    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "gNormal"), 3);
+    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "gAlbedo"), 4);
+    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "ssao"), 5);
+    m_phongShader->unbind();
 
     SSAO->bind();
     glUniform1i(glGetUniformLocation(SSAO->getID(), "gPositionDepth"), 0);
@@ -235,7 +235,7 @@ void SceneviewScene::initSSAO(){
 }
 
 void SceneviewScene::render(View *context) {
-    /*setClearColor();
+    setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
@@ -257,9 +257,9 @@ void SceneviewScene::render(View *context) {
     glCullFace(GL_BACK);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    m_depthShader->unbind();*/
+    m_depthShader->unbind();
 
-
+    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     //SSAO
     // 1. Geometry Pass: render scene's geometry/color data into gbuffer
     glBindFramebuffer(GL_FRAMEBUFFER, gBuffer);
@@ -310,70 +310,28 @@ void SceneviewScene::render(View *context) {
 
     // 4. Lighting Pass: traditional deferred Blinn-Phong lighting now with added screen-space ambient occlusion
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    SSAO_lighting->bind();
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, gPositionDepth);
-    glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, gNormal);
-    glActiveTexture(GL_TEXTURE2);
-    glBindTexture(GL_TEXTURE_2D, gAlbedo);
-    glActiveTexture(GL_TEXTURE3); // Add extra SSAO texture to lighting pass
-    glBindTexture(GL_TEXTURE_2D, ssaoColorBufferBlur);
-    glm::vec3 lightPos = glm::vec3(2.0, 4.0, -2.0);
-    glm::vec3 lightColor = glm::vec3(0.2, 0.2, 0.7);
-    glm::vec3 lightPosView = glm::vec3(context->getOrbitingCamera()->getViewMatrix() * glm::vec4(lightPos, 1.0));
-    glUniform3fv(glGetUniformLocation(SSAO_lighting->getID(), "light.Position"), 1, &lightPosView[0]);
-    glUniform3fv(glGetUniformLocation(SSAO_lighting->getID(), "light.Color"), 1, &lightColor[0]);
-    // Update attenuation parameters
-    const GLfloat constant = 1.0; // Note that we don't send this to the shader, we assume it is always 1.0 (in our case)
-    const GLfloat linear = 0.09;
-    const GLfloat quadratic = 0.032;
-    const GLint draw_mode = 1;
-    glUniform1f(glGetUniformLocation(SSAO_lighting->getID(), "light.Linear"), linear);
-    glUniform1f(glGetUniformLocation(SSAO_lighting->getID(), "light.Quadratic"), quadratic);
-    glUniform1i(glGetUniformLocation(SSAO_lighting->getID(), "draw_mode"), draw_mode);
-    t->draw();
-    SSAO_lighting->unbind();
-
-
-
-
-
-    // reset viewport
-/*    glViewport(0, 0, context->width(), context->height());
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
     m_phongShader->bind();
-    setSceneUniforms(context);
-    setMatrixUniforms(m_phongShader.get(), context);
-    setLights();
 
     glActiveTexture(GL_TEXTURE1);
     glBindTexture(GL_TEXTURE_2D, depthMap);
     glUniform1i(glGetUniformLocation(m_phongShader->getID(), "depthMap"),1);
 
-    //SSAO param
     glActiveTexture(GL_TEXTURE2);
     glBindTexture(GL_TEXTURE_2D, gPositionDepth);
-    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "gPositionDepth"), 2);
     glActiveTexture(GL_TEXTURE3);
     glBindTexture(GL_TEXTURE_2D, gNormal);
-    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "gNormal"), 3);
     glActiveTexture(GL_TEXTURE4);
     glBindTexture(GL_TEXTURE_2D, gAlbedo);
-    glUniform1i(glGetUniformLocation(m_p
-
-hongShader->getID(), "gAlbedo"), 4);
     glActiveTexture(GL_TEXTURE5); // Add extra SSAO texture to lighting pass
     glBindTexture(GL_TEXTURE_2D, ssaoColorBufferBlur);
-    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "ssao"), 5);
-
+    setSceneUniforms(context);
+    setMatrixUniforms(m_phongShader.get(), context);
+    setLights();
     m_phongShader->setUniform("lightSpaceMatrix",lightSpaceMatrix);
-
+    glUniform1i(glGetUniformLocation(m_phongShader->getID(), "square"), 0);
     renderGeometry(m_phongShader.get());
-    glBindTexture(GL_TEXTURE_2D, 0);
     m_phongShader->unbind();
-*/
+
 }
 
 void SceneviewScene::setSceneUniforms(View *context) {
@@ -431,7 +389,7 @@ void SceneviewScene::renderGeometry(CS123Shader *shader) {
         mat.cAmbient*=m_global.ka;
         mat.cSpecular*=m_global.ks;
         mat.cTransparent*=m_global.kt;
-        //shader->applyMaterial(mat);
+        shader->applyMaterial(mat);
         m_shape[m_shapeA[i]]->draw();
     }
 
