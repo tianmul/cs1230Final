@@ -32,6 +32,7 @@ namespace CS123 { namespace GL {
 class SceneviewScene : public OpenGLScene {
 public:
     SceneviewScene();
+    void reinit();
     virtual ~SceneviewScene();
 
     virtual void render(View *context) override;
@@ -40,6 +41,7 @@ public:
     // Use this method to set an internal selection, based on the (x, y) position of the mouse
     // pointer.  This will be used during the "modeler" lab, so don't worry about it for now.
     void setSelection(int x, int y);
+    unsigned int SCR_WIDTH = 800, SCR_HEIGHT = 600;
 
 private:
     void loadPhongShader();
@@ -84,7 +86,6 @@ private:
     unsigned int rboDepth;
     unsigned int ssaoFBO, ssaoBlurFBO;
     unsigned int ssaoColorBuffer, ssaoColorBufferBlur;
-    unsigned int SCR_WIDTH = 800, SCR_HEIGHT = 600;
 
     std::default_random_engine generator;
     std::vector<glm::vec3> ssaoKernel;

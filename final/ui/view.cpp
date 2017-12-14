@@ -129,6 +129,9 @@ void View::resizeGL(int w, int h)
     w = static_cast<int>(w / ratio);
     h = static_cast<int>(h / ratio);
     glViewport(0, 0, w, h);
+    m_sceneviewScene->SCR_WIDTH = w;
+    m_sceneviewScene->SCR_HEIGHT = h;
+    m_sceneviewScene->reinit();
 
 
     //resize camera

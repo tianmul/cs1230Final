@@ -8,10 +8,11 @@ uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 uniform sampler2D ssao;
 uniform int square;
+uniform vec2 SCR_SIZE;
 
 void main()
 {
-    float AmbientOcclusion =texture(ssao, vec2(gl_FragCoord.x / 800, gl_FragCoord.y / 600)).r;
+    float AmbientOcclusion =texture(ssao, vec2(gl_FragCoord.x / SCR_SIZE.x, gl_FragCoord.y / SCR_SIZE.y)).r;
 
     if (square == 1) {
         FragColor = vec4(vec3(1.0f-AmbientOcclusion), 1.0);

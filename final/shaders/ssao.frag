@@ -7,13 +7,14 @@ uniform sampler2D gNormal;
 uniform sampler2D texNoise;
 
 uniform vec3 samples[64];
+uniform vec2 SCR_SIZE;
 
 // parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
 int kernelSize = 64;
 float radius = 1.0;
 
 // tile noise texture over screen based on screen dimensions divided by noise size
-const vec2 noiseScale = vec2(800.0f/4.0f, 600.0f/4.0f);
+//const vec2 noiseScale = vec2(SCR_SIZE.x/4.0f, SCR_SIZE.y/4.0f);
 
 uniform mat4 projection;
 
@@ -22,6 +23,7 @@ void main()
     // Get input for SSAO algorithm
     vec3 fragPos = texture(gPositionDepth, TexCoords).xyz;
     vec3 normal = texture(gNormal, TexCoords).rgb;
+    vec2 noiseScale = vec2(SCR_SIZE.x/4.0f, SCR_SIZE.y/4.0f);
     vec3 randomVec = texture(texNoise, TexCoords * noiseScale).xyz;
     // Create TBN change-of-basis matrix: from tangent-space to view-space
     vec3 tangent = normalize(randomVec - normal * dot(randomVec, normal));

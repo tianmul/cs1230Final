@@ -50,6 +50,13 @@ SceneviewScene::SceneviewScene()
 SceneviewScene::~SceneviewScene()
 {
 }
+void SceneviewScene::reinit(){
+    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    glEnable(GL_DEPTH_TEST);
+    loadPhongShader();
+    initSSAO();
+
+}
 
 void SceneviewScene::loadPhongShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/default.vert");
@@ -303,6 +310,7 @@ void SceneviewScene::render(View *context) {
     for (GLuint i = 0; i < 64; ++i)
                     glUniform3fv(glGetUniformLocation(SSAO->getID(), ("samples[" + std::to_string(i) + "]").c_str()), 1, &ssaoKernel[i][0]);
     glUniformMatrix4fv(glGetUniformLocation(SSAO->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(context->getOrbitingCamera()->getProjectionMatrix()));
+    SSAO->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
 
     std::unique_ptr<FullScreenQuad> t = std::make_unique<FullScreenQuad>();
     //glm::mat4 cammatrix = glm::inverse(glm::translate(glm::vec3(0.f, 0.f, 1.001f))*context->getOrbitingCamera()->getViewMatrix());
@@ -345,6 +353,7 @@ void SceneviewScene::render(View *context) {
         m_phongShader->setUniformArrayByIndex("depthMap", i+6, i);
     }
     glUniform1i(glGetUniformLocation(m_phongShader->getID(), "square"), 0);
+    m_phongShader->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
     renderGeometry(m_phongShader.get());
     glBindTexture(GL_TEXTURE_2D, 0);
     m_phongShader->unbind();
