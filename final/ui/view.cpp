@@ -135,7 +135,12 @@ void View::resizeGL(int w, int h)
 
 
     //resize camera
-     getOrbitingCamera()->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
+    getOrbitingCamera()->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
+}
+
+void View::wheelEvent(QWheelEvent *event)
+{
+    getOrbitingCamera()->mouseScrolled(0.f,event->delta()*0.01f);
 }
 
 void View::mousePressEvent(QMouseEvent *event)
@@ -200,8 +205,8 @@ void View::keyReleaseEvent(QKeyEvent *event)
         // shadow map
         m_sceneviewScene->toggleShadowMap();
     }
-    if (event->key() == Qt::Key_2) {
-        // shadow map
+    else if (event->key() == Qt::Key_2) {
+        // SSAO
         m_sceneviewScene->toggleSSAO();
     }
 }

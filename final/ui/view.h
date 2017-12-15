@@ -37,6 +37,7 @@ private:
     void paintGL();
     void resizeGL(int w, int h);
 
+    void wheelEvent(QWheelEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
