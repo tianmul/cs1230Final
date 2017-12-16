@@ -9,6 +9,7 @@ uniform int square;
 out vec2 TexCoords;
 out vec3 color; // Computed color for this vertex
 out vec2 uv;
+out vec3 ambientColor;
 
 // Transformation matrices
 uniform mat4 p;
@@ -34,6 +35,7 @@ uniform bool useLighting;     // Whether to calculate lighting using lighting eq
 uniform bool useArrowOffsets; // True if rendering the arrowhead of a normal for Shapes
 
 uniform bool usingShadowMap;
+uniform bool usingSSAO;
 uniform sampler2D depthMap[MAX_LIGHTS];
 uniform mat4 lightSpaceMatrix[MAX_LIGHTS];
 
@@ -101,8 +103,10 @@ void main()
         gl_Position = p * position_cameraSpace;
         TexCoords = vec2(gl_Position.x*5.0f+0.5f, 1.0f+gl_Position.y*5.0f+0.5f);
         if (useLighting) {
-            color = ambient_color.xyz; // Add ambient component
-
+            //color = ambient_color.xyz; // Add ambient component
+            if (!usingSSAO)color = ambient_color.xyz; // Add ambient component
+            else color = vec3(0.0f);
+            ambientColor = ambient_color;
 
 
             //color = ambient_color.xyz; // Add ambient component
