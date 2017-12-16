@@ -442,6 +442,9 @@ void SceneviewScene::render(View *context) {
     m_phongShader->setUniform("usingTexutre", true);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);
+    CS123SceneMaterial mat;
+    mat.cDiffuse = glm::vec4(1,1,1,1);
+    m_phongShader->applyMaterial(mat);
     m_phongShader->setUniform("mysp", 0);
     m_terrain.draw();
     glBindTexture(GL_TEXTURE_2D, 0);
