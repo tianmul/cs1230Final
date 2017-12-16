@@ -14,7 +14,8 @@
 //if we want to read file, change it to true
 #define READFILE true
 //#define FILEPATH "/course/cs1230/data/scenes/ray/all_objects.xml"
-#define FILEPATH "/course/cs1230/data/scenes/ray/shadow_test.xml"
+//#define FILEPATH "//Users/zhuzhu/Documents/scenes/ray/shadow_test.xml"
+#define FILEPATH "/Users/zhuzhu/Documents/csci1230/Main/Ray/terrain.xml"
 #define CameraSpeed 15.0f
 
 //edit the whole program and add all comments, Dec.2, by Lan
@@ -132,7 +133,6 @@ void View::resizeGL(int w, int h)
     m_sceneviewScene->SCR_WIDTH = w;
     m_sceneviewScene->SCR_HEIGHT = h;
     m_sceneviewScene->reinit();
-
 
     //resize camera
     getOrbitingCamera()->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));

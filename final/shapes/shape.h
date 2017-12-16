@@ -9,6 +9,7 @@ public:
     Shape();
     virtual void setting(int p1, int p2, float p3);
     virtual void init() = 0;
+    void build();
     void draw();
 
 protected:

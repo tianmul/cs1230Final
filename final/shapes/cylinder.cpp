@@ -23,6 +23,4 @@ void Cylinder::init(){
         p2 = p2.rotate(-degree);
         p3 = p3.rotate(-degree);
     }
-
-
 }

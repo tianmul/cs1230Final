@@ -485,6 +485,9 @@ void SceneviewScene::settingsChanged() {
         m_shape[i]->setting(p1, p2, p3);
         m_shape[i]->init();
     }
+
+    for (int i = 0 ; i < m_shapeA.size(); i ++)
+        m_shape[m_shapeA[i]]->build();
 }
 
 

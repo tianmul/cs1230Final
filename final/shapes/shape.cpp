@@ -15,12 +15,15 @@ void Shape::setting(int p1, int p2, float p3){
 }
 
 
-void Shape::draw(){
+void Shape::build(){
     theShape->setVertexData(&shapePoints[0], shapePoints.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLE_STRIP, shapePoints.size()/6);
     theShape->setAttribute(ShaderAttrib::POSITION , 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     theShape->setAttribute(ShaderAttrib::NORMAL , 3, 12, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     //theShape->setAttribute(ShaderAttrib::TEXCOORD0 , 2, 24, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     theShape->buildVAO();
+}
+
+void Shape::draw(){
     theShape->draw();
 }
 
