@@ -434,8 +434,13 @@ void SceneviewScene::render(View *context) {
     glUniform1i(glGetUniformLocation(m_phongShader->getID(), "square"), 0);
     m_phongShader->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
     renderGeometry(m_phongShader.get());
-     m_phongShader->setUniform("m", glm::mat4(1.0f));
-     m_terrain.draw();
+
+    m_phongShader->setUniform("m", glm::mat4(1.0f));
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);
+    m_phongShader->setUniform("mysp", 0);
+    m_terrain.draw();
     glBindTexture(GL_TEXTURE_2D, 0);
     m_phongShader->unbind();
 
@@ -473,17 +478,17 @@ void SceneviewScene::render(View *context) {
     m_skyboxShaderProgram->unbind();
 
 
-    m_terrainShaderProgram->bind();
+//    m_terrainShaderProgram->bind();
 
-    m_terrainShaderProgram->setUniform("useArrowOffsets", false);
-    m_terrainShaderProgram->setUniform("useLighting", Lighting);
-    m_terrainShaderProgram->setUniform("projection", camera->getProjectionMatrix());
-    m_terrainShaderProgram->setUniform("view", camera->getViewMatrix());
-    m_terrainShaderProgram->setUniform("model", glm::mat4(1.0f));
-    glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);
+//    m_terrainShaderProgram->setUniform("useArrowOffsets", false);
+//    m_terrainShaderProgram->setUniform("useLighting", Lighting);
+//    m_terrainShaderProgram->setUniform("projection", camera->getProjectionMatrix());
+//    m_terrainShaderProgram->setUniform("view", camera->getViewMatrix());
+//    m_terrainShaderProgram->setUniform("model", glm::mat4(1.0f));
+//    glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);
 
-    glBindTexture(GL_TEXTURE_2D, 0);
-    m_terrainShaderProgram->unbind();
+//    glBindTexture(GL_TEXTURE_2D, 0);
+//    m_terrainShaderProgram->unbind();
 
 }
 

@@ -14,11 +14,11 @@ SkyBox::SkyBox()
 
 void SkyBox::init()
 {
-    loadTexture("/Users/zhuzhu/Documents/csci1230/FinalProject/cs1230Final/finalback.jpg", sk_back);
-    loadTexture("/Users/zhuzhu/Documents/csci1230/FinalProject/cs1230Final/finalfront.jpg", sk_front);
-    loadTexture("/Users/zhuzhu/Documents/csci1230/FinalProject/cs1230Final/finalleft.jpg", sk_left);
-    loadTexture("/Users/zhuzhu/Documents/csci1230/FinalProject/cs1230Final/finalright.jpg", sk_right);
-    loadTexture("/Users/zhuzhu/Documents/csci1230/FinalProject/cs1230Final/finaltop.jpg", sk_top);
+    loadTexture("/home/jqian7/Documents/Final/cs1230Final/final/images/back.jpg", sk_back);
+    loadTexture("/home/jqian7/Documents/Final/cs1230Final/final/images/front.jpg", sk_front);
+    loadTexture("/home/jqian7/Documents/Final/cs1230Final/final/images/left.jpg", sk_left);
+    loadTexture("/home/jqian7/Documents/Final/cs1230Final/final/images/right.jpg", sk_right);
+    loadTexture("/home/jqian7/Documents/Final/cs1230Final/final/images/top.jpg", sk_top);
 
 }
 

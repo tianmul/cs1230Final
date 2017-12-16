@@ -1,15 +1,17 @@
 #version 330 core
 out vec4 FragColor;
-in vec2 texc;
 in vec3 color;
+in vec2 uv;
 
 uniform sampler2D gPositionDepth;
 uniform sampler2D gNormal;
 uniform sampler2D gAlbedo;
 uniform sampler2D ssao;
+uniform sampler2D mysp;
 uniform int square;
 uniform vec2 SCR_SIZE;
 uniform bool usingSSAO;
+vec4 texColor;
 
 void main()
 {
@@ -25,7 +27,11 @@ void main()
 
         if(!usingSSAO) FragColor = vec4(color,1);
         else FragColor = vec4(color*AmbientOcclusion,1);
+
+        texColor = texture(mysp, uv);
+        FragColor = vec4( texColor.xyz,1);
         //FragColor = vec4(vec3(1.0f-AmbientOcclusion), 1.0);
+
 
     }
 }

@@ -7,7 +7,7 @@
 
 #include "lib/ResourceLoader.h"
 
-Terrain::Terrain(): m_textureID(99)
+Terrain::Terrain()
 {
 
 }
@@ -224,10 +224,10 @@ void Terrain::init() {
     // TODO: Change from GL_LINE to GL_FILL in order to render full triangles instead of wireframe.
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glShadeModel(GL_SMOOTH);
-    loadHeightMap("/Users/zhuzhu/Documents/csci1230/lab/final_terrain/depth.png");
+    loadHeightMap("/home/jqian7/Documents/Final/cs1230Final/final/images/depth.png");
 
     // TODO (Task 6): Initialize texture map.
-    QImage image("/Users/zhuzhu/Documents/csci1230/lab/final_terrain/map1.jpg");
+    QImage image("/home/jqian7/Documents/Final/cs1230Final/final/images/map1.jpg");
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
     glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
@@ -286,7 +286,7 @@ void Terrain::init() {
                                 "</object>"
                             "</transblock>"
                             "<transblock>"
-                            "    <translate x=\"-0.3\" y=\"0.3\" z=\"0\" />"
+                            "    <translate x=\": m_textureID(10)glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);-0.3\" y=\"0.3\" z=\"0\" />"
                             "<scale x=\""<<1.2 + sy <<"\" y=\""<<1.2 + sy <<"\" z=\""<<1.2 + sy <<"\" />"
                             "   <object type=\"primitive\" name=\"sphere\">"
                             "        <diffuse r=\"0\" g=\"1\" b=\"0\"/>"

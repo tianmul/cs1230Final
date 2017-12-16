@@ -7,8 +7,8 @@ layout(location = 10) in float arrowOffset; // Sideways offset for billboarded n
 
 uniform int square;
 out vec2 TexCoords;
-out vec2 texc;
 out vec3 color; // Computed color for this vertex
+out vec2 uv;
 
 // Transformation matrices
 uniform mat4 p;
@@ -74,19 +74,17 @@ float ShadowCalculation(int i, vec4 fragPosLightSpace, vec4 normal_worldSpace, v
 }
 void main()
 {
+    uv = texCoord.xy;
     if(square == 1){
         gl_Position = vec4(vec3(positionsquare,0.0f), 1.0f);
         TexCoords = vec2((gl_Position.x+1.0f)/2.0f, (1.0f+gl_Position.y)/2.0f);
         //TexCoords = texCoord;
-        texc = vec2(0.0f);
         color = vec3(0.0f);
     }
     else{
         gl_Position = vec4(0.0f);
         TexCoords = vec2(0.0f);
 
-
-        texc = texCoord * repeatUV;
 
         vec4 position_cameraSpace = v * m * vec4(position, 1.0);
         vec4 normal_cameraSpace = vec4(normalize(mat3(transpose(inverse(v * m))) * normal), 0);
