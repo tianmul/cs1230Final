@@ -537,7 +537,15 @@ qrc_resources.cpp: resources.qrc \
 		shaders/skybox.frag \
 		shaders/ssao.vert \
 		shaders/ssao_blur.frag \
-		shaders/terrain.frag
+		shaders/terrain.frag \
+		images/front.jpg \
+		images/back.jpg \
+		images/right.jpg \
+		images/top.jpg \
+		images/depth.png \
+		images/left.jpg \
+		images/map1.jpg \
+		scene/terrain.xml
 	/usr/lib/x86_64-linux-gnu/qt5/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_view.cpp

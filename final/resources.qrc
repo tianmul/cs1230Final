@@ -17,4 +17,16 @@
         <file alias="toon.frag">shaders/toon.frag</file>
         <file alias="toon.vert">shaders/toon.vert</file>
     </qresource>
+    <qresource prefix="/scene">
+        <file>scene/terrain.xml</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>images/back.jpg</file>
+        <file>images/depth.png</file>
+        <file>images/front.jpg</file>
+        <file>images/left.jpg</file>
+        <file>images/map1.jpg</file>
+        <file>images/right.jpg</file>
+        <file>images/top.jpg</file>
+    </qresource>
 </RCC>

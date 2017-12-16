@@ -224,10 +224,10 @@ void Terrain::init() {
     // TODO: Change from GL_LINE to GL_FILL in order to render full triangles instead of wireframe.
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     glShadeModel(GL_SMOOTH);
-    loadHeightMap("/home/jqian7/Documents/Final/cs1230Final/final/images/depth.png");
+    loadHeightMap(":/images/images/depth.png");
 
     // TODO (Task 6): Initialize texture map.
-    QImage image("/home/jqian7/Documents/Final/cs1230Final/final/images/map1.jpg");
+    QImage image(":/images/images/map1.jpg");
     glGenTextures(1, &m_textureID);
     glBindTexture(GL_TEXTURE_2D, m_textureID);
     glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
@@ -285,7 +285,7 @@ void Terrain::init() {
                                     "<diffuse r=\"0\" g=\"1\" b=\"0\"/>"
                                 "</object>"
                             "</transblock>"
-                            "<transblock>"
+                            "<new/prefix1()transblock>"
                             "    <translate x=\": m_textureID(10)glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);-0.3\" y=\"0.3\" z=\"0\" />"
                             "<scale x=\""<<1.2 + sy <<"\" y=\""<<1.2 + sy <<"\" z=\""<<1.2 + sy <<"\" />"
                             "   <object type=\"primitive\" name=\"sphere\">"
@@ -300,7 +300,7 @@ void Terrain::init() {
                                 "</object>"
                             "</transblock>"
                             "<transblock>"
-                                "<translate x=\"0\" y=\"0.7\" z=\"0\" />"
+                               "<translate x=\"0\" y=\"0.7\" z=\"0\" />"
                                 "<scale x=\""<<1.2 + sz <<"\" y=\""<<1.2 + sz <<"\" z=\""<<1.2 + sz <<"\" />"
                                 "<object type=\"primitive\" name=\"sphere\">"
                                     "<diffuse r=\"0\" g=\"1\" b=\"0\"/>"
@@ -319,7 +319,6 @@ void Terrain::init() {
         data[index++] = getColor();
         data[index++] = getUV  (row, m_numCols - 1);
     }
-
     m_shape = std::make_unique<OpenGLShape>();
     m_shape->setVertexData(&data[0][0], data.size() * 3, VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLE_STRIP, numVertices);
     m_shape->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
@@ -327,8 +326,6 @@ void Terrain::init() {
     m_shape->setAttribute(ShaderAttrib::COLOR, 3, 24, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_shape->setAttribute(ShaderAttrib::TEXCOORD0, 3, 36 , VBOAttribMarker::DATA_TYPE::FLOAT, false);
     m_shape->buildVAO();
-
-
 }
 
 bool Terrain::seed(int s){

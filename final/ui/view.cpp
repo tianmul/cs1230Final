@@ -15,7 +15,7 @@
 #define READFILE true
 //#define FILEPATH "/course/cs1230/data/scenes/ray/all_objects.xml"
 //#define FILEPATH "//Users/zhuzhu/Documents/scenes/ray/shadow_test.xml"
-#define FILEPATH "/home/jqian7/Documents/Final/cs1230Final/final/scene/terrain.xml"
+#define FILEPATH ":/scene/scene/terrain.xml"
 #define CameraSpeed 15.0f
 
 //edit the whole program and add all comments, Dec.2, by Lan

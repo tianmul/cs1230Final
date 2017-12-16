@@ -497,7 +497,8 @@ void SceneviewScene::render(View *context) {
     glBindTexture(GL_TEXTURE_2D, sk.sk_front);
     m_sky_front->draw();
     glBindTexture(GL_TEXTURE_2D, 0);
-
+    mat.cDiffuse = glm::vec4(1,1,1,1);
+    m_phongShader->applyMaterial(mat);
     m_skyboxShaderProgram->unbind();
 
 
