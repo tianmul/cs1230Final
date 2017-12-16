@@ -32,6 +32,8 @@ SOURCES += ui/mainwindow.cpp \
     scenegraph/OpenGLScene.cpp \
     scenegraph/ShapesScene.cpp \
     scenegraph/Scene.cpp \
+    scenegraph/terrain.cpp \
+    scenegraph/skybox.cpp \
     shapes/cone.cpp \
     shapes/cube.cpp \
     shapes/cylinder.cpp \
@@ -56,7 +58,8 @@ SOURCES += ui/mainwindow.cpp \
     gl/textures/TextureParametersBuilder.cpp \
     gl/util/FullScreenQuad.cpp \
     gl/GLDebug.cpp \
-    scenegraph/SceneviewScene.cpp
+    scenegraph/SceneviewScene.cpp \
+    shapes/anyshape.cpp
 
 HEADERS += ui/mainwindow.h \
     ui_mainwindow.h \
@@ -70,6 +73,8 @@ HEADERS += ui/mainwindow.h \
     scenegraph/OpenGLScene.h \
     scenegraph/ShapesScene.h \
     scenegraph/Scene.h \
+    scenegraph/terrain.h \
+    scenegraph/skybox.h \
     shapes/cone.h \
     shapes/cube.h \
     shapes/cylinder.h \
@@ -98,7 +103,8 @@ HEADERS += ui/mainwindow.h \
     gl/textures/TextureParametersBuilder.h \
     gl/util/FullScreenQuad.h \
     gl/GLDebug.h \
-    scenegraph/SceneviewScene.h
+    scenegraph/SceneviewScene.h \
+    shapes/anyshape.h
 
 FORMS += ui/mainwindow.ui
 INCLUDEPATH += glm ui glew-1.10.0/include
@@ -145,4 +151,10 @@ DISTFILES += \
     shaders/normals/normals.gsh \
     shaders/normals/normalsArrow.gsh \
     shaders/normals/normalsArrow.frag \
-    shaders/normals/normalsArrow.vert
+    shaders/normals/normalsArrow.vert \
+    shaders/toon.frag \
+    shaders/toon.vert \
+    shaders/terrain.frag \
+    shaders/terrain.vert \
+    shaders/skybox.frag \
+    shaders/skybox.vert

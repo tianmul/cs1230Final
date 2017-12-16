@@ -10,5 +10,11 @@
         <file alias="ssao_geometry.vert">shaders/ssao_geometry.vert</file>
         <file alias="ssao_geometry.frag">shaders/ssao_geometry.frag</file>
         <file alias="ssao_blur.frag">shaders/ssao_blur.frag</file>
+        <file alias="terrain.frag">shaders/terrain.frag</file>
+        <file alias="terrain.vert">shaders/terrain.vert</file>
+        <file alias="skybox.frag">shaders/skybox.frag</file>
+        <file alias="skybox.vert">shaders/skybox.vert</file>
+        <file alias="toon.frag">shaders/toon.frag</file>
+        <file alias="toon.vert">shaders/toon.vert</file>
     </qresource>
 </RCC>

@@ -5,13 +5,16 @@
 
 #include <memory>
 #include "shapes/shape.h"
+#include "terrain.h"
+#include "skybox.h"
 #include "gl/textures/Texture2D.h"
 #include <random>
-
+#include "shapes/anyshape.h"
 namespace CS123 { namespace GL {
 
     class Shader;
     class CS123Shader;
+    class Texture2D;
 }}
 
 /**
@@ -64,6 +67,17 @@ private:
 
 
     std::vector<std::unique_ptr<Shape>> m_shape;
+    std::unique_ptr<AnyShape> m_sky;
+    std::unique_ptr<AnyShape> m_sky_right;
+    std::unique_ptr<AnyShape> m_sky_left;
+    std::unique_ptr<AnyShape> m_sky_top;
+    std::unique_ptr<AnyShape> m_sky_front;
+    Terrain m_terrain;
+    SkyBox sk;
+    std::unique_ptr<CS123::GL::CS123Shader> m_terrainShaderProgram;
+    std::unique_ptr<CS123::GL::CS123Shader> m_skyboxShaderProgram;
+    std::unique_ptr<CS123::GL::CS123Shader> m_toonShaderProgram;
+
     std::vector<int> m_shapeA;
     std::vector<int> marker;
 

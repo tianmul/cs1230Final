@@ -36,7 +36,9 @@ public:
     /** Draw the initialized geometry. */
     void draw();
 
+    void sendToGL(std::vector<float> v);
 
+    void sendToGLWithTexture(std::vector<float> v);
 
 private:
     GLfloat *m_data;                            /// vector of floats containing the vertex data.

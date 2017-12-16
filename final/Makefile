@@ -59,6 +59,8 @@ SOURCES       = ui/mainwindow.cpp \
 		scenegraph/OpenGLScene.cpp \
 		scenegraph/ShapesScene.cpp \
 		scenegraph/Scene.cpp \
+		scenegraph/terrain.cpp \
+		scenegraph/skybox.cpp \
 		shapes/cone.cpp \
 		shapes/cube.cpp \
 		shapes/cylinder.cpp \
@@ -83,7 +85,8 @@ SOURCES       = ui/mainwindow.cpp \
 		gl/textures/TextureParametersBuilder.cpp \
 		gl/util/FullScreenQuad.cpp \
 		gl/GLDebug.cpp \
-		scenegraph/SceneviewScene.cpp qrc_resources.cpp \
+		scenegraph/SceneviewScene.cpp \
+		shapes/anyshape.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
 		moc_view.cpp
 OBJECTS       = mainwindow.o \
@@ -97,6 +100,8 @@ OBJECTS       = mainwindow.o \
 		OpenGLScene.o \
 		ShapesScene.o \
 		Scene.o \
+		terrain.o \
+		skybox.o \
 		cone.o \
 		cube.o \
 		cylinder.o \
@@ -122,6 +127,7 @@ OBJECTS       = mainwindow.o \
 		FullScreenQuad.o \
 		GLDebug.o \
 		SceneviewScene.o \
+		anyshape.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
 		moc_view.o
@@ -131,6 +137,12 @@ DIST          = shaders/normals/normals.vert \
 		shaders/normals/normalsArrow.gsh \
 		shaders/normals/normalsArrow.frag \
 		shaders/normals/normalsArrow.vert \
+		shaders/toon.frag \
+		shaders/toon.vert \
+		shaders/terrain.frag \
+		shaders/terrain.vert \
+		shaders/skybox.frag \
+		shaders/skybox.vert \
 		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/mkspecs/features/spec_pre.prf \
 		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/mkspecs/qdevice.pri \
 		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/mkspecs/features/device_config.prf \
@@ -305,6 +317,8 @@ DIST          = shaders/normals/normals.vert \
 		scenegraph/OpenGLScene.h \
 		scenegraph/ShapesScene.h \
 		scenegraph/Scene.h \
+		scenegraph/terrain.h \
+		scenegraph/skybox.h \
 		shapes/cone.h \
 		shapes/cube.h \
 		shapes/cylinder.h \
@@ -333,7 +347,8 @@ DIST          = shaders/normals/normals.vert \
 		gl/textures/TextureParametersBuilder.h \
 		gl/util/FullScreenQuad.h \
 		gl/GLDebug.h \
-		scenegraph/SceneviewScene.h ui/mainwindow.cpp \
+		scenegraph/SceneviewScene.h \
+		shapes/anyshape.h ui/mainwindow.cpp \
 		main.cpp \
 		glew-1.10.0/src/glew.c \
 		ui/view.cpp \
@@ -344,6 +359,8 @@ DIST          = shaders/normals/normals.vert \
 		scenegraph/OpenGLScene.cpp \
 		scenegraph/ShapesScene.cpp \
 		scenegraph/Scene.cpp \
+		scenegraph/terrain.cpp \
+		scenegraph/skybox.cpp \
 		shapes/cone.cpp \
 		shapes/cube.cpp \
 		shapes/cylinder.cpp \
@@ -368,7 +385,8 @@ DIST          = shaders/normals/normals.vert \
 		gl/textures/TextureParametersBuilder.cpp \
 		gl/util/FullScreenQuad.cpp \
 		gl/GLDebug.cpp \
-		scenegraph/SceneviewScene.cpp
+		scenegraph/SceneviewScene.cpp \
+		shapes/anyshape.cpp
 QMAKE_TARGET  = final
 DESTDIR       = 
 TARGET        = final.app/Contents/MacOS/final
@@ -750,8 +768,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ui/mainwindow.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h ui/view.h ui/viewformat.h camera/Camera.h camera/CamtransCamera.h camera/OrbitingCamera.h camera/QuaternionCamera.h scenegraph/OpenGLScene.h scenegraph/ShapesScene.h scenegraph/Scene.h shapes/cone.h shapes/cube.h shapes/cylinder.h shapes/openglshape.h shapes/point.h shapes/shape.h shapes/sphere.h lib/BGRA.h lib/CS123ISceneParser.h lib/CS123SceneData.h lib/CS123XmlSceneParser.h lib/ResourceLoader.h gl/datatype/FBO.h gl/datatype/IBO.h gl/datatype/VAO.h gl/datatype/VBO.h gl/datatype/VBOAttribMarker.h gl/shaders/CS123Shader.h gl/shaders/Shader.h gl/shaders/ShaderAttribLocations.h gl/textures/DepthBuffer.h gl/textures/RenderBuffer.h gl/textures/Texture.h gl/textures/Texture2D.h gl/textures/TextureParameters.h gl/textures/TextureParametersBuilder.h gl/util/FullScreenQuad.h gl/GLDebug.h scenegraph/SceneviewScene.h $(DISTDIR)/
-	$(COPY_FILE) --parents ui/mainwindow.cpp main.cpp glew-1.10.0/src/glew.c ui/view.cpp ui/viewformat.cpp camera/CamtransCamera.cpp camera/OrbitingCamera.cpp camera/QuaternionCamera.cpp scenegraph/OpenGLScene.cpp scenegraph/ShapesScene.cpp scenegraph/Scene.cpp shapes/cone.cpp shapes/cube.cpp shapes/cylinder.cpp shapes/openglshape.cpp shapes/shape.cpp shapes/sphere.cpp lib/BGRA.cpp lib/CS123XmlSceneParser.cpp lib/ResourceLoader.cpp gl/datatype/FBO.cpp gl/datatype/IBO.cpp gl/datatype/VAO.cpp gl/datatype/VBO.cpp gl/datatype/VBOAttribMarker.cpp gl/shaders/CS123Shader.cpp gl/shaders/Shader.cpp gl/textures/DepthBuffer.cpp gl/textures/RenderBuffer.cpp gl/textures/Texture.cpp gl/textures/Texture2D.cpp gl/textures/TextureParameters.cpp gl/textures/TextureParametersBuilder.cpp gl/util/FullScreenQuad.cpp gl/GLDebug.cpp scenegraph/SceneviewScene.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ui/mainwindow.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h ui/view.h ui/viewformat.h camera/Camera.h camera/CamtransCamera.h camera/OrbitingCamera.h camera/QuaternionCamera.h scenegraph/OpenGLScene.h scenegraph/ShapesScene.h scenegraph/Scene.h scenegraph/terrain.h scenegraph/skybox.h shapes/cone.h shapes/cube.h shapes/cylinder.h shapes/openglshape.h shapes/point.h shapes/shape.h shapes/sphere.h lib/BGRA.h lib/CS123ISceneParser.h lib/CS123SceneData.h lib/CS123XmlSceneParser.h lib/ResourceLoader.h gl/datatype/FBO.h gl/datatype/IBO.h gl/datatype/VAO.h gl/datatype/VBO.h gl/datatype/VBOAttribMarker.h gl/shaders/CS123Shader.h gl/shaders/Shader.h gl/shaders/ShaderAttribLocations.h gl/textures/DepthBuffer.h gl/textures/RenderBuffer.h gl/textures/Texture.h gl/textures/Texture2D.h gl/textures/TextureParameters.h gl/textures/TextureParametersBuilder.h gl/util/FullScreenQuad.h gl/GLDebug.h scenegraph/SceneviewScene.h shapes/anyshape.h $(DISTDIR)/
+	$(COPY_FILE) --parents ui/mainwindow.cpp main.cpp glew-1.10.0/src/glew.c ui/view.cpp ui/viewformat.cpp camera/CamtransCamera.cpp camera/OrbitingCamera.cpp camera/QuaternionCamera.cpp scenegraph/OpenGLScene.cpp scenegraph/ShapesScene.cpp scenegraph/Scene.cpp scenegraph/terrain.cpp scenegraph/skybox.cpp shapes/cone.cpp shapes/cube.cpp shapes/cylinder.cpp shapes/openglshape.cpp shapes/shape.cpp shapes/sphere.cpp lib/BGRA.cpp lib/CS123XmlSceneParser.cpp lib/ResourceLoader.cpp gl/datatype/FBO.cpp gl/datatype/IBO.cpp gl/datatype/VAO.cpp gl/datatype/VBO.cpp gl/datatype/VBOAttribMarker.cpp gl/shaders/CS123Shader.cpp gl/shaders/Shader.cpp gl/textures/DepthBuffer.cpp gl/textures/RenderBuffer.cpp gl/textures/Texture.cpp gl/textures/Texture2D.cpp gl/textures/TextureParameters.cpp gl/textures/TextureParametersBuilder.cpp gl/util/FullScreenQuad.cpp gl/GLDebug.cpp scenegraph/SceneviewScene.cpp shapes/anyshape.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ui/mainwindow.ui $(DISTDIR)/
 
 
@@ -784,13 +802,19 @@ qrc_resources.cpp: resources.qrc \
 		shaders/depth.vert \
 		shaders/ssao_geometry.vert \
 		shaders/shader.frag \
+		shaders/skybox.vert \
+		shaders/toon.frag \
 		shaders/ssao.frag \
+		shaders/terrain.vert \
 		shaders/ssao_lighting.frag \
 		shaders/depth.frag \
 		shaders/ssao_geometry.frag \
 		shaders/shader.vert \
+		shaders/toon.vert \
+		shaders/skybox.frag \
 		shaders/ssao.vert \
-		shaders/ssao_blur.frag
+		shaders/ssao_blur.frag \
+		shaders/terrain.frag
 	/Users/zhuzhu/Qt5.7.1/5.7/clang_64/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_view.cpp
@@ -1223,8 +1247,23 @@ view.o: ui/view.cpp ui/view.h \
 		gl/datatype/VBOAttribMarker.h \
 		shapes/point.h \
 		scenegraph/SceneviewScene.h \
+		scenegraph/terrain.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtc/type_ptr.hpp \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.inl \
+		glm/gtc/type_ptr.inl \
+		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers/QImage \
+		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		scenegraph/skybox.h \
 		gl/textures/Texture2D.h \
 		gl/textures/Texture.h \
+		shapes/anyshape.h \
 		lib/CS123XmlSceneParser.h \
 		lib/CS123ISceneParser.h \
 		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtXml.framework/Headers/QtXml \
@@ -1903,6 +1942,112 @@ Scene.o: scenegraph/Scene.cpp scenegraph/Scene.h \
 		glm/gtx/simd_mat4.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Scene.o scenegraph/Scene.cpp
 
+terrain.o: scenegraph/terrain.cpp scenegraph/terrain.h \
+		glm/glm.hpp \
+		glm/detail/_fixes.hpp \
+		glm/fwd.hpp \
+		glm/detail/type_int.hpp \
+		glm/detail/setup.hpp \
+		glm/detail/type_float.hpp \
+		glm/detail/type_vec.hpp \
+		glm/detail/precision.hpp \
+		glm/detail/type_mat.hpp \
+		glm/vec2.hpp \
+		glm/detail/type_vec2.hpp \
+		glm/detail/_swizzle.hpp \
+		glm/detail/_swizzle_func.hpp \
+		glm/detail/type_vec2.inl \
+		glm/vec3.hpp \
+		glm/detail/type_vec3.hpp \
+		glm/detail/type_vec3.inl \
+		glm/vec4.hpp \
+		glm/detail/type_vec4.hpp \
+		glm/detail/type_vec4.inl \
+		glm/mat2x2.hpp \
+		glm/detail/type_mat2x2.hpp \
+		glm/detail/type_mat2x2.inl \
+		glm/mat2x3.hpp \
+		glm/detail/type_mat2x3.hpp \
+		glm/detail/type_mat2x3.inl \
+		glm/mat2x4.hpp \
+		glm/detail/type_mat2x4.hpp \
+		glm/detail/type_mat2x4.inl \
+		glm/mat3x2.hpp \
+		glm/detail/type_mat3x2.hpp \
+		glm/detail/type_mat3x2.inl \
+		glm/mat3x3.hpp \
+		glm/detail/type_mat3x3.hpp \
+		glm/detail/type_mat3x3.inl \
+		glm/mat3x4.hpp \
+		glm/detail/type_mat3x4.hpp \
+		glm/detail/type_mat3x4.inl \
+		glm/mat4x2.hpp \
+		glm/detail/type_mat4x2.hpp \
+		glm/detail/type_mat4x2.inl \
+		glm/mat4x3.hpp \
+		glm/detail/type_mat4x3.hpp \
+		glm/detail/type_mat4x3.inl \
+		glm/mat4x4.hpp \
+		glm/detail/type_mat4x4.hpp \
+		glm/detail/type_mat4x4.inl \
+		glm/trigonometric.hpp \
+		glm/detail/func_trigonometric.hpp \
+		glm/detail/func_trigonometric.inl \
+		glm/detail/_vectorize.hpp \
+		glm/detail/type_vec1.hpp \
+		glm/detail/type_vec1.inl \
+		glm/exponential.hpp \
+		glm/detail/func_exponential.hpp \
+		glm/detail/func_exponential.inl \
+		glm/detail/func_vector_relational.hpp \
+		glm/detail/func_vector_relational.inl \
+		glm/common.hpp \
+		glm/detail/func_common.hpp \
+		glm/detail/func_common.inl \
+		glm/packing.hpp \
+		glm/detail/func_packing.hpp \
+		glm/detail/func_packing.inl \
+		glm/detail/type_half.hpp \
+		glm/detail/type_half.inl \
+		glm/geometric.hpp \
+		glm/detail/func_geometric.hpp \
+		glm/detail/func_geometric.inl \
+		glm/matrix.hpp \
+		glm/detail/func_matrix.hpp \
+		glm/detail/func_matrix.inl \
+		glm/vector_relational.hpp \
+		glm/integer.hpp \
+		glm/detail/func_integer.hpp \
+		glm/detail/func_integer.inl \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtc/type_ptr.hpp \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.inl \
+		glm/gtc/type_ptr.inl \
+		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers/QImage \
+		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		shapes/openglshape.h \
+		glew-1.10.0/include/GL/glew.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h \
+		gl/shaders/ShaderAttribLocations.h \
+		lib/ResourceLoader.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o terrain.o scenegraph/terrain.cpp
+
+skybox.o: scenegraph/skybox.cpp scenegraph/skybox.h \
+		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers/QImage \
+		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		shapes/openglshape.h \
+		glew-1.10.0/include/GL/glew.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skybox.o scenegraph/skybox.cpp
+
 cone.o: shapes/cone.cpp shapes/cone.h \
 		shapes/shape.h \
 		shapes/openglshape.h \
@@ -1934,7 +2079,8 @@ openglshape.o: shapes/openglshape.cpp shapes/openglshape.h \
 		glew-1.10.0/include/GL/glew.h \
 		gl/datatype/VBO.h \
 		gl/datatype/VBOAttribMarker.h \
-		gl/datatype/VAO.h
+		gl/datatype/VAO.h \
+		gl/shaders/ShaderAttribLocations.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o openglshape.o shapes/openglshape.cpp
 
 shape.o: shapes/shape.cpp shapes/shape.h \
@@ -2529,8 +2675,23 @@ SceneviewScene.o: scenegraph/SceneviewScene.cpp scenegraph/SceneviewScene.h \
 		gl/datatype/VBO.h \
 		gl/datatype/VBOAttribMarker.h \
 		shapes/point.h \
+		scenegraph/terrain.h \
+		glm/gtx/transform.hpp \
+		glm/gtc/matrix_transform.hpp \
+		glm/gtc/matrix_transform.inl \
+		glm/gtx/transform.inl \
+		glm/gtc/type_ptr.hpp \
+		glm/gtc/quaternion.hpp \
+		glm/gtc/constants.hpp \
+		glm/gtc/constants.inl \
+		glm/gtc/quaternion.inl \
+		glm/gtc/type_ptr.inl \
+		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers/QImage \
+		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtGui.framework/Headers/qimage.h \
+		scenegraph/skybox.h \
 		gl/textures/Texture2D.h \
 		gl/textures/Texture.h \
+		shapes/anyshape.h \
 		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtOpenGL.framework/Headers/QGLWidget \
 		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtOpenGL.framework/Headers/qgl.h \
 		camera/OrbitingCamera.h \
@@ -2545,19 +2706,13 @@ SceneviewScene.o: scenegraph/SceneviewScene.cpp scenegraph/SceneviewScene.h \
 		gl/util/FullScreenQuad.h \
 		gl/datatype/VAO.h \
 		glm/ext.hpp \
-		glm/gtc/constants.hpp \
-		glm/gtc/constants.inl \
 		glm/gtc/epsilon.hpp \
 		glm/gtc/epsilon.inl \
-		glm/gtc/quaternion.hpp \
-		glm/gtc/quaternion.inl \
 		glm/gtc/matrix_access.hpp \
 		glm/gtc/matrix_access.inl \
 		glm/gtc/matrix_integer.hpp \
 		glm/gtc/matrix_inverse.hpp \
 		glm/gtc/matrix_inverse.inl \
-		glm/gtc/matrix_transform.hpp \
-		glm/gtc/matrix_transform.inl \
 		glm/gtc/noise.hpp \
 		glm/gtc/noise.inl \
 		glm/detail/_noise.hpp \
@@ -2569,8 +2724,6 @@ SceneviewScene.o: scenegraph/SceneviewScene.cpp scenegraph/SceneviewScene.h \
 		glm/gtc/random.inl \
 		glm/gtc/reciprocal.hpp \
 		glm/gtc/reciprocal.inl \
-		glm/gtc/type_ptr.hpp \
-		glm/gtc/type_ptr.inl \
 		glm/gtc/ulp.hpp \
 		glm/gtc/ulp.inl \
 		glm/gtx/associated_min_max.hpp \
@@ -2653,8 +2806,6 @@ SceneviewScene.o: scenegraph/SceneviewScene.cpp scenegraph/SceneviewScene.h \
 		glm/gtx/polar_coordinates.hpp \
 		glm/gtx/polar_coordinates.inl \
 		glm/gtx/rotate_vector.hpp \
-		glm/gtx/transform.hpp \
-		glm/gtx/transform.inl \
 		glm/gtx/rotate_vector.inl \
 		glm/gtx/spline.hpp \
 		glm/gtx/spline.inl \
@@ -2689,6 +2840,13 @@ SceneviewScene.o: scenegraph/SceneviewScene.cpp scenegraph/SceneviewScene.h \
 		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/QTimer \
 		/Users/zhuzhu/Qt5.7.1/5.7/clang_64/lib/QtCore.framework/Headers/qtimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SceneviewScene.o scenegraph/SceneviewScene.cpp
+
+anyshape.o: shapes/anyshape.cpp shapes/anyshape.h \
+		shapes/openglshape.h \
+		glew-1.10.0/include/GL/glew.h \
+		gl/datatype/VBO.h \
+		gl/datatype/VBOAttribMarker.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o anyshape.o shapes/anyshape.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp

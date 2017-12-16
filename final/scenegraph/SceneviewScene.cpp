@@ -12,6 +12,7 @@
 #include "shapes/cone.h"
 #include "shapes/sphere.h"
 #include "shapes/cylinder.h"
+
 #include "gl/util/FullScreenQuad.h"
 
 
@@ -38,13 +39,15 @@ SceneviewScene::SceneviewScene()
     loadNormalsArrowShader();*/
 
     // shadow map
-    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-    glEnable(GL_DEPTH_TEST);
+    //glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    //glEnable(GL_DEPTH_TEST);
 
-    loadPhongShader();
+    //loadPhongShader();
 //    initShadowMap();
-    initSSAO();
+    //initSSAO();
     //glEnable(GL_MULTISAMPLE);
+
+    reinit();
 }
 
 SceneviewScene::~SceneviewScene()
@@ -53,8 +56,62 @@ SceneviewScene::~SceneviewScene()
 void SceneviewScene::reinit(){
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     glEnable(GL_DEPTH_TEST);
+
+    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/terrain.vert");
+    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/terrain.frag");
+    m_terrainShaderProgram = std::make_unique<CS123::GL::CS123Shader>(vertexSource, fragmentSource);
+
+    std::string vertexSourceSky = ResourceLoader::loadResourceFileToString(":/shaders/skybox.vert");
+    std::string fragmentSourceSky = ResourceLoader::loadResourceFileToString(":/shaders/skybox.frag");
+    m_skyboxShaderProgram = std::make_unique<CS123::GL::CS123Shader>(vertexSourceSky, fragmentSourceSky);
+
+    std::string vertexSourceToon = ResourceLoader::loadResourceFileToString(":/shaders/toon.vert");
+    std::string fragmentSourceToon = ResourceLoader::loadResourceFileToString(":/shaders/toon.frag");
+    m_toonShaderProgram = std::make_unique<CS123Shader>(vertexSourceToon, fragmentSourceToon);
+
+    m_terrain.init();
+    sk.init();
+
     loadPhongShader();
     initSSAO();
+
+    std::vector<float> squareData_back = {-5 ,5,-5,0,0,1,0,0,0,\
+                                     -5 ,-5,-5,0,0,1,0,1,0,\
+                                     5,5,-5,0,0,1,1,0,0,\
+                                     5,5,-5,0,0,1,1,0,0,\
+                                    -5,-5,-5,0,0,1,0,1,0,\
+                                     5,-5,-5,0,0,1,1,1,0};
+
+    std::vector<float> squareData_right = {5 ,5,-5,-1,0,0,0,0,0,\
+                                     5 ,-5,-5,-1,0,0,0,1,0,\
+                                     5,5,5,-1,0,0,1,0,0,\
+                                     5,5,5,-1,0,0,1,0,0,\
+                                     5,-5,-5,-1,0,0,0,1,0,\
+                                     5,-5,5,-1,0,0,1,1,0};
+    std::vector<float> squareData_left = {-5 ,5,5,-1,0,0,0,0,0,\
+                                     -5 ,-5, 5,-1,0,0,0,1,0,\
+                                     -5,5,-5,-1,0,0,1,0,0,\
+                                     -5,5,-5,-1,0,0,1,0,0,\
+                                     -5,-5,5,-1,0,0,0,1,0,\
+                                     -5,-5,-5,-1,0,0,1,1,0};
+    std::vector<float> squareData_top = {-5 ,5,5,-1,0,0,0,0,0,\
+                                         -5 ,5,-5,-1,0,0,0,1,0,\
+                                         5,5,5,-1,0,0,1,0,0,\
+                                         5,5,5,-1,0,0,1,0,0,\
+                                         -5,5,-5,-1,0,0,0,1,0,\
+                                         5,5,-5,-1,0,0,1,1,0};
+    std::vector<float> squareData_front = {5 ,5,5,0,0,1,0,0,0,\
+                                     5 ,-5,5,0,0,1,0,1,0,\
+                                     -5,5,5,0,0,1,1,0,0,\
+                                     -5,5,5,0,0,1,1,0,0,\
+                                    5,-5,5,0,0,1,0,1,0,\
+                                     -5,-5,5,0,0,1,1,1,0};
+
+    m_sky = std::make_unique<AnyShape>(squareData_back,true);
+    m_sky_right = std::make_unique<AnyShape>(squareData_right,true);
+    m_sky_left = std::make_unique<AnyShape>(squareData_left,true);
+    m_sky_top = std::make_unique<AnyShape>(squareData_top,true);
+    m_sky_front = std::make_unique<AnyShape>(squareData_front,true);
 
 }
 
@@ -260,10 +317,14 @@ void SceneviewScene::initSSAO(){
 }
 
 void SceneviewScene::render(View *context) {
+
     initShadowMap(); // run only once
+
 
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+
 
     if (usingShadowMap) {
         m_depthShader->bind();
@@ -373,8 +434,56 @@ void SceneviewScene::render(View *context) {
     glUniform1i(glGetUniformLocation(m_phongShader->getID(), "square"), 0);
     m_phongShader->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
     renderGeometry(m_phongShader.get());
+     m_phongShader->setUniform("m", glm::mat4(1.0f));
+     m_terrain.draw();
     glBindTexture(GL_TEXTURE_2D, 0);
     m_phongShader->unbind();
+
+
+    OrbitingCamera *camera = context->getOrbitingCamera();
+
+    m_skyboxShaderProgram->bind();
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    m_skyboxShaderProgram->setUniform("useArrowOffsets", false);
+    m_skyboxShaderProgram->setUniform("useLighting", Lighting);
+    m_skyboxShaderProgram->setUniform("projection", camera->getProjectionMatrix());
+    m_skyboxShaderProgram->setUniform("view", camera->getViewMatrix());
+    m_skyboxShaderProgram->setUniform("model", glm::translate(glm::mat4(1.0f),glm::vec3(0,4.3,0)));
+
+    glBindTexture(GL_TEXTURE_2D, sk.sk_back);
+    m_sky->draw();
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glBindTexture(GL_TEXTURE_2D, sk.sk_right);
+    m_sky_right->draw();
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glBindTexture(GL_TEXTURE_2D, sk.sk_left);
+    m_sky_left->draw();
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glBindTexture(GL_TEXTURE_2D, sk.sk_top);
+    m_sky_top->draw();
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    glBindTexture(GL_TEXTURE_2D, sk.sk_front);
+    m_sky_front->draw();
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    m_skyboxShaderProgram->unbind();
+
+
+    m_terrainShaderProgram->bind();
+
+    m_terrainShaderProgram->setUniform("useArrowOffsets", false);
+    m_terrainShaderProgram->setUniform("useLighting", Lighting);
+    m_terrainShaderProgram->setUniform("projection", camera->getProjectionMatrix());
+    m_terrainShaderProgram->setUniform("view", camera->getViewMatrix());
+    m_terrainShaderProgram->setUniform("model", glm::mat4(1.0f));
+    glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
+    m_terrainShaderProgram->unbind();
 
 }
 
@@ -412,6 +521,7 @@ void SceneviewScene::setLights(CS123::GL::CS123Shader* shader)
     for (int i = 0; i<m_Lights.size(); i++){
         CS123SceneLightData curlight = *m_Lights[i];
         shader->setLight(curlight);
+        m_terrainShaderProgram->setLight(curlight);
     }
 }
 

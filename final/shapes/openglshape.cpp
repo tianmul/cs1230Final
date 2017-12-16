@@ -1,6 +1,7 @@
 #include "openglshape.h"
 
 #include "gl/datatype/VAO.h"
+#include "gl/shaders/ShaderAttribLocations.h"
 
 using namespace CS123::GL;
 
@@ -52,6 +53,21 @@ void OpenGLShape::setAttribute(
 void OpenGLShape::buildVAO() {
     CS123::GL::VBO vbo = VBO(m_data, m_size, m_markers, m_drawMode);
     m_VAO = std::make_unique<VAO>(vbo, m_numVertices);
+}
+
+void OpenGLShape::sendToGL(std::vector<float> v){
+    setVertexData(&v[0],v.size(),VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES,v.size() /6);
+    setAttribute(ShaderAttrib::POSITION,3,0,VBOAttribMarker::DATA_TYPE::FLOAT,false);
+    setAttribute(ShaderAttrib::NORMAL,3,12,VBOAttribMarker::DATA_TYPE::FLOAT,false);
+    buildVAO();
+}
+
+void OpenGLShape::sendToGLWithTexture(std::vector<float> v){
+    setVertexData(&v[0],v.size(),VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES,v.size() / 9);
+    setAttribute(ShaderAttrib::POSITION,3,0,VBOAttribMarker::DATA_TYPE::FLOAT,false);
+    setAttribute(ShaderAttrib::NORMAL,3,12,VBOAttribMarker::DATA_TYPE::FLOAT,false);
+    setAttribute(ShaderAttrib::TEXCOORD0, 3, 24 , VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    buildVAO();
 }
 
 void OpenGLShape::draw() {
