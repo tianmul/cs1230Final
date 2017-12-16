@@ -56,6 +56,8 @@ SOURCES       = ../final/ui/mainwindow.cpp \
 		../final/scenegraph/OpenGLScene.cpp \
 		../final/scenegraph/ShapesScene.cpp \
 		../final/scenegraph/Scene.cpp \
+		../final/scenegraph/terrain.cpp \
+		../final/scenegraph/skybox.cpp \
 		../final/shapes/cone.cpp \
 		../final/shapes/cube.cpp \
 		../final/shapes/cylinder.cpp \
@@ -80,7 +82,8 @@ SOURCES       = ../final/ui/mainwindow.cpp \
 		../final/gl/textures/TextureParametersBuilder.cpp \
 		../final/gl/util/FullScreenQuad.cpp \
 		../final/gl/GLDebug.cpp \
-		../final/scenegraph/SceneviewScene.cpp qrc_resources.cpp \
+		../final/scenegraph/SceneviewScene.cpp \
+		../final/shapes/anyshape.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
 		moc_view.cpp
 OBJECTS       = mainwindow.o \
@@ -94,6 +97,8 @@ OBJECTS       = mainwindow.o \
 		OpenGLScene.o \
 		ShapesScene.o \
 		Scene.o \
+		terrain.o \
+		skybox.o \
 		cone.o \
 		cube.o \
 		cylinder.o \
@@ -119,6 +124,7 @@ OBJECTS       = mainwindow.o \
 		FullScreenQuad.o \
 		GLDebug.o \
 		SceneviewScene.o \
+		anyshape.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
 		moc_view.o
@@ -128,6 +134,12 @@ DIST          = ../final/shaders/normals/normals.vert \
 		../final/shaders/normals/normalsArrow.gsh \
 		../final/shaders/normals/normalsArrow.frag \
 		../final/shaders/normals/normalsArrow.vert \
+		../final/shaders/toon.frag \
+		../final/shaders/toon.vert \
+		../final/shaders/terrain.frag \
+		../final/shaders/terrain.vert \
+		../final/shaders/skybox.frag \
+		../final/shaders/skybox.vert \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/mkspecs/common/shell-unix.conf \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/mkspecs/common/unix.conf \
@@ -498,7 +510,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/final1.0.0 || mkdir -p .tmp/final1.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/final1.0.0/ && $(COPY_FILE) --parents ../final/resources.qrc .tmp/final1.0.0/ && $(COPY_FILE) --parents ../final/ui/mainwindow.h ui_mainwindow.h ../final/glew-1.10.0/include/GL/glew.h ../final/ui/view.h ../final/ui/viewformat.h ../final/camera/Camera.h ../final/camera/CamtransCamera.h ../final/camera/OrbitingCamera.h ../final/camera/QuaternionCamera.h ../final/scenegraph/OpenGLScene.h ../final/scenegraph/ShapesScene.h ../final/scenegraph/Scene.h ../final/shapes/cone.h ../final/shapes/cube.h ../final/shapes/cylinder.h ../final/shapes/openglshape.h ../final/shapes/point.h ../final/shapes/shape.h ../final/shapes/sphere.h ../final/lib/BGRA.h ../final/lib/CS123ISceneParser.h ../final/lib/CS123SceneData.h ../final/lib/CS123XmlSceneParser.h ../final/lib/ResourceLoader.h ../final/gl/datatype/FBO.h ../final/gl/datatype/IBO.h ../final/gl/datatype/VAO.h ../final/gl/datatype/VBO.h ../final/gl/datatype/VBOAttribMarker.h ../final/gl/shaders/CS123Shader.h ../final/gl/shaders/Shader.h ../final/gl/shaders/ShaderAttribLocations.h ../final/gl/textures/DepthBuffer.h ../final/gl/textures/RenderBuffer.h ../final/gl/textures/Texture.h ../final/gl/textures/Texture2D.h ../final/gl/textures/TextureParameters.h ../final/gl/textures/TextureParametersBuilder.h ../final/gl/util/FullScreenQuad.h ../final/gl/GLDebug.h ../final/scenegraph/SceneviewScene.h .tmp/final1.0.0/ && $(COPY_FILE) --parents ../final/ui/mainwindow.cpp ../final/main.cpp ../final/glew-1.10.0/src/glew.c ../final/ui/view.cpp ../final/ui/viewformat.cpp ../final/camera/CamtransCamera.cpp ../final/camera/OrbitingCamera.cpp ../final/camera/QuaternionCamera.cpp ../final/scenegraph/OpenGLScene.cpp ../final/scenegraph/ShapesScene.cpp ../final/scenegraph/Scene.cpp ../final/shapes/cone.cpp ../final/shapes/cube.cpp ../final/shapes/cylinder.cpp ../final/shapes/openglshape.cpp ../final/shapes/shape.cpp ../final/shapes/sphere.cpp ../final/lib/BGRA.cpp ../final/lib/CS123XmlSceneParser.cpp ../final/lib/ResourceLoader.cpp ../final/gl/datatype/FBO.cpp ../final/gl/datatype/IBO.cpp ../final/gl/datatype/VAO.cpp ../final/gl/datatype/VBO.cpp ../final/gl/datatype/VBOAttribMarker.cpp ../final/gl/shaders/CS123Shader.cpp ../final/gl/shaders/Shader.cpp ../final/gl/textures/DepthBuffer.cpp ../final/gl/textures/RenderBuffer.cpp ../final/gl/textures/Texture.cpp ../final/gl/textures/Texture2D.cpp ../final/gl/textures/TextureParameters.cpp ../final/gl/textures/TextureParametersBuilder.cpp ../final/gl/util/FullScreenQuad.cpp ../final/gl/GLDebug.cpp ../final/scenegraph/SceneviewScene.cpp .tmp/final1.0.0/ && $(COPY_FILE) --parents ../final/ui/mainwindow.ui .tmp/final1.0.0/ && (cd `dirname .tmp/final1.0.0` && $(TAR) final1.0.0.tar final1.0.0 && $(COMPRESS) final1.0.0.tar) && $(MOVE) `dirname .tmp/final1.0.0`/final1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/final1.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/final1.0.0/ && $(COPY_FILE) --parents ../final/resources.qrc .tmp/final1.0.0/ && $(COPY_FILE) --parents ../final/ui/mainwindow.h ../final/ui_mainwindow.h ../final/glew-1.10.0/include/GL/glew.h ../final/ui/view.h ../final/ui/viewformat.h ../final/camera/Camera.h ../final/camera/CamtransCamera.h ../final/camera/OrbitingCamera.h ../final/camera/QuaternionCamera.h ../final/scenegraph/OpenGLScene.h ../final/scenegraph/ShapesScene.h ../final/scenegraph/Scene.h ../final/scenegraph/terrain.h ../final/scenegraph/skybox.h ../final/shapes/cone.h ../final/shapes/cube.h ../final/shapes/cylinder.h ../final/shapes/openglshape.h ../final/shapes/point.h ../final/shapes/shape.h ../final/shapes/sphere.h ../final/lib/BGRA.h ../final/lib/CS123ISceneParser.h ../final/lib/CS123SceneData.h ../final/lib/CS123XmlSceneParser.h ../final/lib/ResourceLoader.h ../final/gl/datatype/FBO.h ../final/gl/datatype/IBO.h ../final/gl/datatype/VAO.h ../final/gl/datatype/VBO.h ../final/gl/datatype/VBOAttribMarker.h ../final/gl/shaders/CS123Shader.h ../final/gl/shaders/Shader.h ../final/gl/shaders/ShaderAttribLocations.h ../final/gl/textures/DepthBuffer.h ../final/gl/textures/RenderBuffer.h ../final/gl/textures/Texture.h ../final/gl/textures/Texture2D.h ../final/gl/textures/TextureParameters.h ../final/gl/textures/TextureParametersBuilder.h ../final/gl/util/FullScreenQuad.h ../final/gl/GLDebug.h ../final/scenegraph/SceneviewScene.h ../final/shapes/anyshape.h .tmp/final1.0.0/ && $(COPY_FILE) --parents ../final/ui/mainwindow.cpp ../final/main.cpp ../final/glew-1.10.0/src/glew.c ../final/ui/view.cpp ../final/ui/viewformat.cpp ../final/camera/CamtransCamera.cpp ../final/camera/OrbitingCamera.cpp ../final/camera/QuaternionCamera.cpp ../final/scenegraph/OpenGLScene.cpp ../final/scenegraph/ShapesScene.cpp ../final/scenegraph/Scene.cpp ../final/scenegraph/terrain.cpp ../final/scenegraph/skybox.cpp ../final/shapes/cone.cpp ../final/shapes/cube.cpp ../final/shapes/cylinder.cpp ../final/shapes/openglshape.cpp ../final/shapes/shape.cpp ../final/shapes/sphere.cpp ../final/lib/BGRA.cpp ../final/lib/CS123XmlSceneParser.cpp ../final/lib/ResourceLoader.cpp ../final/gl/datatype/FBO.cpp ../final/gl/datatype/IBO.cpp ../final/gl/datatype/VAO.cpp ../final/gl/datatype/VBO.cpp ../final/gl/datatype/VBOAttribMarker.cpp ../final/gl/shaders/CS123Shader.cpp ../final/gl/shaders/Shader.cpp ../final/gl/textures/DepthBuffer.cpp ../final/gl/textures/RenderBuffer.cpp ../final/gl/textures/Texture.cpp ../final/gl/textures/Texture2D.cpp ../final/gl/textures/TextureParameters.cpp ../final/gl/textures/TextureParametersBuilder.cpp ../final/gl/util/FullScreenQuad.cpp ../final/gl/GLDebug.cpp ../final/scenegraph/SceneviewScene.cpp ../final/shapes/anyshape.cpp .tmp/final1.0.0/ && $(COPY_FILE) --parents ../final/ui/mainwindow.ui .tmp/final1.0.0/ && (cd `dirname .tmp/final1.0.0` && $(TAR) final1.0.0.tar final1.0.0 && $(COMPRESS) final1.0.0.tar) && $(MOVE) `dirname .tmp/final1.0.0`/final1.0.0.tar.gz . && $(DEL_FILE) -r .tmp/final1.0.0
 
 
 clean:compiler_clean 
@@ -523,16 +535,30 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../final/resources.qrc \
-		../final/shaders/ssao_geometry.frag \
-		../final/shaders/depth.frag \
-		../final/shaders/ssao.vert \
+		../final/scene/terrain.xml \
+		../final/images/front.jpg \
+		../final/images/back.jpg \
+		../final/images/right.jpg \
+		../final/images/depth.png \
+		../final/images/left.jpg \
+		../final/images/top.jpg \
+		../final/images/map1.jpg \
 		../final/shaders/shader.vert \
-		../final/shaders/ssao_blur.frag \
+		../final/shaders/ssao.vert \
 		../final/shaders/ssao_geometry.vert \
-		../final/shaders/depth.vert \
-		../final/shaders/ssao.frag \
+		../final/shaders/ssao_blur.frag \
+		../final/shaders/skybox.frag \
+		../final/shaders/terrain.frag \
+		../final/shaders/toon.frag \
+		../final/shaders/depth.frag \
 		../final/shaders/ssao_lighting.frag \
-		../final/shaders/shader.frag
+		../final/shaders/skybox.vert \
+		../final/shaders/shader.frag \
+		../final/shaders/ssao.frag \
+		../final/shaders/ssao_geometry.frag \
+		../final/shaders/terrain.vert \
+		../final/shaders/toon.vert \
+		../final/shaders/depth.vert
 	/contrib/projects/qt5.2.0/5.2.0/gcc_64/bin/rcc -name resources ../final/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_view.cpp
@@ -1426,7 +1452,7 @@ mainwindow.o: ../final/ui/mainwindow.cpp ../final/ui/mainwindow.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qdom.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qxml.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/qtxmlversion.h \
-		ui_mainwindow.h \
+		../final/ui_mainwindow.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QVariant \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QAction \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qaction.h \
@@ -2026,8 +2052,22 @@ view.o: ../final/ui/view.cpp ../final/ui/view.h \
 		../final/gl/datatype/VBOAttribMarker.h \
 		../final/shapes/point.h \
 		../final/scenegraph/SceneviewScene.h \
+		../final/scenegraph/terrain.h \
+		../final/glm/gtx/transform.hpp \
+		../final/glm/gtc/matrix_transform.hpp \
+		../final/glm/gtc/matrix_transform.inl \
+		../final/glm/gtx/transform.inl \
+		../final/glm/gtc/type_ptr.hpp \
+		../final/glm/gtc/quaternion.hpp \
+		../final/glm/gtc/constants.hpp \
+		../final/glm/gtc/constants.inl \
+		../final/glm/gtc/quaternion.inl \
+		../final/glm/gtc/type_ptr.inl \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QImage \
+		../final/scenegraph/skybox.h \
 		../final/gl/textures/Texture2D.h \
 		../final/gl/textures/Texture.h \
+		../final/shapes/anyshape.h \
 		../final/lib/CS123XmlSceneParser.h \
 		../final/lib/CS123ISceneParser.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml/QtXml \
@@ -3053,6 +3093,264 @@ Scene.o: ../final/scenegraph/Scene.cpp ../final/scenegraph/Scene.h \
 		../final/glm/gtx/simd_mat4.inl
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Scene.o ../final/scenegraph/Scene.cpp
 
+terrain.o: ../final/scenegraph/terrain.cpp ../final/scenegraph/terrain.h \
+		../final/glm/glm.hpp \
+		../final/glm/detail/_fixes.hpp \
+		../final/glm/fwd.hpp \
+		../final/glm/detail/type_int.hpp \
+		../final/glm/detail/setup.hpp \
+		../final/glm/detail/type_float.hpp \
+		../final/glm/detail/type_vec.hpp \
+		../final/glm/detail/precision.hpp \
+		../final/glm/detail/type_mat.hpp \
+		../final/glm/vec2.hpp \
+		../final/glm/detail/type_vec2.hpp \
+		../final/glm/detail/_swizzle.hpp \
+		../final/glm/detail/_swizzle_func.hpp \
+		../final/glm/detail/type_vec2.inl \
+		../final/glm/vec3.hpp \
+		../final/glm/detail/type_vec3.hpp \
+		../final/glm/detail/type_vec3.inl \
+		../final/glm/vec4.hpp \
+		../final/glm/detail/type_vec4.hpp \
+		../final/glm/detail/type_vec4.inl \
+		../final/glm/mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.inl \
+		../final/glm/mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.inl \
+		../final/glm/mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.inl \
+		../final/glm/mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.inl \
+		../final/glm/mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.inl \
+		../final/glm/mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.inl \
+		../final/glm/mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.inl \
+		../final/glm/mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.inl \
+		../final/glm/mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.inl \
+		../final/glm/trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.inl \
+		../final/glm/detail/_vectorize.hpp \
+		../final/glm/detail/type_vec1.hpp \
+		../final/glm/detail/type_vec1.inl \
+		../final/glm/exponential.hpp \
+		../final/glm/detail/func_exponential.hpp \
+		../final/glm/detail/func_exponential.inl \
+		../final/glm/detail/func_vector_relational.hpp \
+		../final/glm/detail/func_vector_relational.inl \
+		../final/glm/common.hpp \
+		../final/glm/detail/func_common.hpp \
+		../final/glm/detail/func_common.inl \
+		../final/glm/packing.hpp \
+		../final/glm/detail/func_packing.hpp \
+		../final/glm/detail/func_packing.inl \
+		../final/glm/detail/type_half.hpp \
+		../final/glm/detail/type_half.inl \
+		../final/glm/geometric.hpp \
+		../final/glm/detail/func_geometric.hpp \
+		../final/glm/detail/func_geometric.inl \
+		../final/glm/matrix.hpp \
+		../final/glm/detail/func_matrix.hpp \
+		../final/glm/detail/func_matrix.inl \
+		../final/glm/vector_relational.hpp \
+		../final/glm/integer.hpp \
+		../final/glm/detail/func_integer.hpp \
+		../final/glm/detail/func_integer.inl \
+		../final/glm/gtx/transform.hpp \
+		../final/glm/gtc/matrix_transform.hpp \
+		../final/glm/gtc/matrix_transform.inl \
+		../final/glm/gtx/transform.inl \
+		../final/glm/gtc/type_ptr.hpp \
+		../final/glm/gtc/quaternion.hpp \
+		../final/glm/gtc/constants.hpp \
+		../final/glm/gtc/constants.inl \
+		../final/glm/gtc/quaternion.inl \
+		../final/glm/gtc/type_ptr.inl \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QImage \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qimage.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtransform.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qmatrix.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpolygon.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvector.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobal.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qconfig.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfeatures.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_integrity.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qoldbasicatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_vxworks.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_power.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_alpha.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv7.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv6.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv5.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bfin.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_ia64.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_mips.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_s390.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sh4a.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sparc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_x86.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_gcc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_unix.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmutex.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlogging.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qflags.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypetraits.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiterator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrefcount.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydata.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpoint.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnamespace.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrect.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsize.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qregion.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatastream.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiodevice.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstring.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qchar.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetatype.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qisenum.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpair.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qline.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainterpath.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpaintdevice.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qrgb.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregexp.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringmatcher.h \
+		../final/shapes/openglshape.h \
+		../final/glew-1.10.0/include/GL/glew.h \
+		../final/gl/datatype/VBO.h \
+		../final/gl/datatype/VBOAttribMarker.h \
+		../final/gl/shaders/ShaderAttribLocations.h \
+		../final/lib/ResourceLoader.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o terrain.o ../final/scenegraph/terrain.cpp
+
+skybox.o: ../final/scenegraph/skybox.cpp ../final/scenegraph/skybox.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QImage \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qimage.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtransform.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qmatrix.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpolygon.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvector.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobal.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qconfig.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfeatures.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_integrity.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qoldbasicatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_vxworks.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_power.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_alpha.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv7.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv6.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv5.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bfin.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_ia64.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_mips.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_s390.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sh4a.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sparc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_x86.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_gcc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_unix.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmutex.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlogging.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qflags.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypetraits.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiterator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrefcount.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydata.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpoint.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnamespace.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrect.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsize.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qregion.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatastream.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiodevice.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstring.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qchar.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetatype.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qisenum.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpair.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qline.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainterpath.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpaintdevice.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qrgb.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregexp.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringmatcher.h \
+		../final/shapes/openglshape.h \
+		../final/glew-1.10.0/include/GL/glew.h \
+		../final/gl/datatype/VBO.h \
+		../final/gl/datatype/VBOAttribMarker.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skybox.o ../final/scenegraph/skybox.cpp
+
 cone.o: ../final/shapes/cone.cpp ../final/shapes/cone.h \
 		../final/shapes/shape.h \
 		../final/shapes/openglshape.h \
@@ -3084,7 +3382,8 @@ openglshape.o: ../final/shapes/openglshape.cpp ../final/shapes/openglshape.h \
 		../final/glew-1.10.0/include/GL/glew.h \
 		../final/gl/datatype/VBO.h \
 		../final/gl/datatype/VBOAttribMarker.h \
-		../final/gl/datatype/VAO.h
+		../final/gl/datatype/VAO.h \
+		../final/gl/shaders/ShaderAttribLocations.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o openglshape.o ../final/shapes/openglshape.cpp
 
 shape.o: ../final/shapes/shape.cpp ../final/shapes/shape.h \
@@ -3585,359 +3884,7 @@ CS123Shader.o: ../final/gl/shaders/CS123Shader.cpp ../final/gl/shaders/CS123Shad
 		../final/glm/detail/func_integer.hpp \
 		../final/glm/detail/func_integer.inl \
 		../final/lib/CS123SceneData.h \
-		../final/gl/GLDebug.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CS123Shader.o ../final/gl/shaders/CS123Shader.cpp
-
-Shader.o: ../final/gl/shaders/Shader.cpp ../final/gl/shaders/Shader.h \
-		../final/glew-1.10.0/include/GL/glew.h \
-		../final/glm/glm.hpp \
-		../final/glm/detail/_fixes.hpp \
-		../final/glm/fwd.hpp \
-		../final/glm/detail/type_int.hpp \
-		../final/glm/detail/setup.hpp \
-		../final/glm/detail/type_float.hpp \
-		../final/glm/detail/type_vec.hpp \
-		../final/glm/detail/precision.hpp \
-		../final/glm/detail/type_mat.hpp \
-		../final/glm/vec2.hpp \
-		../final/glm/detail/type_vec2.hpp \
-		../final/glm/detail/_swizzle.hpp \
-		../final/glm/detail/_swizzle_func.hpp \
-		../final/glm/detail/type_vec2.inl \
-		../final/glm/vec3.hpp \
-		../final/glm/detail/type_vec3.hpp \
-		../final/glm/detail/type_vec3.inl \
-		../final/glm/vec4.hpp \
-		../final/glm/detail/type_vec4.hpp \
-		../final/glm/detail/type_vec4.inl \
-		../final/glm/mat2x2.hpp \
-		../final/glm/detail/type_mat2x2.hpp \
-		../final/glm/detail/type_mat2x2.inl \
-		../final/glm/mat2x3.hpp \
-		../final/glm/detail/type_mat2x3.hpp \
-		../final/glm/detail/type_mat2x3.inl \
-		../final/glm/mat2x4.hpp \
-		../final/glm/detail/type_mat2x4.hpp \
-		../final/glm/detail/type_mat2x4.inl \
-		../final/glm/mat3x2.hpp \
-		../final/glm/detail/type_mat3x2.hpp \
-		../final/glm/detail/type_mat3x2.inl \
-		../final/glm/mat3x3.hpp \
-		../final/glm/detail/type_mat3x3.hpp \
-		../final/glm/detail/type_mat3x3.inl \
-		../final/glm/mat3x4.hpp \
-		../final/glm/detail/type_mat3x4.hpp \
-		../final/glm/detail/type_mat3x4.inl \
-		../final/glm/mat4x2.hpp \
-		../final/glm/detail/type_mat4x2.hpp \
-		../final/glm/detail/type_mat4x2.inl \
-		../final/glm/mat4x3.hpp \
-		../final/glm/detail/type_mat4x3.hpp \
-		../final/glm/detail/type_mat4x3.inl \
-		../final/glm/mat4x4.hpp \
-		../final/glm/detail/type_mat4x4.hpp \
-		../final/glm/detail/type_mat4x4.inl \
-		../final/glm/trigonometric.hpp \
-		../final/glm/detail/func_trigonometric.hpp \
-		../final/glm/detail/func_trigonometric.inl \
-		../final/glm/detail/_vectorize.hpp \
-		../final/glm/detail/type_vec1.hpp \
-		../final/glm/detail/type_vec1.inl \
-		../final/glm/exponential.hpp \
-		../final/glm/detail/func_exponential.hpp \
-		../final/glm/detail/func_exponential.inl \
-		../final/glm/detail/func_vector_relational.hpp \
-		../final/glm/detail/func_vector_relational.inl \
-		../final/glm/common.hpp \
-		../final/glm/detail/func_common.hpp \
-		../final/glm/detail/func_common.inl \
-		../final/glm/packing.hpp \
-		../final/glm/detail/func_packing.hpp \
-		../final/glm/detail/func_packing.inl \
-		../final/glm/detail/type_half.hpp \
-		../final/glm/detail/type_half.inl \
-		../final/glm/geometric.hpp \
-		../final/glm/detail/func_geometric.hpp \
-		../final/glm/detail/func_geometric.inl \
-		../final/glm/matrix.hpp \
-		../final/glm/detail/func_matrix.hpp \
-		../final/glm/detail/func_matrix.inl \
-		../final/glm/vector_relational.hpp \
-		../final/glm/integer.hpp \
-		../final/glm/detail/func_integer.hpp \
-		../final/glm/detail/func_integer.inl \
-		../final/glm/gtc/type_ptr.hpp \
-		../final/glm/gtc/quaternion.hpp \
-		../final/glm/gtc/constants.hpp \
-		../final/glm/gtc/constants.inl \
-		../final/glm/gtc/quaternion.inl \
-		../final/glm/gtc/type_ptr.inl \
 		../final/gl/GLDebug.h \
-		../final/gl/textures/Texture2D.h \
-		../final/gl/textures/Texture.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Shader.o ../final/gl/shaders/Shader.cpp
-
-DepthBuffer.o: ../final/gl/textures/DepthBuffer.cpp ../final/gl/textures/DepthBuffer.h \
-		../final/gl/textures/RenderBuffer.h \
-		../final/glew-1.10.0/include/GL/glew.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DepthBuffer.o ../final/gl/textures/DepthBuffer.cpp
-
-RenderBuffer.o: ../final/gl/textures/RenderBuffer.cpp ../final/gl/textures/RenderBuffer.h \
-		../final/glew-1.10.0/include/GL/glew.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RenderBuffer.o ../final/gl/textures/RenderBuffer.cpp
-
-Texture.o: ../final/gl/textures/Texture.cpp ../final/gl/textures/Texture.h \
-		../final/glew-1.10.0/include/GL/glew.h \
-		../final/gl/GLDebug.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Texture.o ../final/gl/textures/Texture.cpp
-
-Texture2D.o: ../final/gl/textures/Texture2D.cpp ../final/gl/textures/Texture2D.h \
-		../final/gl/textures/Texture.h \
-		../final/glew-1.10.0/include/GL/glew.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Texture2D.o ../final/gl/textures/Texture2D.cpp
-
-TextureParameters.o: ../final/gl/textures/TextureParameters.cpp ../final/gl/textures/TextureParameters.h \
-		../final/glew-1.10.0/include/GL/glew.h \
-		../final/gl/GLDebug.h \
-		../final/gl/textures/Texture.h \
-		../final/gl/textures/Texture2D.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TextureParameters.o ../final/gl/textures/TextureParameters.cpp
-
-TextureParametersBuilder.o: ../final/gl/textures/TextureParametersBuilder.cpp ../final/gl/textures/TextureParametersBuilder.h \
-		../final/gl/textures/TextureParameters.h \
-		../final/glew-1.10.0/include/GL/glew.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TextureParametersBuilder.o ../final/gl/textures/TextureParametersBuilder.cpp
-
-FullScreenQuad.o: ../final/gl/util/FullScreenQuad.cpp ../final/gl/util/FullScreenQuad.h \
-		../final/gl/datatype/VBO.h \
-		../final/glew-1.10.0/include/GL/glew.h \
-		../final/gl/datatype/VBOAttribMarker.h \
-		../final/gl/datatype/VAO.h \
-		../final/gl/shaders/ShaderAttribLocations.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o FullScreenQuad.o ../final/gl/util/FullScreenQuad.cpp
-
-GLDebug.o: ../final/gl/GLDebug.cpp ../final/gl/GLDebug.h \
-		../final/glew-1.10.0/include/GL/glew.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GLDebug.o ../final/gl/GLDebug.cpp
-
-SceneviewScene.o: ../final/scenegraph/SceneviewScene.cpp ../final/scenegraph/SceneviewScene.h \
-		../final/scenegraph/OpenGLScene.h \
-		../final/scenegraph/Scene.h \
-		../final/lib/CS123SceneData.h \
-		../final/glm/glm.hpp \
-		../final/glm/detail/_fixes.hpp \
-		../final/glm/fwd.hpp \
-		../final/glm/detail/type_int.hpp \
-		../final/glm/detail/setup.hpp \
-		../final/glm/detail/type_float.hpp \
-		../final/glm/detail/type_vec.hpp \
-		../final/glm/detail/precision.hpp \
-		../final/glm/detail/type_mat.hpp \
-		../final/glm/vec2.hpp \
-		../final/glm/detail/type_vec2.hpp \
-		../final/glm/detail/_swizzle.hpp \
-		../final/glm/detail/_swizzle_func.hpp \
-		../final/glm/detail/type_vec2.inl \
-		../final/glm/vec3.hpp \
-		../final/glm/detail/type_vec3.hpp \
-		../final/glm/detail/type_vec3.inl \
-		../final/glm/vec4.hpp \
-		../final/glm/detail/type_vec4.hpp \
-		../final/glm/detail/type_vec4.inl \
-		../final/glm/mat2x2.hpp \
-		../final/glm/detail/type_mat2x2.hpp \
-		../final/glm/detail/type_mat2x2.inl \
-		../final/glm/mat2x3.hpp \
-		../final/glm/detail/type_mat2x3.hpp \
-		../final/glm/detail/type_mat2x3.inl \
-		../final/glm/mat2x4.hpp \
-		../final/glm/detail/type_mat2x4.hpp \
-		../final/glm/detail/type_mat2x4.inl \
-		../final/glm/mat3x2.hpp \
-		../final/glm/detail/type_mat3x2.hpp \
-		../final/glm/detail/type_mat3x2.inl \
-		../final/glm/mat3x3.hpp \
-		../final/glm/detail/type_mat3x3.hpp \
-		../final/glm/detail/type_mat3x3.inl \
-		../final/glm/mat3x4.hpp \
-		../final/glm/detail/type_mat3x4.hpp \
-		../final/glm/detail/type_mat3x4.inl \
-		../final/glm/mat4x2.hpp \
-		../final/glm/detail/type_mat4x2.hpp \
-		../final/glm/detail/type_mat4x2.inl \
-		../final/glm/mat4x3.hpp \
-		../final/glm/detail/type_mat4x3.hpp \
-		../final/glm/detail/type_mat4x3.inl \
-		../final/glm/mat4x4.hpp \
-		../final/glm/detail/type_mat4x4.hpp \
-		../final/glm/detail/type_mat4x4.inl \
-		../final/glm/trigonometric.hpp \
-		../final/glm/detail/func_trigonometric.hpp \
-		../final/glm/detail/func_trigonometric.inl \
-		../final/glm/detail/_vectorize.hpp \
-		../final/glm/detail/type_vec1.hpp \
-		../final/glm/detail/type_vec1.inl \
-		../final/glm/exponential.hpp \
-		../final/glm/detail/func_exponential.hpp \
-		../final/glm/detail/func_exponential.inl \
-		../final/glm/detail/func_vector_relational.hpp \
-		../final/glm/detail/func_vector_relational.inl \
-		../final/glm/common.hpp \
-		../final/glm/detail/func_common.hpp \
-		../final/glm/detail/func_common.inl \
-		../final/glm/packing.hpp \
-		../final/glm/detail/func_packing.hpp \
-		../final/glm/detail/func_packing.inl \
-		../final/glm/detail/type_half.hpp \
-		../final/glm/detail/type_half.inl \
-		../final/glm/geometric.hpp \
-		../final/glm/detail/func_geometric.hpp \
-		../final/glm/detail/func_geometric.inl \
-		../final/glm/matrix.hpp \
-		../final/glm/detail/func_matrix.hpp \
-		../final/glm/detail/func_matrix.inl \
-		../final/glm/vector_relational.hpp \
-		../final/glm/integer.hpp \
-		../final/glm/detail/func_integer.hpp \
-		../final/glm/detail/func_integer.inl \
-		../final/shapes/shape.h \
-		../final/shapes/openglshape.h \
-		../final/glew-1.10.0/include/GL/glew.h \
-		../final/gl/datatype/VBO.h \
-		../final/gl/datatype/VBOAttribMarker.h \
-		../final/shapes/point.h \
-		../final/gl/textures/Texture2D.h \
-		../final/gl/textures/Texture.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/QGLWidget \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qgl.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qopengl.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobal.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qconfig.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfeatures.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemdetection.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocessordetection.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcompilerdetection.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobalstatic.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasicatomic.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qgenericatomic.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_msvc.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_integrity.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qoldbasicatomic.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_vxworks.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_power.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_alpha.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv7.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv6.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv5.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bfin.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_ia64.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_mips.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_s390.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sh4a.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sparc.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_x86.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_cxx11.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_gcc.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_unix.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmutex.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlogging.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qflags.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypeinfo.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypetraits.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsysinfo.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qt_windows.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qopengles2ext.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qopenglext.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qwidget.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnamespace.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs_win.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstring.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qchar.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearray.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrefcount.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydata.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringbuilder.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlist.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qalgorithms.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiterator.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreevent.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedpointer.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetatype.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvarlengtharray.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontainerfwd.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qisenum.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject_impl.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmargins.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrect.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsize.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpoint.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpaintdevice.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpalette.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcolor.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qrgb.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlist.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatastream.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiodevice.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpair.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregexp.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringmatcher.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qbrush.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvector.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qmatrix.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpolygon.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qregion.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qline.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtransform.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainterpath.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qimage.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpixmap.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedpointer.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qshareddata.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qhash.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfont.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfontmetrics.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfontinfo.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qsizepolicy.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcursor.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qkeysequence.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qevent.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvariant.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmap.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdebug.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextstream.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlocale.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qset.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontiguouscache.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qurl.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qurlquery.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfile.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfiledevice.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qvector2d.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtouchdevice.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpaintengine.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainter.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextoption.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpen.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qglcolormap.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qtopenglglobal.h \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QSurfaceFormat \
-		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qsurfaceformat.h \
-		../final/camera/OrbitingCamera.h \
-		../final/camera/Camera.h \
-		../final/lib/ResourceLoader.h \
-		../final/gl/shaders/CS123Shader.h \
-		../final/gl/shaders/Shader.h \
-		../final/shapes/cube.h \
-		../final/shapes/cone.h \
-		../final/shapes/sphere.h \
-		../final/shapes/cylinder.h \
 		../final/glm/ext.hpp \
 		../final/glm/gtc/constants.hpp \
 		../final/glm/gtc/constants.inl \
@@ -4075,6 +4022,502 @@ SceneviewScene.o: ../final/scenegraph/SceneviewScene.cpp ../final/scenegraph/Sce
 		../final/glm/gtx/simd_mat4.hpp \
 		../final/glm/detail/intrinsic_matrix.hpp \
 		../final/glm/detail/intrinsic_matrix.inl \
+		../final/glm/gtx/simd_mat4.inl
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o CS123Shader.o ../final/gl/shaders/CS123Shader.cpp
+
+Shader.o: ../final/gl/shaders/Shader.cpp ../final/gl/shaders/Shader.h \
+		../final/glew-1.10.0/include/GL/glew.h \
+		../final/glm/glm.hpp \
+		../final/glm/detail/_fixes.hpp \
+		../final/glm/fwd.hpp \
+		../final/glm/detail/type_int.hpp \
+		../final/glm/detail/setup.hpp \
+		../final/glm/detail/type_float.hpp \
+		../final/glm/detail/type_vec.hpp \
+		../final/glm/detail/precision.hpp \
+		../final/glm/detail/type_mat.hpp \
+		../final/glm/vec2.hpp \
+		../final/glm/detail/type_vec2.hpp \
+		../final/glm/detail/_swizzle.hpp \
+		../final/glm/detail/_swizzle_func.hpp \
+		../final/glm/detail/type_vec2.inl \
+		../final/glm/vec3.hpp \
+		../final/glm/detail/type_vec3.hpp \
+		../final/glm/detail/type_vec3.inl \
+		../final/glm/vec4.hpp \
+		../final/glm/detail/type_vec4.hpp \
+		../final/glm/detail/type_vec4.inl \
+		../final/glm/mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.inl \
+		../final/glm/mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.inl \
+		../final/glm/mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.inl \
+		../final/glm/mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.inl \
+		../final/glm/mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.inl \
+		../final/glm/mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.inl \
+		../final/glm/mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.inl \
+		../final/glm/mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.inl \
+		../final/glm/mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.inl \
+		../final/glm/trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.inl \
+		../final/glm/detail/_vectorize.hpp \
+		../final/glm/detail/type_vec1.hpp \
+		../final/glm/detail/type_vec1.inl \
+		../final/glm/exponential.hpp \
+		../final/glm/detail/func_exponential.hpp \
+		../final/glm/detail/func_exponential.inl \
+		../final/glm/detail/func_vector_relational.hpp \
+		../final/glm/detail/func_vector_relational.inl \
+		../final/glm/common.hpp \
+		../final/glm/detail/func_common.hpp \
+		../final/glm/detail/func_common.inl \
+		../final/glm/packing.hpp \
+		../final/glm/detail/func_packing.hpp \
+		../final/glm/detail/func_packing.inl \
+		../final/glm/detail/type_half.hpp \
+		../final/glm/detail/type_half.inl \
+		../final/glm/geometric.hpp \
+		../final/glm/detail/func_geometric.hpp \
+		../final/glm/detail/func_geometric.inl \
+		../final/glm/matrix.hpp \
+		../final/glm/detail/func_matrix.hpp \
+		../final/glm/detail/func_matrix.inl \
+		../final/glm/vector_relational.hpp \
+		../final/glm/integer.hpp \
+		../final/glm/detail/func_integer.hpp \
+		../final/glm/detail/func_integer.inl \
+		../final/glm/gtc/type_ptr.hpp \
+		../final/glm/gtc/quaternion.hpp \
+		../final/glm/gtc/constants.hpp \
+		../final/glm/gtc/constants.inl \
+		../final/glm/gtc/quaternion.inl \
+		../final/glm/gtc/type_ptr.inl \
+		../final/gl/GLDebug.h \
+		../final/gl/textures/Texture2D.h \
+		../final/gl/textures/Texture.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Shader.o ../final/gl/shaders/Shader.cpp
+
+DepthBuffer.o: ../final/gl/textures/DepthBuffer.cpp ../final/gl/textures/DepthBuffer.h \
+		../final/gl/textures/RenderBuffer.h \
+		../final/glew-1.10.0/include/GL/glew.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o DepthBuffer.o ../final/gl/textures/DepthBuffer.cpp
+
+RenderBuffer.o: ../final/gl/textures/RenderBuffer.cpp ../final/gl/textures/RenderBuffer.h \
+		../final/glew-1.10.0/include/GL/glew.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o RenderBuffer.o ../final/gl/textures/RenderBuffer.cpp
+
+Texture.o: ../final/gl/textures/Texture.cpp ../final/gl/textures/Texture.h \
+		../final/glew-1.10.0/include/GL/glew.h \
+		../final/gl/GLDebug.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Texture.o ../final/gl/textures/Texture.cpp
+
+Texture2D.o: ../final/gl/textures/Texture2D.cpp ../final/gl/textures/Texture2D.h \
+		../final/gl/textures/Texture.h \
+		../final/glew-1.10.0/include/GL/glew.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Texture2D.o ../final/gl/textures/Texture2D.cpp
+
+TextureParameters.o: ../final/gl/textures/TextureParameters.cpp ../final/gl/textures/TextureParameters.h \
+		../final/glew-1.10.0/include/GL/glew.h \
+		../final/gl/GLDebug.h \
+		../final/gl/textures/Texture.h \
+		../final/gl/textures/Texture2D.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TextureParameters.o ../final/gl/textures/TextureParameters.cpp
+
+TextureParametersBuilder.o: ../final/gl/textures/TextureParametersBuilder.cpp ../final/gl/textures/TextureParametersBuilder.h \
+		../final/gl/textures/TextureParameters.h \
+		../final/glew-1.10.0/include/GL/glew.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o TextureParametersBuilder.o ../final/gl/textures/TextureParametersBuilder.cpp
+
+FullScreenQuad.o: ../final/gl/util/FullScreenQuad.cpp ../final/gl/util/FullScreenQuad.h \
+		../final/gl/datatype/VAO.h \
+		../final/glew-1.10.0/include/GL/glew.h \
+		../final/gl/datatype/VBO.h \
+		../final/gl/datatype/VBOAttribMarker.h \
+		../final/gl/shaders/ShaderAttribLocations.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o FullScreenQuad.o ../final/gl/util/FullScreenQuad.cpp
+
+GLDebug.o: ../final/gl/GLDebug.cpp ../final/gl/GLDebug.h \
+		../final/glew-1.10.0/include/GL/glew.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o GLDebug.o ../final/gl/GLDebug.cpp
+
+SceneviewScene.o: ../final/scenegraph/SceneviewScene.cpp ../final/scenegraph/SceneviewScene.h \
+		../final/scenegraph/OpenGLScene.h \
+		../final/scenegraph/Scene.h \
+		../final/lib/CS123SceneData.h \
+		../final/glm/glm.hpp \
+		../final/glm/detail/_fixes.hpp \
+		../final/glm/fwd.hpp \
+		../final/glm/detail/type_int.hpp \
+		../final/glm/detail/setup.hpp \
+		../final/glm/detail/type_float.hpp \
+		../final/glm/detail/type_vec.hpp \
+		../final/glm/detail/precision.hpp \
+		../final/glm/detail/type_mat.hpp \
+		../final/glm/vec2.hpp \
+		../final/glm/detail/type_vec2.hpp \
+		../final/glm/detail/_swizzle.hpp \
+		../final/glm/detail/_swizzle_func.hpp \
+		../final/glm/detail/type_vec2.inl \
+		../final/glm/vec3.hpp \
+		../final/glm/detail/type_vec3.hpp \
+		../final/glm/detail/type_vec3.inl \
+		../final/glm/vec4.hpp \
+		../final/glm/detail/type_vec4.hpp \
+		../final/glm/detail/type_vec4.inl \
+		../final/glm/mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.hpp \
+		../final/glm/detail/type_mat2x2.inl \
+		../final/glm/mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.hpp \
+		../final/glm/detail/type_mat2x3.inl \
+		../final/glm/mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.hpp \
+		../final/glm/detail/type_mat2x4.inl \
+		../final/glm/mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.hpp \
+		../final/glm/detail/type_mat3x2.inl \
+		../final/glm/mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.hpp \
+		../final/glm/detail/type_mat3x3.inl \
+		../final/glm/mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.hpp \
+		../final/glm/detail/type_mat3x4.inl \
+		../final/glm/mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.hpp \
+		../final/glm/detail/type_mat4x2.inl \
+		../final/glm/mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.hpp \
+		../final/glm/detail/type_mat4x3.inl \
+		../final/glm/mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.hpp \
+		../final/glm/detail/type_mat4x4.inl \
+		../final/glm/trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.hpp \
+		../final/glm/detail/func_trigonometric.inl \
+		../final/glm/detail/_vectorize.hpp \
+		../final/glm/detail/type_vec1.hpp \
+		../final/glm/detail/type_vec1.inl \
+		../final/glm/exponential.hpp \
+		../final/glm/detail/func_exponential.hpp \
+		../final/glm/detail/func_exponential.inl \
+		../final/glm/detail/func_vector_relational.hpp \
+		../final/glm/detail/func_vector_relational.inl \
+		../final/glm/common.hpp \
+		../final/glm/detail/func_common.hpp \
+		../final/glm/detail/func_common.inl \
+		../final/glm/packing.hpp \
+		../final/glm/detail/func_packing.hpp \
+		../final/glm/detail/func_packing.inl \
+		../final/glm/detail/type_half.hpp \
+		../final/glm/detail/type_half.inl \
+		../final/glm/geometric.hpp \
+		../final/glm/detail/func_geometric.hpp \
+		../final/glm/detail/func_geometric.inl \
+		../final/glm/matrix.hpp \
+		../final/glm/detail/func_matrix.hpp \
+		../final/glm/detail/func_matrix.inl \
+		../final/glm/vector_relational.hpp \
+		../final/glm/integer.hpp \
+		../final/glm/detail/func_integer.hpp \
+		../final/glm/detail/func_integer.inl \
+		../final/shapes/shape.h \
+		../final/shapes/openglshape.h \
+		../final/glew-1.10.0/include/GL/glew.h \
+		../final/gl/datatype/VBO.h \
+		../final/gl/datatype/VBOAttribMarker.h \
+		../final/shapes/point.h \
+		../final/scenegraph/terrain.h \
+		../final/glm/gtx/transform.hpp \
+		../final/glm/gtc/matrix_transform.hpp \
+		../final/glm/gtc/matrix_transform.inl \
+		../final/glm/gtx/transform.inl \
+		../final/glm/gtc/type_ptr.hpp \
+		../final/glm/gtc/quaternion.hpp \
+		../final/glm/gtc/constants.hpp \
+		../final/glm/gtc/constants.inl \
+		../final/glm/gtc/quaternion.inl \
+		../final/glm/gtc/type_ptr.inl \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QImage \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qimage.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtransform.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qmatrix.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpolygon.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvector.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qalgorithms.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobal.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qconfig.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfeatures.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemdetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocessordetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcompilerdetection.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobalstatic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasicatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qgenericatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_msvc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_integrity.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qoldbasicatomic.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_vxworks.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_power.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_alpha.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv7.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv6.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv5.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bfin.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_ia64.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_mips.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_s390.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sh4a.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sparc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_x86.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_cxx11.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_gcc.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_unix.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmutex.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlogging.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qflags.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypeinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypetraits.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsysinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiterator.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrefcount.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydata.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpoint.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnamespace.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrect.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsize.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qregion.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs_win.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatastream.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedpointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiodevice.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstring.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qchar.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringbuilder.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreevent.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetatype.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvarlengtharray.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontainerfwd.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qisenum.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject_impl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpair.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qline.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainterpath.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpaintdevice.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qrgb.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlist.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregexp.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringmatcher.h \
+		../final/scenegraph/skybox.h \
+		../final/gl/textures/Texture2D.h \
+		../final/gl/textures/Texture.h \
+		../final/shapes/anyshape.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/QGLWidget \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qgl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qopengl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qt_windows.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qopengles2ext.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qopenglext.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qwidget.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmargins.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpalette.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcolor.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qbrush.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpixmap.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedpointer.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qshareddata.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qhash.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfont.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfontmetrics.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfontinfo.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qsizepolicy.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcursor.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qkeysequence.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qevent.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvariant.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmap.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdebug.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextstream.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlocale.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qset.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontiguouscache.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qurl.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qurlquery.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfile.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfiledevice.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qvector2d.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtouchdevice.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpaintengine.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainter.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextoption.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpen.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qglcolormap.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qtopenglglobal.h \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QSurfaceFormat \
+		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qsurfaceformat.h \
+		../final/camera/OrbitingCamera.h \
+		../final/camera/Camera.h \
+		../final/lib/ResourceLoader.h \
+		../final/gl/shaders/CS123Shader.h \
+		../final/gl/shaders/Shader.h \
+		../final/shapes/cube.h \
+		../final/shapes/cone.h \
+		../final/shapes/sphere.h \
+		../final/shapes/cylinder.h \
+		../final/gl/util/FullScreenQuad.h \
+		../final/gl/datatype/VAO.h \
+		../final/glm/ext.hpp \
+		../final/glm/gtc/epsilon.hpp \
+		../final/glm/gtc/epsilon.inl \
+		../final/glm/gtc/matrix_access.hpp \
+		../final/glm/gtc/matrix_access.inl \
+		../final/glm/gtc/matrix_integer.hpp \
+		../final/glm/gtc/matrix_inverse.hpp \
+		../final/glm/gtc/matrix_inverse.inl \
+		../final/glm/gtc/noise.hpp \
+		../final/glm/gtc/noise.inl \
+		../final/glm/detail/_noise.hpp \
+		../final/glm/gtc/packing.hpp \
+		../final/glm/gtc/type_precision.hpp \
+		../final/glm/gtc/type_precision.inl \
+		../final/glm/gtc/packing.inl \
+		../final/glm/gtc/random.hpp \
+		../final/glm/gtc/random.inl \
+		../final/glm/gtc/reciprocal.hpp \
+		../final/glm/gtc/reciprocal.inl \
+		../final/glm/gtc/ulp.hpp \
+		../final/glm/gtc/ulp.inl \
+		../final/glm/gtx/associated_min_max.hpp \
+		../final/glm/gtx/associated_min_max.inl \
+		../final/glm/gtx/bit.hpp \
+		../final/glm/gtx/bit.inl \
+		../final/glm/gtx/closest_point.hpp \
+		../final/glm/gtx/closest_point.inl \
+		../final/glm/gtx/color_space.hpp \
+		../final/glm/gtx/color_space.inl \
+		../final/glm/gtx/color_space_YCoCg.hpp \
+		../final/glm/gtx/color_space_YCoCg.inl \
+		../final/glm/gtx/compatibility.hpp \
+		../final/glm/gtx/compatibility.inl \
+		../final/glm/gtx/component_wise.hpp \
+		../final/glm/gtx/component_wise.inl \
+		../final/glm/gtx/dual_quaternion.hpp \
+		../final/glm/gtx/dual_quaternion.inl \
+		../final/glm/gtx/euler_angles.hpp \
+		../final/glm/gtx/euler_angles.inl \
+		../final/glm/gtx/extend.hpp \
+		../final/glm/gtx/extend.inl \
+		../final/glm/gtx/extented_min_max.hpp \
+		../final/glm/gtx/extented_min_max.inl \
+		../final/glm/gtx/fast_exponential.hpp \
+		../final/glm/gtx/fast_exponential.inl \
+		../final/glm/gtx/fast_square_root.hpp \
+		../final/glm/gtx/fast_square_root.inl \
+		../final/glm/gtx/fast_trigonometry.hpp \
+		../final/glm/gtx/fast_trigonometry.inl \
+		../final/glm/gtx/gradient_paint.hpp \
+		../final/glm/gtx/optimum_pow.hpp \
+		../final/glm/gtx/optimum_pow.inl \
+		../final/glm/gtx/gradient_paint.inl \
+		../final/glm/gtx/handed_coordinate_space.hpp \
+		../final/glm/gtx/handed_coordinate_space.inl \
+		../final/glm/gtx/inertia.hpp \
+		../final/glm/gtx/inertia.inl \
+		../final/glm/gtx/int_10_10_10_2.hpp \
+		../final/glm/gtx/raw_data.hpp \
+		../final/glm/gtx/raw_data.inl \
+		../final/glm/gtx/int_10_10_10_2.inl \
+		../final/glm/gtx/integer.hpp \
+		../final/glm/gtx/integer.inl \
+		../final/glm/gtx/intersect.hpp \
+		../final/glm/gtx/intersect.inl \
+		../final/glm/gtx/log_base.hpp \
+		../final/glm/gtx/log_base.inl \
+		../final/glm/gtx/matrix_cross_product.hpp \
+		../final/glm/gtx/matrix_cross_product.inl \
+		../final/glm/gtx/matrix_interpolation.hpp \
+		../final/glm/gtx/matrix_interpolation.inl \
+		../final/glm/gtx/matrix_major_storage.hpp \
+		../final/glm/gtx/matrix_major_storage.inl \
+		../final/glm/gtx/matrix_operation.hpp \
+		../final/glm/gtx/matrix_operation.inl \
+		../final/glm/gtx/matrix_query.hpp \
+		../final/glm/gtx/vector_query.hpp \
+		../final/glm/gtx/vector_query.inl \
+		../final/glm/gtx/matrix_query.inl \
+		../final/glm/gtx/mixed_product.hpp \
+		../final/glm/gtx/mixed_product.inl \
+		../final/glm/gtx/multiple.hpp \
+		../final/glm/gtx/multiple.inl \
+		../final/glm/gtx/norm.hpp \
+		../final/glm/gtx/quaternion.hpp \
+		../final/glm/gtx/norm.inl \
+		../final/glm/gtx/normal.hpp \
+		../final/glm/gtx/normal.inl \
+		../final/glm/gtx/normalize_dot.hpp \
+		../final/glm/gtx/normalize_dot.inl \
+		../final/glm/gtx/number_precision.hpp \
+		../final/glm/gtx/number_precision.inl \
+		../final/glm/gtx/orthonormalize.hpp \
+		../final/glm/gtx/orthonormalize.inl \
+		../final/glm/gtx/perpendicular.hpp \
+		../final/glm/gtx/projection.hpp \
+		../final/glm/gtx/projection.inl \
+		../final/glm/gtx/perpendicular.inl \
+		../final/glm/gtx/polar_coordinates.hpp \
+		../final/glm/gtx/polar_coordinates.inl \
+		../final/glm/gtx/rotate_vector.hpp \
+		../final/glm/gtx/rotate_vector.inl \
+		../final/glm/gtx/spline.hpp \
+		../final/glm/gtx/spline.inl \
+		../final/glm/gtx/std_based_type.hpp \
+		../final/glm/gtx/std_based_type.inl \
+		../final/glm/gtx/string_cast.hpp \
+		../final/glm/gtx/string_cast.inl \
+		../final/glm/gtx/transform2.hpp \
+		../final/glm/gtx/transform2.inl \
+		../final/glm/gtx/vec1.hpp \
+		../final/glm/gtx/vec1.inl \
+		../final/glm/gtx/vector_angle.hpp \
+		../final/glm/gtx/vector_angle.inl \
+		../final/glm/gtx/wrap.hpp \
+		../final/glm/gtx/wrap.inl \
+		../final/glm/gtx/simd_vec4.hpp \
+		../final/glm/detail/intrinsic_common.hpp \
+		../final/glm/detail/intrinsic_common.inl \
+		../final/glm/detail/intrinsic_geometric.hpp \
+		../final/glm/detail/intrinsic_geometric.inl \
+		../final/glm/detail/intrinsic_integer.hpp \
+		../final/glm/detail/intrinsic_integer.inl \
+		../final/glm/gtx/simd_vec4.inl \
+		../final/glm/gtx/simd_mat4.hpp \
+		../final/glm/detail/intrinsic_matrix.hpp \
+		../final/glm/detail/intrinsic_matrix.inl \
 		../final/glm/gtx/simd_mat4.inl \
 		../final/gl/GLDebug.h \
 		../final/ui/view.h \
@@ -4084,6 +4527,13 @@ SceneviewScene.o: ../final/scenegraph/SceneviewScene.cpp ../final/scenegraph/Sce
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtimer.h \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasictimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SceneviewScene.o ../final/scenegraph/SceneviewScene.cpp
+
+anyshape.o: ../final/shapes/anyshape.cpp ../final/shapes/anyshape.h \
+		../final/shapes/openglshape.h \
+		../final/glew-1.10.0/include/GL/glew.h \
+		../final/gl/datatype/VBO.h \
+		../final/gl/datatype/VBOAttribMarker.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o anyshape.o ../final/shapes/anyshape.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp

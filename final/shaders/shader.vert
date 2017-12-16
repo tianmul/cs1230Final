@@ -105,7 +105,7 @@ void main()
         if (useLighting) {
             //color = ambient_color.xyz; // Add ambient component
             if (!usingSSAO)color = ambient_color.xyz; // Add ambient component
-            else color = vec3(0.0f);
+            else color = ambient_color.xyz;
             ambientColor = ambient_color;
 
 

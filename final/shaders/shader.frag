@@ -23,7 +23,6 @@ void main()
         FragColor = vec4(vec3(1.0f-AmbientOcclusion), 1.0);
     }
     else{
-        FragColor = vec4(ambientColor*AmbientOcclusion, 0.0);
         //vec3 texColor = texture(tex, texc).rgb;
         //texColor = clamp(texColor + vec3(1-useTexture), vec3(0), vec3(1));
         //fragColor = vec4(color * texColor, 1);
@@ -31,12 +30,14 @@ void main()
         {
             texColor = texture(mysp, uv);
             if(usingSSAO)
-                FragColor += vec4(  color * clamp(texColor.xyz,0,1) ,1);
+                FragColor = vec4(  ambientColor*AmbientOcclusion + color * clamp(texColor.xyz,0,1) - ambientColor ,1);
             else
                 FragColor = vec4(  color * clamp(texColor.xyz,0,1) ,1);
         } else {
-            if(!usingSSAO) FragColor = vec4(color,1);
-            else FragColor += vec4(color,1);
+            if(usingSSAO)
+                FragColor = vec4(  ambientColor*AmbientOcclusion + color - ambientColor ,1);
+            else
+                FragColor = vec4(  color  ,1);
         }
 
 //        texColor = texture(mysp, uv);
