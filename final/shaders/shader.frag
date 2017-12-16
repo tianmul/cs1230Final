@@ -11,6 +11,7 @@ uniform sampler2D mysp;
 uniform int square;
 uniform vec2 SCR_SIZE;
 uniform bool usingSSAO;
+uniform bool usingTexutre;
 vec4 texColor;
 
 void main()
@@ -24,12 +25,21 @@ void main()
         //vec3 texColor = texture(tex, texc).rgb;
         //texColor = clamp(texColor + vec3(1-useTexture), vec3(0), vec3(1));
         //fragColor = vec4(color * texColor, 1);
+        if(usingTexutre)
+        {
+            texColor = texture(mysp, uv);
+            if(usingSSAO)
+                FragColor = vec4( AmbientOcclusion * color * clamp(texColor.xyz,0,1) ,1);
+            else
+                FragColor = vec4(  color * clamp(texColor.xyz,0,1) ,1);
+        } else {
+            if(!usingSSAO) FragColor = vec4(color,1);
+            else FragColor = vec4(color*AmbientOcclusion,1);
+        }
 
-        if(!usingSSAO) FragColor = vec4(color,1);
-        else FragColor = vec4(color*AmbientOcclusion,1);
+//        texColor = texture(mysp, uv);
+//        FragColor = vec4( texColor.xyz,1);
 
-        texColor = texture(mysp, uv);
-        FragColor = vec4( texColor.xyz,1);
         //FragColor = vec4(vec3(1.0f-AmbientOcclusion), 1.0);
 
 

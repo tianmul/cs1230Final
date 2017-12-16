@@ -337,6 +337,8 @@ void SceneviewScene::render(View *context) {
 
             m_depthShader->setUniform("lightIndex", i);
             glCullFace(GL_FRONT);
+            m_depthShader->setUniform("m", glm::mat4(1.0f));
+            m_terrain.draw();
             renderGeometry(m_depthShader.get());
             glCullFace(GL_BACK);
     //        glBindTexture(GL_TEXTURE_2D, gNormal);
@@ -364,6 +366,8 @@ void SceneviewScene::render(View *context) {
         //glm::mat4 model;
         glUniformMatrix4fv(glGetUniformLocation(SSAO_geometry->getID(), "p"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(SSAO_geometry->getID(), "v"), 1, GL_FALSE, glm::value_ptr(view));
+        SSAO_geometry->setUniform("m", glm::mat4(1.0f));
+        m_terrain.draw();
         renderGeometry(SSAO_geometry.get());
         SSAO_geometry->unbind();
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -433,19 +437,35 @@ void SceneviewScene::render(View *context) {
 
     glUniform1i(glGetUniformLocation(m_phongShader->getID(), "square"), 0);
     m_phongShader->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
-    renderGeometry(m_phongShader.get());
 
     m_phongShader->setUniform("m", glm::mat4(1.0f));
-
+    m_phongShader->setUniform("usingTexutre", true);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);
     m_phongShader->setUniform("mysp", 0);
     m_terrain.draw();
     glBindTexture(GL_TEXTURE_2D, 0);
+    m_phongShader->setUniform("usingTexutre", false);
+    renderGeometry(m_phongShader.get());
+    glBindTexture(GL_TEXTURE_2D, 0);
     m_phongShader->unbind();
 
 
-    OrbitingCamera *camera = context->getOrbitingCamera();
+      OrbitingCamera *camera = context->getOrbitingCamera();
+
+//    m_terrainShaderProgram->bind();
+
+//    m_terrainShaderProgram->setUniform("useArrowOffsets", false);
+//    m_terrainShaderProgram->setUniform("useLighting", Lighting);
+//    m_terrainShaderProgram->setUniform("projection", camera->getProjectionMatrix());
+//    m_terrainShaderProgram->setUniform("view", camera->getViewMatrix());
+//    m_terrainShaderProgram->setUniform("model", glm::mat4(1.0f));
+//    glActiveTexture(GL_TEXTURE0);
+//    glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);
+//    m_terrainShaderProgram->setUniform("mysp", 0);
+//    m_terrain.draw();
+//    glBindTexture(GL_TEXTURE_2D, 0);
+//    m_terrainShaderProgram->unbind();
 
     m_skyboxShaderProgram->bind();
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -478,17 +498,7 @@ void SceneviewScene::render(View *context) {
     m_skyboxShaderProgram->unbind();
 
 
-//    m_terrainShaderProgram->bind();
 
-//    m_terrainShaderProgram->setUniform("useArrowOffsets", false);
-//    m_terrainShaderProgram->setUniform("useLighting", Lighting);
-//    m_terrainShaderProgram->setUniform("projection", camera->getProjectionMatrix());
-//    m_terrainShaderProgram->setUniform("view", camera->getViewMatrix());
-//    m_terrainShaderProgram->setUniform("model", glm::mat4(1.0f));
-//    glBindTexture(GL_TEXTURE_2D, m_terrain.m_textureID);
-
-//    glBindTexture(GL_TEXTURE_2D, 0);
-//    m_terrainShaderProgram->unbind();
 
 }
 
@@ -526,7 +536,7 @@ void SceneviewScene::setLights(CS123::GL::CS123Shader* shader)
     for (int i = 0; i<m_Lights.size(); i++){
         CS123SceneLightData curlight = *m_Lights[i];
         shader->setLight(curlight);
-        m_terrainShaderProgram->setLight(curlight);
+       // m_terrainShaderProgram->setLight(curlight);
     }
 }
 
