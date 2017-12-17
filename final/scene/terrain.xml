@@ -21,13 +21,13 @@
     <lightdata>
 		<id v="1"/>
 		<position x="2" y="2" z="-2"/>
-		<color r="0.001" g="0.001" b="0.001"/>
+		<color r="0.01" g="0.01" b="0.01"/>
 	</lightdata>
 
     <lightdata>
         <id v="2"/>
         <position x="5" y="4" z="-3"/>
-        <color r="0.001" g="0.001" b="0.001"/>
+        <color r="0.01" g="0.01" b="0.01"/>
     </lightdata>
 
 
