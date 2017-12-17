@@ -194,8 +194,8 @@ void View::keyPressEvent(QKeyEvent *event)
 
     if (event->key() == Qt::Key_W) getOrbitingCamera()->mouseScrolled(0.f,speed*seconds);
     else if (event->key() == Qt::Key_S) getOrbitingCamera()->mouseScrolled(0.f,-speed*seconds);
-    else if (event->key() == Qt::Key_A) getOrbitingCamera()->mouseScrolled(speed*seconds, 0.f);
-    else if (event->key() == Qt::Key_D) getOrbitingCamera()->mouseScrolled(-speed*seconds, 0.f);
+    else if (event->key() == Qt::Key_D) getOrbitingCamera()->mouseScrolled(speed*seconds, 0.f);
+    else if (event->key() == Qt::Key_A) getOrbitingCamera()->mouseScrolled(-speed*seconds, 0.f);
     else if (event->key() == Qt::Key_I && !m_movingLight) m_sec += speed*seconds;
     else if (event->key() == Qt::Key_O && !m_movingLight) m_sec -= speed*seconds;
     else if (event->key() == Qt::Key_P) m_movingLight = !m_movingLight;
