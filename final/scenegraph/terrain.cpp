@@ -240,7 +240,7 @@ void Terrain::init() {
     int index = 0;
     for (int row = 0; row < m_numRows - 1; row++) {
         for (int col = m_numCols - 1; col >= 0; col--) {
-            if(col % 100 == 0){
+            if(col % 1 == 0){
             data[index++] = getPositionFromHeightMap(row, col);
             data[index++] = getNormal  (row, col);
             data[index++] = getColor();

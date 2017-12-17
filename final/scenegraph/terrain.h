@@ -18,6 +18,7 @@ public:
     GLuint m_textureID;
     std::vector<glm::vec3> grassPos;
     std::vector<glm::vec3> grassPosNormal;
+    std::vector<float> windSeed;
 
 private:
     float randValue(int row, int col);
