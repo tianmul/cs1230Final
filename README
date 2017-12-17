@@ -1,0 +1,20 @@
+Keyboard Operations
+
+WASD:
+camera movement
+
+num '1':
+toggle Shadow Map
+
+num '2':
+toggle SSAO
+
+P:
+pause or resume main light source movement
+
+I,O:
+when the main light source movement is paused,
+press I/O to manually rotate the main light
+
+Mouse Operation:
+right click drag to rotate camera
