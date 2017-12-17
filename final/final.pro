@@ -157,4 +157,6 @@ DISTFILES += \
     shaders/terrain.frag \
     shaders/terrain.vert \
     shaders/skybox.frag \
-    shaders/skybox.vert
+    shaders/skybox.vert \
+    shaders/grass.frag \
+    shaders/grass.vert

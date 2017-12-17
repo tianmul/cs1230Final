@@ -32,7 +32,7 @@ using namespace CS123::GL;
 #define PI 3.141592653571828
 
 SceneviewScene::SceneviewScene()
-    : init_done(false), usingShadowMap(true), usingSSAO(true)
+    : init_done(false), usingShadowMap(true), usingSSAO(true),grassMaterialID(30)
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     /*loadWireframeShader();
@@ -57,6 +57,9 @@ SceneviewScene::~SceneviewScene()
 void SceneviewScene::reinit(){
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     glEnable(GL_DEPTH_TEST);
+    glEnable (GL_BLEND);
+
+   // glBlendFunc(GL_ONE,GL_CONSTANT_COLOR);
 
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/terrain.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/terrain.frag");
@@ -69,6 +72,10 @@ void SceneviewScene::reinit(){
     std::string vertexSourceToon = ResourceLoader::loadResourceFileToString(":/shaders/toon.vert");
     std::string fragmentSourceToon = ResourceLoader::loadResourceFileToString(":/shaders/toon.frag");
     m_toonShaderProgram = std::make_unique<CS123Shader>(vertexSourceToon, fragmentSourceToon);
+
+    std::string vertexSourceGrass= ResourceLoader::loadResourceFileToString(":/shaders/grass.vert");
+    std::string fragmentSourceGrass = ResourceLoader::loadResourceFileToString(":/shaders/grass.frag");
+    m_grassShaderProgram = std::make_unique<CS123Shader>(vertexSourceGrass, fragmentSourceGrass);
 
     m_terrain.init();
     sk.init();
@@ -88,7 +95,7 @@ void SceneviewScene::reinit(){
                                      5,5,5,-1,0,0,1,0,0,\
                                      5,5,5,-1,0,0,1,0,0,\
                                      5,-5,-5,-1,0,0,0,1,0,\
-                                     5,-5,5,-1,0,0,1,1,0};
+                                      5,-5,5,-1,0,0,1,1,0};
     std::vector<float> squareData_left = {-5 ,5,5,-1,0,0,0,0,0,\
                                      -5 ,-5, 5,-1,0,0,0,1,0,\
                                      -5,5,-5,-1,0,0,1,0,0,\
@@ -108,12 +115,26 @@ void SceneviewScene::reinit(){
                                     5,-5,5,0,0,1,0,1,0,\
                                      -5,-5,5,0,0,1,1,1,0};
 
+    std::vector<float> grass = {-1 ,1,-1,0,0,1,0,0,0,\
+                                     -1 ,-1,-1,0,0,1,0,1,0,\
+                                     1,1,-1,0,0,1,1,0,0,\
+                                     1,1,-1,0,0,1,1,0,0,\
+                                    -1,-1,-1,0,0,1,0,1,0,\
+                                     1,-1,-1,0,0,1,1,1,0};
+
     m_sky = std::make_unique<AnyShape>(squareData_back,true);
     m_sky_right = std::make_unique<AnyShape>(squareData_right,true);
     m_sky_left = std::make_unique<AnyShape>(squareData_left,true);
     m_sky_top = std::make_unique<AnyShape>(squareData_top,true);
     m_sky_front = std::make_unique<AnyShape>(squareData_front,true);
-
+    m_grass=  std::make_unique<AnyShape>(grass,true);
+    // load texture to grass
+    QImage image(":/images/images/grass.png");
+    glGenTextures(1, &grassMaterialID);
+    glBindTexture(GL_TEXTURE_2D, grassMaterialID);
+    glTexImage2D(GL_TEXTURE_2D, 0,GL_RGBA, image.width(), image.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, image.bits());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 }
 
 void SceneviewScene::loadPhongShader() {
@@ -355,7 +376,7 @@ void SceneviewScene::render(View *context) {
             glCullFace(GL_BACK);
     //        glBindTexture(GL_TEXTURE_2D, gNormal);
     //        glActiveTexture(GL_TEXTURE4);
-    //        glBindTexture(GL_TEXTURE_2D, gAlbedo);
+    //        glBindTexture(GL_TEXTURE_2D, gAglBlendFunc(GL_ONE,GL_CONSTANT_COLOR);o);
 
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
@@ -483,6 +504,8 @@ void SceneviewScene::render(View *context) {
 //    glBindTexture(GL_TEXTURE_2D, 0);
 //    m_terrainShaderProgram->unbind();
 
+
+
     m_skyboxShaderProgram->bind();
     //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     m_skyboxShaderProgram->setUniform("useArrowOffsets", false);
@@ -514,7 +537,20 @@ void SceneviewScene::render(View *context) {
     m_phongShader->applyMaterial(mat);
     m_skyboxShaderProgram->unbind();
 
-
+    //draw grass
+    m_grassShaderProgram->bind();
+    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    glBindTexture(GL_TEXTURE_2D, grassMaterialID);
+    glm::mat4 s(1);
+    s = glm::translate(s,glm::vec3(0,1,0));
+    s[1][0] = sin/10;
+    m_grassShaderProgram->setUniform("projection", camera->getProjectionMatrix());
+    m_grassShaderProgram->setUniform("view", camera->getViewMatrix());
+    m_grassShaderProgram->setUniform("model", s);
+    m_grass->draw();
+     glBindTexture(GL_TEXTURE_2D, 0);
+    glBlendFunc(GL_ONE,GL_CONSTANT_COLOR);
+  m_grassShaderProgram->unbind();
 
 
 }

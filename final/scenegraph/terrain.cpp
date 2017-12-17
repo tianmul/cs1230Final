@@ -83,7 +83,7 @@ glm::vec3 Terrain::getPositionFromHeightMap(int row, int col){
      float B = qBlue(gHeightMap.pixel(nRow+1,nCol-1)) / 255.f- 0.5f;
      float A = qBlue(gHeightMap.pixel(nRow,nCol-1)) / 255.f- 0.5f;
 
-     float x = glm::fract(row / 16.f);
+     float x = glm::fract(row / 16.f);    //draw grass
      float y = glm::fract(col / 16.f);
 
      float val1 = glm::mix(A,B,x*x*(3-2*x));
@@ -240,7 +240,7 @@ void Terrain::init() {
     int index = 0;
     for (int row = 0; row < m_numRows - 1; row++) {
         for (int col = m_numCols - 1; col >= 0; col--) {
-            if(col % 1 == 0){
+            if(col % 100 == 0){
             data[index++] = getPositionFromHeightMap(row, col);
             data[index++] = getNormal  (row, col);
             data[index++] = getColor();
@@ -272,7 +272,7 @@ void Terrain::init() {
                                     "<ambient r=\"0.4\" g=\"0.4\" b=\"0.4\"/>"
                                     "</object>"
                             "</transblock>"
-                            "<transblock>"
+                            "<transblock>"    //draw grass
                                 "<translate x=\"0\" y=\"0.3\" z=\"-0.3\" />"
                                 "<scale x=\""<<1.2 + sx <<"\" y=\""<<1.2 + sx <<"\" z=\""<<1.2 + sx <<"\" />"
                                 "<object type=\"primitive\" name=\"sphere\">"

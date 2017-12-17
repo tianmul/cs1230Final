@@ -143,6 +143,8 @@ DIST          = shaders/normals/normals.vert \
 		shaders/terrain.vert \
 		shaders/skybox.frag \
 		shaders/skybox.vert \
+		shaders/grass.frag \
+		shaders/grass.vert \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/linux.conf \
@@ -522,28 +524,35 @@ compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: resources.qrc \
 		/usr/lib/x86_64-linux-gnu/qt5/bin/rcc \
-		shaders/depth.vert \
-		shaders/ssao_geometry.vert \
 		shaders/shader.frag \
-		shaders/skybox.vert \
-		shaders/toon.frag \
-		shaders/ssao.frag \
-		shaders/terrain.vert \
-		shaders/ssao_lighting.frag \
-		shaders/depth.frag \
+		shaders/depth.vert \
 		shaders/ssao_geometry.frag \
-		shaders/shader.vert \
-		shaders/toon.vert \
-		shaders/skybox.frag \
-		shaders/ssao.vert \
-		shaders/ssao_blur.frag \
+		shaders/ssao.frag \
+		shaders/grass.frag \
+		shaders/toon.frag \
+		shaders/ssao_lighting.frag \
 		shaders/terrain.frag \
+		shaders/skybox.vert \
+		shaders/shader.vert \
+		shaders/depth.frag \
+		shaders/ssao_geometry.vert \
+		shaders/ssao_blur.frag \
+		shaders/ssao.vert \
+		shaders/grass.vert \
+		shaders/toon.vert \
+		shaders/terrain.vert \
+		shaders/skybox.frag \
+		images/grass2.png \
+		images/grass2.png \
 		images/front.jpg \
 		images/back.jpg \
 		images/right.jpg \
 		images/top.jpg \
 		images/depth.png \
 		images/left.jpg \
+		images/grass_t1.tga \
+		images/grass.png \
+		images/grass_p1.png \
 		images/map1.jpg \
 		scene/terrain.xml
 	/usr/lib/x86_64-linux-gnu/qt5/bin/rcc -name resources resources.qrc -o qrc_resources.cpp
