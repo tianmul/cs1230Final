@@ -59,7 +59,8 @@ SOURCES += ui/mainwindow.cpp \
     gl/util/FullScreenQuad.cpp \
     gl/GLDebug.cpp \
     scenegraph/SceneviewScene.cpp \
-    shapes/anyshape.cpp
+    shapes/anyshape.cpp \
+    shapes/grassbrush.cpp
 
 HEADERS += ui/mainwindow.h \
     ui_mainwindow.h \
@@ -104,7 +105,8 @@ HEADERS += ui/mainwindow.h \
     gl/util/FullScreenQuad.h \
     gl/GLDebug.h \
     scenegraph/SceneviewScene.h \
-    shapes/anyshape.h
+    shapes/anyshape.h \
+    shapes/grassbrush.h
 
 FORMS += ui/mainwindow.ui
 INCLUDEPATH += glm ui glew-1.10.0/include

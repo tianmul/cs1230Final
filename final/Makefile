@@ -86,7 +86,8 @@ SOURCES       = ui/mainwindow.cpp \
 		gl/util/FullScreenQuad.cpp \
 		gl/GLDebug.cpp \
 		scenegraph/SceneviewScene.cpp \
-		shapes/anyshape.cpp qrc_resources.cpp \
+		shapes/anyshape.cpp \
+		shapes/grassbrush.cpp qrc_resources.cpp \
 		moc_mainwindow.cpp \
 		moc_view.cpp
 OBJECTS       = mainwindow.o \
@@ -128,6 +129,7 @@ OBJECTS       = mainwindow.o \
 		GLDebug.o \
 		SceneviewScene.o \
 		anyshape.o \
+		grassbrush.o \
 		qrc_resources.o \
 		moc_mainwindow.o \
 		moc_view.o
@@ -263,7 +265,8 @@ DIST          = shaders/normals/normals.vert \
 		gl/util/FullScreenQuad.h \
 		gl/GLDebug.h \
 		scenegraph/SceneviewScene.h \
-		shapes/anyshape.h ui/mainwindow.cpp \
+		shapes/anyshape.h \
+		shapes/grassbrush.h ui/mainwindow.cpp \
 		main.cpp \
 		glew-1.10.0/src/glew.c \
 		ui/view.cpp \
@@ -301,7 +304,8 @@ DIST          = shaders/normals/normals.vert \
 		gl/util/FullScreenQuad.cpp \
 		gl/GLDebug.cpp \
 		scenegraph/SceneviewScene.cpp \
-		shapes/anyshape.cpp
+		shapes/anyshape.cpp \
+		shapes/grassbrush.cpp
 QMAKE_TARGET  = final
 DESTDIR       = 
 TARGET        = final
@@ -493,8 +497,8 @@ distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
 	$(COPY_FILE) --parents resources.qrc $(DISTDIR)/
-	$(COPY_FILE) --parents ui/mainwindow.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h ui/view.h ui/viewformat.h camera/Camera.h camera/CamtransCamera.h camera/OrbitingCamera.h camera/QuaternionCamera.h scenegraph/OpenGLScene.h scenegraph/ShapesScene.h scenegraph/Scene.h scenegraph/terrain.h scenegraph/skybox.h shapes/cone.h shapes/cube.h shapes/cylinder.h shapes/openglshape.h shapes/point.h shapes/shape.h shapes/sphere.h lib/BGRA.h lib/CS123ISceneParser.h lib/CS123SceneData.h lib/CS123XmlSceneParser.h lib/ResourceLoader.h gl/datatype/FBO.h gl/datatype/IBO.h gl/datatype/VAO.h gl/datatype/VBO.h gl/datatype/VBOAttribMarker.h gl/shaders/CS123Shader.h gl/shaders/Shader.h gl/shaders/ShaderAttribLocations.h gl/textures/DepthBuffer.h gl/textures/RenderBuffer.h gl/textures/Texture.h gl/textures/Texture2D.h gl/textures/TextureParameters.h gl/textures/TextureParametersBuilder.h gl/util/FullScreenQuad.h gl/GLDebug.h scenegraph/SceneviewScene.h shapes/anyshape.h $(DISTDIR)/
-	$(COPY_FILE) --parents ui/mainwindow.cpp main.cpp glew-1.10.0/src/glew.c ui/view.cpp ui/viewformat.cpp camera/CamtransCamera.cpp camera/OrbitingCamera.cpp camera/QuaternionCamera.cpp scenegraph/OpenGLScene.cpp scenegraph/ShapesScene.cpp scenegraph/Scene.cpp scenegraph/terrain.cpp scenegraph/skybox.cpp shapes/cone.cpp shapes/cube.cpp shapes/cylinder.cpp shapes/openglshape.cpp shapes/shape.cpp shapes/sphere.cpp lib/BGRA.cpp lib/CS123XmlSceneParser.cpp lib/ResourceLoader.cpp gl/datatype/FBO.cpp gl/datatype/IBO.cpp gl/datatype/VAO.cpp gl/datatype/VBO.cpp gl/datatype/VBOAttribMarker.cpp gl/shaders/CS123Shader.cpp gl/shaders/Shader.cpp gl/textures/DepthBuffer.cpp gl/textures/RenderBuffer.cpp gl/textures/Texture.cpp gl/textures/Texture2D.cpp gl/textures/TextureParameters.cpp gl/textures/TextureParametersBuilder.cpp gl/util/FullScreenQuad.cpp gl/GLDebug.cpp scenegraph/SceneviewScene.cpp shapes/anyshape.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ui/mainwindow.h ui_mainwindow.h glew-1.10.0/include/GL/glew.h ui/view.h ui/viewformat.h camera/Camera.h camera/CamtransCamera.h camera/OrbitingCamera.h camera/QuaternionCamera.h scenegraph/OpenGLScene.h scenegraph/ShapesScene.h scenegraph/Scene.h scenegraph/terrain.h scenegraph/skybox.h shapes/cone.h shapes/cube.h shapes/cylinder.h shapes/openglshape.h shapes/point.h shapes/shape.h shapes/sphere.h lib/BGRA.h lib/CS123ISceneParser.h lib/CS123SceneData.h lib/CS123XmlSceneParser.h lib/ResourceLoader.h gl/datatype/FBO.h gl/datatype/IBO.h gl/datatype/VAO.h gl/datatype/VBO.h gl/datatype/VBOAttribMarker.h gl/shaders/CS123Shader.h gl/shaders/Shader.h gl/shaders/ShaderAttribLocations.h gl/textures/DepthBuffer.h gl/textures/RenderBuffer.h gl/textures/Texture.h gl/textures/Texture2D.h gl/textures/TextureParameters.h gl/textures/TextureParametersBuilder.h gl/util/FullScreenQuad.h gl/GLDebug.h scenegraph/SceneviewScene.h shapes/anyshape.h shapes/grassbrush.h $(DISTDIR)/
+	$(COPY_FILE) --parents ui/mainwindow.cpp main.cpp glew-1.10.0/src/glew.c ui/view.cpp ui/viewformat.cpp camera/CamtransCamera.cpp camera/OrbitingCamera.cpp camera/QuaternionCamera.cpp scenegraph/OpenGLScene.cpp scenegraph/ShapesScene.cpp scenegraph/Scene.cpp scenegraph/terrain.cpp scenegraph/skybox.cpp shapes/cone.cpp shapes/cube.cpp shapes/cylinder.cpp shapes/openglshape.cpp shapes/shape.cpp shapes/sphere.cpp lib/BGRA.cpp lib/CS123XmlSceneParser.cpp lib/ResourceLoader.cpp gl/datatype/FBO.cpp gl/datatype/IBO.cpp gl/datatype/VAO.cpp gl/datatype/VBO.cpp gl/datatype/VBOAttribMarker.cpp gl/shaders/CS123Shader.cpp gl/shaders/Shader.cpp gl/textures/DepthBuffer.cpp gl/textures/RenderBuffer.cpp gl/textures/Texture.cpp gl/textures/Texture2D.cpp gl/textures/TextureParameters.cpp gl/textures/TextureParametersBuilder.cpp gl/util/FullScreenQuad.cpp gl/GLDebug.cpp scenegraph/SceneviewScene.cpp shapes/anyshape.cpp shapes/grassbrush.cpp $(DISTDIR)/
 	$(COPY_FILE) --parents ui/mainwindow.ui $(DISTDIR)/
 
 
@@ -4396,6 +4400,9 @@ anyshape.o: shapes/anyshape.cpp shapes/anyshape.h \
 		gl/datatype/VBO.h \
 		gl/datatype/VBOAttribMarker.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o anyshape.o shapes/anyshape.cpp
+
+grassbrush.o: shapes/grassbrush.cpp shapes/grassbrush.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o grassbrush.o shapes/grassbrush.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp

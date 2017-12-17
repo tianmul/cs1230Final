@@ -16,6 +16,8 @@ public:
     void init();
     void draw();
     GLuint m_textureID;
+    std::vector<glm::vec3> grassPos;
+    std::vector<glm::vec3> grassPosNormal;
 
 private:
     float randValue(int row, int col);
@@ -27,13 +29,14 @@ private:
     float m_numRows, m_numCols;
     void loadHeightMap(QString filename);
     void convertHeightMap(QImage heightMap);
-    bool seed(int s);
+    bool seed(int s, int base);
     glm::vec3 getPositionFromHeightMap(int row, int col);
     std::vector<glm::vec3> heightMapList;
     QImage gHeightMap;
     int gWorldMapWidth;
     int gWorldMapHeight;
     GLuint m_terrainTexture;
+
     //GLuint m_textureID;
 
 };

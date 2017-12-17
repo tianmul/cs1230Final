@@ -115,12 +115,12 @@ void SceneviewScene::reinit(){
                                     5,-5,5,0,0,1,0,1,0,\
                                      -5,-5,5,0,0,1,1,1,0};
 
-    std::vector<float> grass = {-1 ,1,-1,0,0,1,0,0,0,\
-                                     -1 ,-1,-1,0,0,1,0,1,0,\
-                                     1,1,-1,0,0,1,1,0,0,\
-                                     1,1,-1,0,0,1,1,0,0,\
-                                    -1,-1,-1,0,0,1,0,1,0,\
-                                     1,-1,-1,0,0,1,1,1,0};
+    std::vector<float> grass = {-.1,.05,0,0,0,1,0,0,0,\
+                                     -.1 ,-.05,0,0,0,1,0,1,0,\
+                                     .0,.05,0,0,0,1,1,0,0,\
+                                     .0,.05,0,0,0,1,1,0,0,\
+                                    -.1,-.05,0,0,0,1,0,1,0,\
+                                     .0,-.05,0,0,0,1,1,1,0};
 
     m_sky = std::make_unique<AnyShape>(squareData_back,true);
     m_sky_right = std::make_unique<AnyShape>(squareData_right,true);
@@ -215,7 +215,7 @@ void SceneviewScene::initSSAO(){
 
     /*std::string vertexSource2 = ResourceLoader::loadResourceFileToString(":/shaders/ssao.vert");
     std::string fragmentSource2 = ResourceLoader::loadResourceFileToString(":/shaders/ssao_lighting.frag");
-    SSAO_lighting = std::make_unique<CS123Shader>(vertexSource2, fragmentSource2);*/
+    SSAO_lighting = std::make_unique<2CS123Shader>(vertexSource2, fragmentSource2);*/
 
     std::string vertexSource3 = ResourceLoader::loadResourceFileToString(":/shaders/ssao.vert");
     std::string fragmentSource3 = ResourceLoader::loadResourceFileToString(":/shaders/ssao.frag");
@@ -417,7 +417,7 @@ void SceneviewScene::render(View *context) {
         glBindTexture(GL_TEXTURE_2D, noiseTexture);
 
         for (GLuint i = 0; i < 64; ++i)
-                        glUniform3fv(glGetUniformLocation(SSAO->getID(), ("samples[" + std::to_string(i) + "]").c_str()), 1, &ssaoKernel[i][0]);
+             glUniform3fv(glGetUniformLocation(SSAO->getID(), ("samples[" + std::to_string(i) + "]").c_str()), 1, &ssaoKernel[i][0]);
         glUniformMatrix4fv(glGetUniformLocation(SSAO->getID(), "projection"), 1, GL_FALSE, glm::value_ptr(context->getOrbitingCamera()->getProjectionMatrix()));
         SSAO->setUniform("SCR_SIZE", glm::vec2(SCR_WIDTH, SCR_HEIGHT));
 
@@ -541,16 +541,20 @@ void SceneviewScene::render(View *context) {
     m_grassShaderProgram->bind();
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glBindTexture(GL_TEXTURE_2D, grassMaterialID);
-    glm::mat4 s(1);
-    s = glm::translate(s,glm::vec3(0,1,0));
-    s[1][0] = sin/10;
     m_grassShaderProgram->setUniform("projection", camera->getProjectionMatrix());
     m_grassShaderProgram->setUniform("view", camera->getViewMatrix());
-    m_grassShaderProgram->setUniform("model", s);
-    m_grass->draw();
+
+    for(int i = 0 ; i < m_terrain.grassPos.size(); i ++){
+        glm::mat4 s(1);
+          s = glm::translate(s,m_terrain.grassPos[i]);
+          s[1][0] = sin/10;
+          m_grassShaderProgram->setUniform("model", s);
+          m_grass->draw();
+
+    }
      glBindTexture(GL_TEXTURE_2D, 0);
     glBlendFunc(GL_ONE,GL_CONSTANT_COLOR);
-  m_grassShaderProgram->unbind();
+    m_grassShaderProgram->unbind();
 
 
 }

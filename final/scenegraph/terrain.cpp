@@ -250,8 +250,24 @@ void Terrain::init() {
             data[index++] = getColor();
             data[index++] = getUV  (row, col);
             }
+            // generate grass
+            if(seed(29999,99)){
+
+                glm::vec3 pos = getPositionFromHeightMap(row, col);
+                glm::vec3 normal = getNormal  (row, col);
+                if(pos.y < 0.01f){
+                    for(int j = 0; j < 9; j ++){
+                        int _x = rand() % 100 / 3.f;
+                        int _y = rand() % 100 / 3.f;
+                        pos = getPositionFromHeightMap(row +_x, col +_y);
+                        normal = getNormal  (row + _x, col + _y);
+                        grassPos.push_back(pos);
+                        grassPosNormal.push_back(normal);
+                        }
+                }
+            }
             // generate tree
-            if(seed(2999999999)){
+            if(seed(2999999999,99)){
                 glm::vec3 pos = getPositionFromHeightMap(row, col);
                 glm::vec3 normal = getNormal  (row, col);
                 float scalex = rand() % 100 / 1000.f;
@@ -334,10 +350,10 @@ void Terrain::init() {
     m_shape->buildVAO();
 }
 
-bool Terrain::seed(int s){
+bool Terrain::seed(int s, int base = 99){
     int max = rand() % s;
 
-    if( max == 99)
+    if( max == base)
          return true;
     return false;
 }
