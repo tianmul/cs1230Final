@@ -28,9 +28,13 @@ public:
     // Returns a pointer to the current scene. If no scene is loaded, this function returns nullptr.
     OpenGLScene *getScene() { return m_currentScene; }
 
+    float getTime();
 private:
     QTime m_time;
     QTimer m_timer;
+
+    float m_sec;
+
     bool m_captureMouse;
 
     void initializeGL();
@@ -58,6 +62,8 @@ private:
     std::unique_ptr<ShapesScene> m_shapesScene;
     std::unique_ptr<SceneviewScene> m_sceneviewScene;
     float holdTime;
+
+    bool m_movingLight;
 };
 
 #endif // VIEW_H

@@ -31,7 +31,7 @@ OrbitingCamera *View::getOrbitingCamera(){
 
 View::View(QWidget *parent) : QGLWidget(ViewFormat(), parent),
     m_time(), m_timer(), m_captureMouse(false),m_defaultOrbitingCamera(new OrbitingCamera()),
-    m_currentScene(nullptr), m_isDragging(false)
+    m_currentScene(nullptr), m_isDragging(false), m_movingLight(true)
 {
     // View needs all mouse move events, not just mouse drag events
     setMouseTracking(true);
@@ -71,6 +71,7 @@ void View::initializeGL()
 
     // Start a timer that will try to get 60 frames per second (the actual
     // frame rate depends on the operating system and other running programs)
+    m_sec = 0;
     m_time.start();
     m_timer.start(1000 / 60);
 
@@ -103,7 +104,7 @@ void View::initializeGL()
             // Set the camera for the new scene
             CS123SceneCameraData camera;
             if (parser.getCameraData(camera)) {
-                //Since we use Orbiting Camera here, just do nothing
+                //Since we use Orb1.iting Camera here, just do nothing
             }
         } else {
             QMessageBox::critical(this, "Error", "Could not load scene \"" + file + "\"");
@@ -195,7 +196,9 @@ void View::keyPressEvent(QKeyEvent *event)
     else if (event->key() == Qt::Key_S) getOrbitingCamera()->mouseScrolled(0.f,-speed*seconds);
     else if (event->key() == Qt::Key_A) getOrbitingCamera()->mouseScrolled(speed*seconds, 0.f);
     else if (event->key() == Qt::Key_D) getOrbitingCamera()->mouseScrolled(-speed*seconds, 0.f);
-
+    else if (event->key() == Qt::Key_I && !m_movingLight) m_sec += speed*seconds;
+    else if (event->key() == Qt::Key_O && !m_movingLight) m_sec -= speed*seconds;
+    else if (event->key() == Qt::Key_P) m_movingLight = !m_movingLight;
     // TODO: Handle keyboard presses here
 }
 
@@ -215,7 +218,8 @@ void View::tick()
 {
     // Get the number of seconds since the last tick (variable update rate)
     float seconds = m_time.restart() * 0.001f;
-
+    if (m_movingLight)
+        m_sec += 10.0f*seconds;
     // TODO: Implement the demo update here
     //at most 60 frams per second
 
@@ -227,4 +231,11 @@ void View::tick()
 
     // Flag this view for repainting (Qt will call paintGL() soon after)
     //update();
+}
+
+float View::getTime() {
+    while (m_sec > 20.0f) {
+        m_sec -= 20.0f;
+    }
+    return m_sec;
 }

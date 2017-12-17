@@ -29,6 +29,7 @@ using namespace CS123::GL;
 #define P3 0
 #define Lighting true
 
+#define PI 3.141592653571828
 
 SceneviewScene::SceneviewScene()
     : init_done(false), usingShadowMap(true), usingSSAO(true)
@@ -317,6 +318,17 @@ void SceneviewScene::initSSAO(){
 }
 
 void SceneviewScene::render(View *context) {
+    // move light
+    glm::vec4 prev_light_pos = m_Lights[0]->pos;
+    float x = prev_light_pos.x;
+    float z = prev_light_pos.z;
+    float len = glm::sqrt(x*x+z*z);
+    float offset = context->getTime();
+    float sin = glm::sin(offset*2.0f*PI/20.0f);
+    float cos = glm::cos(offset*2.0f*PI/20.0f);
+    m_Lights[0]->pos.x = len*sin;
+    m_Lights[0]->pos.y = 7*cos;
+    m_Lights[0]->pos.z = len*cos;
 
     initShadowMap(); // run only once
 

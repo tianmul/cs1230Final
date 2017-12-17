@@ -111,7 +111,6 @@ private:
     std::uniform_real_distribution<float> randomFloats;
     GLuint noiseTexture;
     void initSSAO();
-
 };
 
 #endif // SCENEVIEWSCENE_H
