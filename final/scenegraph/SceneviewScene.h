@@ -68,6 +68,7 @@ private:
 
     std::vector<std::unique_ptr<Shape>> m_shape;
     std::unique_ptr<AnyShape> m_sky;
+    std::unique_ptr<AnyShape> m_grass;
     std::unique_ptr<AnyShape> m_sky_right;
     std::unique_ptr<AnyShape> m_sky_left;
     std::unique_ptr<AnyShape> m_sky_top;
@@ -77,6 +78,8 @@ private:
     std::unique_ptr<CS123::GL::CS123Shader> m_terrainShaderProgram;
     std::unique_ptr<CS123::GL::CS123Shader> m_skyboxShaderProgram;
     std::unique_ptr<CS123::GL::CS123Shader> m_toonShaderProgram;
+    std::unique_ptr<CS123::GL::CS123Shader> m_grassShaderProgram;
+    GLuint grassMaterialID;
 
     std::vector<int> m_shapeA;
     std::vector<int> marker;
