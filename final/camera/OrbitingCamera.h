@@ -17,7 +17,7 @@
  */
 class OrbitingCamera : public Camera {
 public:
-    OrbitingCamera() : m_aspectRatio(1), m_angleX(0), m_angleY(0), m_zoomX(0), m_zoomZ(-5), eyepos(glm::vec3(0,2,0)) {}
+    OrbitingCamera() : m_aspectRatio(1), m_angleX(0), m_angleY(0), m_zoomX(0), m_zoomZ(-5) {}
     ~OrbitingCamera() {}
 
     virtual void setAspectRatio(float aspectRatio);
@@ -43,9 +43,6 @@ private:
     glm::mat4x4 m_scaleMatrix;
     float m_aspectRatio, m_angleX, m_angleY, m_zoomX, m_zoomZ;
     int m_oldX, m_oldY;
-
-
-    glm::vec3 eyepos;
 };
 
 #endif // ORBITINGCAMERA_H

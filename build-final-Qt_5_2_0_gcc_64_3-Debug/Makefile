@@ -140,6 +140,8 @@ DIST          = ../final/shaders/normals/normals.vert \
 		../final/shaders/terrain.vert \
 		../final/shaders/skybox.frag \
 		../final/shaders/skybox.vert \
+		../final/shaders/grass.frag \
+		../final/shaders/grass.vert \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/mkspecs/features/spec_pre.prf \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/mkspecs/common/shell-unix.conf \
 		../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/mkspecs/common/unix.conf \
@@ -535,30 +537,37 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../final/resources.qrc \
-		../final/scene/terrain.xml \
-		../final/images/front.jpg \
+		../final/images/grass_p1.png \
 		../final/images/back.jpg \
-		../final/images/right.jpg \
-		../final/images/depth.png \
+		../final/images/grass2.png \
 		../final/images/left.jpg \
 		../final/images/top.jpg \
+		../final/images/front.jpg \
+		../final/images/right.jpg \
+		../final/images/depth.png \
 		../final/images/map1.jpg \
-		../final/shaders/shader.vert \
-		../final/shaders/ssao.vert \
-		../final/shaders/ssao_geometry.vert \
+		../final/images/grass.png \
+		../final/images/grass_t1.tga \
+		../final/scene/terrain.xml \
 		../final/shaders/ssao_blur.frag \
-		../final/shaders/skybox.frag \
-		../final/shaders/terrain.frag \
-		../final/shaders/toon.frag \
-		../final/shaders/depth.frag \
-		../final/shaders/ssao_lighting.frag \
-		../final/shaders/skybox.vert \
-		../final/shaders/shader.frag \
-		../final/shaders/ssao.frag \
+		../final/shaders/grass.vert \
+		../final/shaders/ssao.vert \
 		../final/shaders/ssao_geometry.frag \
-		../final/shaders/terrain.vert \
+		../final/shaders/terrain.frag \
+		../final/shaders/skybox.vert \
 		../final/shaders/toon.vert \
-		../final/shaders/depth.vert
+		../final/shaders/ssao_lighting.frag \
+		../final/shaders/shader.vert \
+		../final/shaders/depth.vert \
+		../final/shaders/grass.frag \
+		../final/shaders/ssao.frag \
+		../final/shaders/skybox.frag \
+		../final/shaders/toon.frag \
+		../final/shaders/ssao_geometry.vert \
+		../final/shaders/terrain.vert \
+		../final/shaders/shader.frag \
+		../final/shaders/depth.frag \
+		../final/images/grass2.png
 	/contrib/projects/qt5.2.0/5.2.0/gcc_64/bin/rcc -name resources ../final/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_mainwindow.cpp moc_view.cpp
